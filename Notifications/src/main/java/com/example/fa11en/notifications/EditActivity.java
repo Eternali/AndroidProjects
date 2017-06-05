@@ -30,6 +30,8 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import static com.example.fa11en.notifications.MainActivity.reminders;
+
 public class EditActivity extends Activity {
 
     private static final int RESULT_PICK_CONTACT = 85500;  // desired result code
@@ -117,6 +119,32 @@ public class EditActivity extends Activity {
                             MY_PERMISSIONS_REQUEST_SEND_SMS);
                 }
 
+                String[] date = datePicker.getText().toString().split("/");
+                String[] time = timePicker.getText().toString().split(":");
+                String[] info = contact.getText().toString().split(" ");
+                String name = info[0];
+                String phoneNo = info[2];
+                String msg = message.getText().toString();
+
+                Calendar calendar = Calendar.getInstance();
+
+                calendar.set(Calendar.YEAR, Integer.parseInt(date[2]));
+                calendar.set(Calendar.MONTH, Integer.parseInt(date[1]));
+                calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date[0]));
+                calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
+                calendar.set(Calendar.MINUTE, Integer.parseInt(time[1]));
+                calendar.set(Calendar.SECOND, 0);
+
+                AlarmManager alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
+                Intent intent = new Intent(EditActivity.this, AlarmReceiver.class);
+                intent.putExtra("number", phoneNo);
+                intent.putExtra("message", msg);
+                PendingIntent alarmIntent = PendingIntent.getBroadcast(EditActivity.this, reminders.size(), intent, 0);
+
+                alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+                reminders.add(new Reminder(date, time, name, phoneNo, msg));
+                goToMain();
+
             }
         });
 
@@ -147,39 +175,10 @@ public class EditActivity extends Activity {
     public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_SEND_SMS: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    String[] date = datePicker.getText().toString().split("/");
-                    String[] time = timePicker.getText().toString().split(":");
-                    String[] info = contact.getText().toString().split(" ");
-                    String name = info[0];
-                    String phoneNo = info[2];
-                    String msg = message.getText().toString();
-
-                    reminders.add(new Reminder(date, time, name, phoneNo, msg));
-
-                    Calendar calendar = Calendar.getInstance();
-
-                    calendar.set(Calendar.YEAR, Integer.parseInt(date[2]));
-                    calendar.set(Calendar.MONTH, Integer.parseInt(date[1]));
-                    calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date[0]));
-                    calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
-                    calendar.set(Calendar.MINUTE, Integer.parseInt(time[1]));
-                    calendar.set(Calendar.SECOND, 0);
-
-                    AlarmManager alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
-                    Intent intent = new Intent(EditActivity.this, AlarmReceiver.class);
-                    intent.putExtra("number", phoneNo);
-                    intent.putExtra("message", msg);
-                    PendingIntent alarmIntent = PendingIntent.getBroadcast(EditActivity.this, 0, intent, 0);
-
-                    alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-
-                    saveReminder(remind);
-                    goToMain();
-                } else {
+                if (grantResults.length <= 0
+                        && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(getApplicationContext(),
-                                    "SMS failed: Incorrect permissions", Toast.LENGTH_LONG).show();
+                            "SMS failed: Incorrect permissions", Toast.LENGTH_LONG).show();
                     return;
                 }
             }
