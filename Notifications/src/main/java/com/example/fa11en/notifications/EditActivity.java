@@ -2,6 +2,7 @@ package com.example.fa11en.notifications;
 
 import java.util.Calendar;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -11,10 +12,13 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
@@ -24,10 +28,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class EditActivity extends Activity {
 
     private static final int RESULT_PICK_CONTACT = 85500;  // desired result code
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
 
     private EditText datePicker;
     private EditText timePicker;
@@ -103,34 +109,14 @@ public class EditActivity extends Activity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v) {
-                String[] date = datePicker.getText().toString().split("/");
-                String[] time = timePicker.getText().toString().split(":");
-                String[] info = contact.getText().toString().split(" ");
-                String name = info[0];
-                String phoneNo = info[2];
-                String msg = message.getText().toString();
+                if (ContextCompat.checkSelfPermission(EditActivity.this,
+                        Manifest.permission.SEND_SMS)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(EditActivity.this,
+                            new String[] {Manifest.permission.SEND_SMS},
+                            MY_PERMISSIONS_REQUEST_SEND_SMS);
+                }
 
-                Reminder remind = new Reminder(date, time, name, phoneNo, msg);
-
-                Calendar calendar = Calendar.getInstance();
-
-                calendar.set(Calendar.YEAR, Integer.parseInt(date[2]));
-                calendar.set(Calendar.MONTH, Integer.parseInt(date[1]));
-                calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date[0]));
-                calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
-                calendar.set(Calendar.MINUTE, Integer.parseInt(time[1]));
-                calendar.set(Calendar.SECOND, 0);
-
-                AlarmManager alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
-                Intent intent = new Intent(EditActivity.this, AlarmReceiver.class);
-                intent.putExtra("message", msg);
-                PendingIntent alarmIntent = PendingIntent.getBroadcast(EditActivity.this, 0, intent, 0);
-
-                alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-
-                saveReminder(remind);
-
-                goToMain();
             }
         });
 
@@ -156,6 +142,50 @@ public class EditActivity extends Activity {
         }
     }
 
+    @Override
+    @TargetApi(19)
+    public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    String[] date = datePicker.getText().toString().split("/");
+                    String[] time = timePicker.getText().toString().split(":");
+                    String[] info = contact.getText().toString().split(" ");
+                    String name = info[0];
+                    String phoneNo = info[2];
+                    String msg = message.getText().toString();
+
+                    reminders.add(new Reminder(date, time, name, phoneNo, msg));
+
+                    Calendar calendar = Calendar.getInstance();
+
+                    calendar.set(Calendar.YEAR, Integer.parseInt(date[2]));
+                    calendar.set(Calendar.MONTH, Integer.parseInt(date[1]));
+                    calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date[0]));
+                    calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
+                    calendar.set(Calendar.MINUTE, Integer.parseInt(time[1]));
+                    calendar.set(Calendar.SECOND, 0);
+
+                    AlarmManager alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    Intent intent = new Intent(EditActivity.this, AlarmReceiver.class);
+                    intent.putExtra("number", phoneNo);
+                    intent.putExtra("message", msg);
+                    PendingIntent alarmIntent = PendingIntent.getBroadcast(EditActivity.this, 0, intent, 0);
+
+                    alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+
+                    saveReminder(remind);
+                    goToMain();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                                    "SMS failed: Incorrect permissions", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
+        }
+    }
+
     private void goToMain () {
         Intent backIntent = new Intent(EditActivity.this, MainActivity.class);
         startActivity(backIntent);
@@ -163,9 +193,9 @@ public class EditActivity extends Activity {
 
     private void parseSelectedContact (Intent data) {
         Cursor cursor;
+        String phoneNo;
+        String name;
         try {
-            String phoneNo;
-            String name;
             Uri uri = data.getData();
             cursor = getContentResolver().query(uri, null, null, null, null);
             cursor.moveToFirst();

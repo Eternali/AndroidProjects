@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton addButton;
-    ArrayList<Reminder> reminders = new ArrayList<>();
+    public ArrayList<Reminder> reminders = new ArrayList<>();
     final String filename = "reminders.xml";
 
     @Override
@@ -36,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onPause () {
+        super.onPause();
+        saveReminders(filename, reminders);
     }
 
     public void saveReminders (String fname, ArrayList<Reminder> reminds) {
