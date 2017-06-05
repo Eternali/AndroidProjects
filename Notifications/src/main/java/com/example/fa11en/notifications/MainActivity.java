@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton addButton;
     ListView remindersList;
     public static ArrayList<Reminder> reminders = new ArrayList<>();
+    RemindersArrayAdapter adapter;
     final String filename = "reminders.xml";
 
     @Override
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        reminders = getReminders(filename);
 
-        ArrayAdapter<Reminder> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, reminders);
+        adapter = new RemindersArrayAdapter(this, reminders);
         remindersList = (ListView) findViewById(R.id.remindersList);
         remindersList.setAdapter(adapter);
 
