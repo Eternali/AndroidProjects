@@ -20,8 +20,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         number = intent.getStringExtra("number");
         msg = intent.getStringExtra("message");
 
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(number, null, msg, null, null);
+//        SmsManager smsManager = SmsManager.getDefault();
+//        smsManager.sendTextMessage(number, null, msg, null, null);
 
         NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_stat_name)

@@ -22,10 +22,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        reminders = getReminders(filename);
+        reminders = getReminders(filename);
 
         adapter = new RemindersArrayAdapter(this, reminders);
         remindersList = (ListView) findViewById(R.id.remindersList);
@@ -59,11 +61,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause () {
         super.onPause();
-//        saveReminders(filename, reminders);
+        saveReminders(filename, reminders);
     }
 
     public ArrayList<Reminder> getReminders (String fname) {
         String data = null;
+
         ArrayList<Reminder> tmpReminds = new ArrayList<>();
         try {
             FileInputStream fis = getApplicationContext().openFileInput(fname);
@@ -101,23 +104,23 @@ public class MainActivity extends AppCompatActivity {
                 if (eventType == XmlPullParser.START_TAG && "reminder".equals(xpp.getName())) {
                     eventType = xpp.next();
                     eventType = xpp.next();
-                    date = xpp.getText().toString().split("/");
+                    date = xpp.getText().split("/");
                     eventType = xpp.next();
                     eventType = xpp.next();
                     eventType = xpp.next();
-                    time = xpp.getText().toString().split(":");
+                    time = xpp.getText().split(":");
                     eventType = xpp.next();
                     eventType = xpp.next();
                     eventType = xpp.next();
-                    name = xpp.getText().toString();
+                    name = xpp.getText();
                     eventType = xpp.next();
                     eventType = xpp.next();
                     eventType = xpp.next();
-                    number = xpp.getText().toString();
+                    number = xpp.getText();
                     eventType = xpp.next();
                     eventType = xpp.next();
                     eventType = xpp.next();
-                    message = xpp.getText().toString();
+                    message = xpp.getText();
                     tmpReminds.add(new Reminder(date, time, name, number, message));
                 }
             } catch (XmlPullParserException e) {
