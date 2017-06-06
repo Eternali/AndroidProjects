@@ -1,5 +1,6 @@
 package com.example.fa11en.notifications;
 
+import java.security.KeyException;
 import java.util.Calendar;
 
 import android.Manifest;
@@ -44,6 +45,10 @@ public class EditActivity extends Activity {
     private Button sendBtn;
     private Button backBtn;
 
+    private String[] data = new String[5];
+    int index;
+    Bundle bundle;
+
     @Override
     @TargetApi(21)
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,27 @@ public class EditActivity extends Activity {
         datePicker.setShowSoftInputOnFocus(false);
         timePicker.setShowSoftInputOnFocus(false);
         contact.setShowSoftInputOnFocus(false);
+
+        bundle = getIntent().getExtras();
+        try {
+            data[0] = bundle.getString("date");
+            data[1] = bundle.getString("time");
+            data[2] = bundle.getString("name");
+            data[3] = bundle.getString("number");
+            data[4] = bundle.getString("message");
+            index = bundle.getInt("index");
+        } catch (Exception e) {
+            e.printStackTrace();
+            for (int d = 0; d < data.length; d++) {
+                data[d] = null;
+            }
+            index = -1;
+        }
+
+        if (data[0] != null) datePicker.setText(data[0]);
+        if (data[1] != null) timePicker.setText(data[1]);
+        if (data[2] != null && data[3] != null) contact.setText(data[2] + " at " + data[3]);
+        if (data[4] != null) message.setText(data[4]);
 
         datePicker.setOnClickListener (new View.OnClickListener() {
             @Override
@@ -91,7 +117,7 @@ public class EditActivity extends Activity {
                 TimePickerDialog timePickDialog = new TimePickerDialog(EditActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        timePicker.setText(""+Integer.toString(hourOfDay)+":"+Integer.toString(minute));
+                        timePicker.setText(Integer.toString(hourOfDay)+":"+Integer.toString(minute));
                     }
                 }, chour, cminute, true);
                 timePickDialog.setTitle("Select Time");
@@ -136,13 +162,29 @@ public class EditActivity extends Activity {
                 calendar.set(Calendar.SECOND, 0);
 
                 AlarmManager alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
-                Intent intent = new Intent(EditActivity.this, AlarmReceiver.class);
-                intent.putExtra("number", phoneNo);
-                intent.putExtra("message", msg);
-                PendingIntent alarmIntent = PendingIntent.getBroadcast(EditActivity.this, reminders.size(), intent, 0);
+                Intent intent;
+                PendingIntent alarmIntent;
 
+                if (index < 0) {
+                    intent = new Intent(EditActivity.this, AlarmReceiver.class);
+                    intent.putExtra("number", phoneNo);
+                    intent.putExtra("message", msg);
+                    alarmIntent = PendingIntent.getBroadcast(EditActivity.this, reminders.size(), intent, 0);
+                    reminders.add(new Reminder(date, time, name, phoneNo, msg));
+                } else {
+//                    Intent prevIntent = new Intent(EditActivity.this, AlarmReceiver.class);
+//                    prevIntent.putExtra("number", phoneNo);
+//                    prevIntent.putExtra("message", msg);
+//                    PendingIntent prevAlarmIntent = PendingIntent.getBroadcast(EditActivity.this, index, prevIntent, 0)
+//                    alarmMgr.cancel(prevAlarmIntent);
+                    intent = new Intent(EditActivity.this, AlarmReceiver.class);
+                    intent.putExtra("number", phoneNo);
+                    intent.putExtra("message", msg);
+                    alarmIntent = PendingIntent.getBroadcast(EditActivity.this, index, intent, 0);
+                    reminders.set(index, new Reminder(date, time, name, phoneNo, msg));
+                }
                 alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-                reminders.add(new Reminder(date, time, name, phoneNo, msg));
+
                 goToMain();
 
             }

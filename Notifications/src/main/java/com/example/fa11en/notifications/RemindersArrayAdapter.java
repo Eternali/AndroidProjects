@@ -1,6 +1,7 @@
 package com.example.fa11en.notifications;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RemindersArrayAdapter extends ArrayAdapter<Reminder> {
 
@@ -27,7 +29,7 @@ public class RemindersArrayAdapter extends ArrayAdapter<Reminder> {
     }
 
     @Override
-    public View getView (int position, View convertView, ViewGroup parent) {
+    public View getView (final int position, View convertView, ViewGroup parent) {
         View remindView = null;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -40,6 +42,22 @@ public class RemindersArrayAdapter extends ArrayAdapter<Reminder> {
         contactName.setText(reminds.get(position).name);
         message.setText(reminds.get(position).message);
 
+        remindView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v) {
+                Reminder r = reminds.get(position);
+                Intent editIntent = new Intent(context, EditActivity.class);
+                editIntent.putExtra("date", TextUtils.join("/", r.date));
+                editIntent.putExtra("time", TextUtils.join(":", r.time));
+                editIntent.putExtra("name", r.name);
+                editIntent.putExtra("number", r.number);
+                editIntent.putExtra("message", r.message);
+                editIntent.putExtra("index", position);
+                context.startActivity(editIntent);
+            }
+        });
+
         return remindView;
     }
+
 }
