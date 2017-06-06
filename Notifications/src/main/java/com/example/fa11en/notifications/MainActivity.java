@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
     ListView remindersList;
     RemindersArrayAdapter adapter;
     final static String filename = "reminders.xml";
+    private Context context;
     public static ArrayList<Reminder> reminders;
-    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         context = getApplicationContext();
-        reminders = getReminders(filename);
+        MainActivity.reminders = new ArrayList<>();//getReminders(filename);
 
         adapter = new RemindersArrayAdapter(this, reminders);
         remindersList = (ListView) findViewById(R.id.remindersList);
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         saveReminders(filename, reminders);
     }
 
-    public static ArrayList<Reminder> getReminders (String fname) {
+    public ArrayList<Reminder> getReminders (String fname) {
 
         String data = "";
         ArrayList<Reminder> tmpReminds = new ArrayList<>();
