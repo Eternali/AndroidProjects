@@ -65,6 +65,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public ArrayList<Reminder> getReminders (String fname) {
+
+        /*
+        try {
+            FileInputStream fis = getApplicationContext().openFileInput(fname);
+            InputStreamReader isr = new InputStreamReader(fis);
+            char[] inBuff = new char[fis.available()];
+            isr.read(inBuff);
+            String data = new String(inBuff);
+            isr.close();
+            fis.close();
+            XmlPullParserFactory xppFact = XmlPullParserFactory.newInstance();
+            XmlPullParser xpp = xppFact.newPullParser();
+            xpp.setInput(new StringReader(data));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        */
+
         String data = null;
 
         ArrayList<Reminder> tmpReminds = new ArrayList<>();
@@ -93,12 +115,29 @@ public class MainActivity extends AppCompatActivity {
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         }
+        String date, time, contact, number, message = null;
         while (eventType != XmlPullParser.END_DOCUMENT) {
-            String[] date;
-            String[] time;
-            String name;
-            String number;
-            String message;
+            try {
+                String name = xpp.getName();
+                String text = null;
+                switch (eventType) {
+                    case XmlPullParser.START_TAG:
+                        break;
+                    case XmlPullParser.TEXT:
+                        text = xpp.getText();
+                        break;
+                    case XmlPullParser.END_TAG:
+                        if (name.equals("date")) date = text;
+                        else if (name.equals("time")) time = text;
+                        else if (name.equals("name")) contact = text;
+                        else if (name.equals("number")) number = text;
+                        else if (name.equals("message")) message = text;
+                        break;
+                }
+                eventType = xpp.next();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             try {
                 if (eventType == XmlPullParser.START_TAG && "reminder".equals(xpp.getName())) {
