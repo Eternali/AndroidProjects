@@ -31,8 +31,6 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import static com.example.fa11en.notifications.MainActivity.reminders;
-
 public class EditActivity extends Activity {
 
     private static final int RESULT_PICK_CONTACT = 85500;  // desired result code
@@ -169,8 +167,8 @@ public class EditActivity extends Activity {
                     intent = new Intent(EditActivity.this, AlarmReceiver.class);
                     intent.putExtra("number", phoneNo);
                     intent.putExtra("message", msg);
-                    alarmIntent = PendingIntent.getBroadcast(EditActivity.this, reminders.size(), intent, 0);
-                    reminders.add(new Reminder(date, time, name, phoneNo, msg));
+                    alarmIntent = PendingIntent.getBroadcast(EditActivity.this, MainActivity.reminders.size(), intent, 0);
+                    MainActivity.reminders.add(new Reminder(date, time, name, phoneNo, msg));
                 } else {
 //                    Intent prevIntent = new Intent(EditActivity.this, AlarmReceiver.class);
 //                    prevIntent.putExtra("number", phoneNo);
@@ -181,7 +179,7 @@ public class EditActivity extends Activity {
                     intent.putExtra("number", phoneNo);
                     intent.putExtra("message", msg);
                     alarmIntent = PendingIntent.getBroadcast(EditActivity.this, index, intent, 0);
-                    reminders.set(index, new Reminder(date, time, name, phoneNo, msg));
+                    MainActivity.reminders.set(index, new Reminder(date, time, name, phoneNo, msg));
                 }
                 alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
 
