@@ -2,10 +2,13 @@ package com.example.fa11en.notifications;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Xml;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton addButton;
     ListView remindersList;
     RemindersArrayAdapter adapter;
-    final static String filename = "reminders.xml";
     private Context context;
-    public static ArrayList<Reminder> reminders;
+    final static String filename = "reminders.xml";
+    public static ArrayList<Reminder> reminders = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         context = getApplicationContext();
-        MainActivity.reminders = new ArrayList<>();//getReminders(filename);
+        getReminders(context, filename, reminders);
 
         adapter = new RemindersArrayAdapter(this, reminders);
         remindersList = (ListView) findViewById(R.id.remindersList);
@@ -63,118 +66,127 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause () {
         super.onPause();
-        saveReminders(filename, reminders);
+        saveReminders(context, filename, reminders);
     }
 
-    public ArrayList<Reminder> getReminders (String fname) {
+    @Override
+    protected void onDestroy () {
+        super.onDestroy();
+        saveReminders(context, filename, reminders);
+    }
+
+//    @Override
+//    protected void onActivityResult (int reqCode, int resCode, Intent data) {
+//        if (resCode == RESULT_OK) {
+//            switch (reqCode) {
+//                case RESULT_GOT_REMINDER:
+//                    updateReminders(data);
+//                    break;
+//            }
+//        } else {
+//            Log.e("Editactivity Result", "Failed to get new reminder");
+//        }
+//    }
+
+    /*
+    private static void updateReminders (Context ctx, Intent data) {
+        Cursor cursor;
+        Reminder r;
+        String date = "";
+        String time = "";
+        String name = "";
+        String number = "";
+        String message = "";
+        try {
+            Uri uri = data.getData();
+            cursor = ctx.getContentResolver().query(uri, null, null, null, null);
+            cursor.moveToFirst();
+            date = cursor.getString(cursor.getColumnIndex(EditActivity.))
+        }
+
+        reminders.add(r);
+    }*/
+
+    public static void getReminders (Context ctx, String fname, ArrayList<Reminder> reminds) {
 
         String data = "";
-        ArrayList<Reminder> tmpReminds = new ArrayList<>();
+//        String[] date = {"07", "06", "2017"};
+//        String[] time = {"9", "40"};
+//        reminds.add(new Reminder(date, time, "Billy", "5554", "reminder"));
 
-//        try {
-//            FileInputStream fis = context.openFileInput(fname);
-//            InputStreamReader isr = new InputStreamReader(fis);
-//            char[] inBuff = new char[fis.available()];
-//            isr.read(inBuff);
-//            data = new String(inBuff);
-//            isr.close();
-//            fis.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//            return new ArrayList<>();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return new ArrayList<>();
-//        }
-//        XmlPullParserFactory factory;
-//        XmlPullParser xpp = null;
-//        int eventType = 0;
-//        try {
-//            factory = XmlPullParserFactory.newInstance();
-//            factory.setNamespaceAware(true);
-//            xpp = factory.newPullParser();
-//            xpp.setInput(new StringReader(data));
-//            eventType = xpp.getEventType();
-//        } catch (XmlPullParserException e) {
-//            e.printStackTrace();
-//            return new ArrayList<>();
-//        }
-//        String date = "";
-//        String time = "";
-//        String contact = "";
-//        String number = "";
-//        String message = "";
-//        String text = "";
-//        while (eventType != XmlPullParser.END_DOCUMENT) {
-//            try {
-//                String name = xpp.getName();
-//                switch (eventType) {
-//                    case XmlPullParser.START_TAG:
-//                        break;
-//                    case XmlPullParser.TEXT:
-//                        text = xpp.getText();
-//                        break;
-//                    case XmlPullParser.END_TAG:
-//                        if (name.equals("date")) date = text;
-//                        else if (name.equals("time")) time = text;
-//                        else if (name.equals("name")) contact = text;
-//                        else if (name.equals("number")) number = text;
-//                        else if (name.equals("message")) message = text;
-//                        else if (name.equals("reminder")) tmpReminds.add(new Reminder(date.split("/"), time.split(":"), contact, number, message));
-//                        break;
-//                }
-//                eventType = xpp.next();
-//            } catch (XmlPullParserException e) {
-//                e.printStackTrace();
-//                return new ArrayList<>();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return new ArrayList<>();
-//            }
-
-            /*
+        try {
+            FileInputStream fis = ctx.openFileInput(fname);
+            InputStreamReader isr = new InputStreamReader(fis);
+            char[] inBuff = new char[fis.available()];
+            isr.read(inBuff);
+            data = new String(inBuff);
+            isr.close();
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        XmlPullParserFactory factory;
+        XmlPullParser xpp = null;
+        int eventType = 0;
+        try {
+            factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            xpp = factory.newPullParser();
+            xpp.setInput(new StringReader(data));
+            eventType = xpp.getEventType();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+            return;
+        }
+        String date = "";
+        String time = "";
+        String contact = "";
+        String number = "";
+        String message = "";
+        String text = "";
+        while (eventType != XmlPullParser.END_DOCUMENT) {
             try {
-                if (eventType == XmlPullParser.START_TAG && "reminder".equals(xpp.getName())) {
-                    eventType = xpp.next();
-                    eventType = xpp.next();
-                    date = xpp.getText().split("/");
-                    eventType = xpp.next();
-                    eventType = xpp.next();
-                    eventType = xpp.next();
-                    time = xpp.getText().split(":");
-                    eventType = xpp.next();
-                    eventType = xpp.next();
-                    eventType = xpp.next();
-                    name = xpp.getText();
-                    eventType = xpp.next();
-                    eventType = xpp.next();
-                    eventType = xpp.next();
-                    number = xpp.getText();
-                    eventType = xpp.next();
-                    eventType = xpp.next();
-                    eventType = xpp.next();
-                    message = xpp.getText();
-                    tmpReminds.add(new Reminder(date, time, name, number, message));
+                String name = xpp.getName();
+                switch (eventType) {
+                    case XmlPullParser.START_TAG:
+                        break;
+                    case XmlPullParser.TEXT:
+                        text = xpp.getText();
+                        break;
+                    case XmlPullParser.END_TAG:
+                        if (name.equals("date")) date = text;
+                        else if (name.equals("time")) time = text;
+                        else if (name.equals("name")) contact = text;
+                        else if (name.equals("number")) number = text;
+                        else if (name.equals("message")) message = text;
+                        else if (name.equals("reminder")) reminds.add(new Reminder(date.split("/"), time.split(":"), contact, number, message));
+                        break;
                 }
+                eventType = xpp.next();
             } catch (XmlPullParserException e) {
                 e.printStackTrace();
+                return;
             } catch (IOException e) {
                 e.printStackTrace();
+                return;
             }
-            */
-//        }
 
-        return tmpReminds;
+        }
+
     }
 
-    public void saveReminders (String fname, ArrayList<Reminder> reminds) {
+    public static void saveReminders (Context context, String fname, ArrayList<Reminder> reminds) {
         try {
             // create file if doesn't exist
             // (FileOutputStream should create it automatically but just to be safe)
             File saveFile = new File(fname);
             saveFile.createNewFile();
 //            FileOutputStream fos = new FileOutputStream(saveFile);
-            FileOutputStream fos = getApplicationContext().openFileOutput(fname, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.getApplicationContext().openFileOutput(fname, Context.MODE_PRIVATE);
             XmlSerializer xmlSerial = Xml.newSerializer();
             StringWriter writer = new StringWriter();
             xmlSerial.setOutput(writer);

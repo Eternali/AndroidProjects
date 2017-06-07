@@ -180,7 +180,9 @@ public class EditActivity extends Activity {
                     intent.putExtra("message", msg);
                     alarmIntent = PendingIntent.getBroadcast(EditActivity.this, index, intent, 0);
                     MainActivity.reminders.set(index, new Reminder(date, time, name, phoneNo, msg));
+
                 }
+                Log.i("Reminders", MainActivity.reminders.get(0).message);
                 alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
 
                 goToMain();
