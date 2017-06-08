@@ -10,7 +10,7 @@ for p in projects:
 os.system('git pull origin master')
 
 for p in projects:
-    os.system("rm -r $HOME/AndroidStudioProjects/%s/app/src/*")
-    os.system('cp -r %s/src/* $HOME/AndroidStudioProjects/%s/app/src/' % (p, p))
-
+    #os.system("rm -r $HOME/AndroidStudioProjects/%s/app/src/*" % p)
+    #os.system('cp -r %s/src/* $HOME/AndroidStudioProjects/%s/app/src/' % (p, p))
+    os.system('rsync -avz --delete "$HOME/AndroidStudioProjects/Src/%s/src" "$HOME/AndroidStudioProjects/%s/app/src"' % (p, p))
 

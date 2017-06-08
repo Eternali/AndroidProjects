@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.conrad.notificationscheduler.MainActivity">
+
+    <Button
+        android:id="@+id/notiBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Notification"
+        tools:layout_editor_absoluteX="114dp"
+        tools:layout_editor_absoluteY="231dp" />
+
+    <EditText
+        android:id="@+id/secInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:editable="true"
+        android:ems="10"
+        android:enabled="true"
+        android:hint="Interval in seconds"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="90dp"
+        android:layout_marginTop="47dp"
+        android:layout_below="@+id/message"
+        android:layout_alignLeft="@+id/message"
+        android:layout_alignStart="@+id/message" />
+
+    <EditText
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:editable="true"
+        android:ems="10"
+        android:enabled="true"
+        android:hint="Notification message"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="160dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/notiBtn"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

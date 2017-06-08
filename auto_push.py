@@ -8,8 +8,9 @@ for p in projects:
         projects.remove(p)
 
 for p in projects:
-    os.system('rm -r $HOME/AndroidStudioProjects/Src/%s/*' % p)
-    os.system('cp -r $HOME/AndroidStudioProjects/%s/app/src $HOME/AndroidStudioProjects/Src/%s/' % (p, p))
+    #os.system('rm -r $HOME/AndroidStudioProjects/Src/%s/*' % p)
+    #os.system('cp -r $HOME/AndroidStudioProjects/%s/app/src $HOME/AndroidStudioProjects/Src/%s/' % (p, p))
+    os.system('rsync -avz --delete "$HOME/AndroidStudioProjects/%s/app/src" "$HOME/AndroidStudioProjects/Src/%s/src"' % (p, p))
 
 os.system('git add -f .')
 commit_msg = input('Enter commit message: ')
