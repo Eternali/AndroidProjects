@@ -38,6 +38,7 @@ public class RemindersArrayAdapter extends ArrayAdapter<Reminder> {
     @Override
     public void notifyDataSetChanged () {
         super.notifyDataSetChanged();
+//        MainActivity.orderReminders(reminds);
     }
 
     /**

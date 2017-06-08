@@ -262,5 +262,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Would be used to order the reminders from soonest to furthest into the future
+//    public static void orderReminders (ArrayList<Reminder> reminds) {
+//
+//    }
+
 }
 
