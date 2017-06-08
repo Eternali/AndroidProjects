@@ -6,7 +6,7 @@ projects = list(filter(None, os.popen('cd .. && ls').read().strip(' ').split('\n
 for p in projects:
     if p == 'Src' or p == 'Examples':
         projects.remove(p)
-print(projects)
+
 for p in projects:
     os.system('rm -r $HOME/AndroidStudioProjects/Src/%s/*' % p)
     os.system('cp -r $HOME/AndroidStudioProjects/%s/app/src $HOME/AndroidStudioProjects/Src/%s/' % (p, p))

@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="?attr/selectableItemBackground"
     android:divider="#BDBDBD"
-    android:dividerHeight="2dp"
     android:orientation="vertical"
     android:clickable="true">
 
@@ -19,6 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:gravity="left"
             android:paddingLeft="10dp"
             android:text="TextView"
