@@ -182,6 +182,16 @@ public class EditActivity extends Activity {
                     calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
                     calendar.set(Calendar.MINUTE, Integer.parseInt(time[1]));
                     calendar.set(Calendar.SECOND, 0);
+
+                    // Test if the desired time is after the current time
+                    Calendar curCalendar = Calendar.getInstance();
+                    if (curCalendar.compareTo(calendar) >= 0) {
+                        Toast.makeText(EditActivity.this,
+                                "Please choose a time in the future.",
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(EditActivity.this, "Please enter valid input.", Toast.LENGTH_LONG).show();
