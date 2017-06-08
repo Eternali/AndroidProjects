@@ -2,8 +2,6 @@ package com.example.fa11en.notifications;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,8 +9,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Xml;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -25,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -38,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     RemindersArrayAdapter adapter;
     private Context context;
     final static String filename = "reminders.xml";
-    public static ArrayList<Reminder> reminders = new ArrayList<>();
+    public static ArrayList<Reminder> reminders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         context = getApplicationContext();
+        reminders = new ArrayList<>();
         getReminders(context, filename, reminders);
-        Log.i("reminders length", Integer.toString(reminders.size()));
 
         adapter = new RemindersArrayAdapter(this, reminders);
         remindersList = (ListView) findViewById(R.id.remindersList);
@@ -64,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume () {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     protected void onPause () {
         super.onPause();
         saveReminders(context, filename, reminders);
@@ -77,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static void getReminders (Context ctx, String fname, ArrayList<Reminder> reminds) {
 
-        String data = "";
-//        reminds = new ArrayList<>();
+        String data;
 
         try {
             FileInputStream fis = ctx.openFileInput(fname);

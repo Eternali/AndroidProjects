@@ -2,6 +2,7 @@ package com.example.fa11en.notifications;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RemindersArrayAdapter extends ArrayAdapter<Reminder> {
 
@@ -29,6 +29,7 @@ public class RemindersArrayAdapter extends ArrayAdapter<Reminder> {
     }
 
     @Override
+    @NonNull
     public View getView (final int position, View convertView, ViewGroup parent) {
         View remindView = null;
 

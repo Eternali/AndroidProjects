@@ -1,28 +1,21 @@
 package com.example.fa11en.notifications;
 
-import java.security.KeyException;
 import java.util.Calendar;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,7 +41,6 @@ public class EditActivity extends Activity {
     Bundle bundle;
 
     @Override
-    @TargetApi(21)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
@@ -87,7 +79,6 @@ public class EditActivity extends Activity {
 
         datePicker.setOnClickListener (new View.OnClickListener() {
             @Override
-            @TargetApi(24)
             public void onClick (View v) {
                 Calendar cCurrentDate = Calendar.getInstance();
                 int cYear = cCurrentDate.get(Calendar.YEAR);
@@ -177,9 +168,8 @@ public class EditActivity extends Activity {
                     MainActivity.reminders.set(index, new Reminder(date, time, name, phoneNo, msg));
 
                 }
-                Log.i("Reminders", MainActivity.reminders.get(0).message);
+                
                 alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-
                 goToMain();
 
             }
@@ -209,7 +199,6 @@ public class EditActivity extends Activity {
     }
 
     @Override
-    @TargetApi(19)
     public void onRequestPermissionsResult (int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_SEND_SMS: {
@@ -240,8 +229,7 @@ public class EditActivity extends Activity {
     }
 
     private void goToMain () {
-        Intent backIntent = new Intent(EditActivity.this, MainActivity.class);
-        startActivity(backIntent);
+        this.finish();
     }
 
 }
