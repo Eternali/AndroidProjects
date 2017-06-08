@@ -11,7 +11,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-// This broadcast receiver activates when the android device boots
+// This broadcast receiver activates when the android device boots and resets the alarm managers
 public class BootReceiver extends BroadcastReceiver {
 
     /**
