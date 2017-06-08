@@ -1,0 +1,37 @@
+//    @Override
+//    protected void onActivityResult (int reqCode, int resCode, Intent data) {
+//        if (resCode == RESULT_OK) {
+//            switch (reqCode) {
+//                case RESULT_GOT_REMINDER:
+//                    updateReminders(data);
+//                    break;
+//            }
+//        } else {
+//            Log.e("Editactivity Result", "Failed to get new reminder");
+//        }
+//    }
+
+    /*
+    private static void updateReminders (Context ctx, Intent data) {
+        Cursor cursor;
+        Reminder r;
+        String date = "";
+        String time = "";
+        String name = "";
+        String number = "";
+        String message = "";
+        try {
+            Uri uri = data.getData();
+            cursor = ctx.getContentResolver().query(uri, null, null, null, null);
+            cursor.moveToFirst();
+            date = cursor.getString(cursor.getColumnIndex(EditActivity.))
+        }
+
+        reminders.add(r);
+    }*/
+
+//                    Intent prevIntent = new Intent(EditActivity.this, AlarmReceiver.class);
+//                    prevIntent.putExtra("number", phoneNo);
+//                    prevIntent.putExtra("message", msg);
+//                    PendingIntent prevAlarmIntent = PendingIntent.getBroadcast(EditActivity.this, index, prevIntent, 0)
+//                    alarmMgr.cancel(prevAlarmIntent);

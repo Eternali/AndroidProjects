@@ -170,11 +170,6 @@ public class EditActivity extends Activity {
                     alarmIntent = PendingIntent.getBroadcast(EditActivity.this, MainActivity.reminders.size(), intent, 0);
                     MainActivity.reminders.add(new Reminder(date, time, name, phoneNo, msg));
                 } else {
-//                    Intent prevIntent = new Intent(EditActivity.this, AlarmReceiver.class);
-//                    prevIntent.putExtra("number", phoneNo);
-//                    prevIntent.putExtra("message", msg);
-//                    PendingIntent prevAlarmIntent = PendingIntent.getBroadcast(EditActivity.this, index, prevIntent, 0)
-//                    alarmMgr.cancel(prevAlarmIntent);
                     intent = new Intent(EditActivity.this, AlarmReceiver.class);
                     intent.putExtra("number", phoneNo);
                     intent.putExtra("message", msg);
@@ -193,6 +188,7 @@ public class EditActivity extends Activity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v) {
+                if (index >= 0) MainActivity.reminders.remove(index);
                 goToMain();
             }
         });
@@ -227,11 +223,6 @@ public class EditActivity extends Activity {
         }
     }
 
-    private void goToMain () {
-        Intent backIntent = new Intent(EditActivity.this, MainActivity.class);
-        startActivity(backIntent);
-    }
-
     private void parseSelectedContact (Intent data) {
         Cursor cursor;
         String phoneNo;
@@ -248,8 +239,9 @@ public class EditActivity extends Activity {
         }
     }
 
-    private void saveReminder (Reminder reminder) {
-
+    private void goToMain () {
+        Intent backIntent = new Intent(EditActivity.this, MainActivity.class);
+        startActivity(backIntent);
     }
 
 }

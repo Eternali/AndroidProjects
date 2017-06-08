@@ -30,7 +30,6 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         context = getApplicationContext();
         getReminders(context, filename, reminders);
+        Log.i("reminders length", Integer.toString(reminders.size()));
 
         adapter = new RemindersArrayAdapter(this, reminders);
         remindersList = (ListView) findViewById(R.id.remindersList);
@@ -75,44 +75,10 @@ public class MainActivity extends AppCompatActivity {
         saveReminders(context, filename, reminders);
     }
 
-//    @Override
-//    protected void onActivityResult (int reqCode, int resCode, Intent data) {
-//        if (resCode == RESULT_OK) {
-//            switch (reqCode) {
-//                case RESULT_GOT_REMINDER:
-//                    updateReminders(data);
-//                    break;
-//            }
-//        } else {
-//            Log.e("Editactivity Result", "Failed to get new reminder");
-//        }
-//    }
-
-    /*
-    private static void updateReminders (Context ctx, Intent data) {
-        Cursor cursor;
-        Reminder r;
-        String date = "";
-        String time = "";
-        String name = "";
-        String number = "";
-        String message = "";
-        try {
-            Uri uri = data.getData();
-            cursor = ctx.getContentResolver().query(uri, null, null, null, null);
-            cursor.moveToFirst();
-            date = cursor.getString(cursor.getColumnIndex(EditActivity.))
-        }
-
-        reminders.add(r);
-    }*/
-
     public static void getReminders (Context ctx, String fname, ArrayList<Reminder> reminds) {
 
         String data = "";
-//        String[] date = {"07", "06", "2017"};
-//        String[] time = {"9", "40"};
-//        reminds.add(new Reminder(date, time, "Billy", "5554", "reminder"));
+//        reminds = new ArrayList<>();
 
         try {
             FileInputStream fis = ctx.openFileInput(fname);
@@ -120,13 +86,16 @@ public class MainActivity extends AppCompatActivity {
             char[] inBuff = new char[fis.available()];
             isr.read(inBuff);
             data = new String(inBuff);
+            Log.i("Read data", data);
             isr.close();
             fis.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            Log.i("XML Error", "on fisnf");
             return;
         } catch (IOException e) {
             e.printStackTrace();
+            Log.i("XML Error", "on fis");
             return;
         }
         XmlPullParserFactory factory;
@@ -140,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
             eventType = xpp.getEventType();
         } catch (XmlPullParserException e) {
             e.printStackTrace();
+            Log.i("XML Error", "on XmlpullparserFactory");
             return;
         }
         String date = "";
@@ -169,9 +139,11 @@ public class MainActivity extends AppCompatActivity {
                 eventType = xpp.next();
             } catch (XmlPullParserException e) {
                 e.printStackTrace();
+                Log.i("XML Error", "on Xmlpullparsera");
                 return;
             } catch (IOException e) {
                 e.printStackTrace();
+                Log.i("XML Error", "on Xmlpullparserb");
                 return;
             }
 
@@ -183,10 +155,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             // create file if doesn't exist
             // (FileOutputStream should create it automatically but just to be safe)
-            File saveFile = new File(fname);
+            String filepath = context.getFilesDir().getPath() + "/" + fname;
+            File saveFile = new File(filepath);
             saveFile.createNewFile();
 //            FileOutputStream fos = new FileOutputStream(saveFile);
-            FileOutputStream fos = context.getApplicationContext().openFileOutput(fname, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(fname, Context.MODE_PRIVATE);
             XmlSerializer xmlSerial = Xml.newSerializer();
             StringWriter writer = new StringWriter();
             xmlSerial.setOutput(writer);
@@ -218,10 +191,13 @@ public class MainActivity extends AppCompatActivity {
             fos.write(dWrite.getBytes());
             fos.close();
         } catch (IllegalArgumentException e) {
+            Log.i("XML Writer Error", "on writing to xmlSeriala");
             e.printStackTrace();
         } catch (IllegalStateException e) {
+            Log.i("XML Writer Error", "on writing to xmlSerialb");
             e.printStackTrace();
         } catch (IOException e) {
+            Log.i("XML Writer Error", "on writing to xmlSerialc");
             e.printStackTrace();
         }
     }
