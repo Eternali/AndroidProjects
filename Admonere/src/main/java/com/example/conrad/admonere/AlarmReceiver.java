@@ -31,8 +31,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         // Send the actual text message
         try {
-//        SmsManager smsManager = SmsManager.getDefault();
-//        smsManager.sendTextMessage(number, null, msg, null, null);
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(number, null, msg, null, null);
 
             // Build and show a notification that the text message has been sent
             NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)

@@ -171,9 +171,9 @@ public class EditActivity extends Activity {
                 try {
                     date = datePicker.getText().toString().split("/");
                     time = timePicker.getText().toString().split(":");
-                    String[] info = contact.getText().toString().split(" ");
+                    String[] info = contact.getText().toString().replaceAll("\\s", "").split("at");
                     name = info[0];
-                    phoneNo = info[2];
+                    phoneNo = info[1];
                     msg = message.getText().toString();
 
                     calendar.set(Calendar.YEAR, Integer.parseInt(date[2]));
