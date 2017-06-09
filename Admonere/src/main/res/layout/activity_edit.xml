@@ -77,8 +77,9 @@
         android:hint="Choose Contact"
         android:inputType="phone"
         android:textColorLink="#FFC300"
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/message" />
+        android:layout_below="@+id/timePick"
+        android:layout_alignStart="@+id/timePick"
+        android:layout_marginTop="60dp" />
 
     <EditText
         android:id="@+id/message"
@@ -88,9 +89,9 @@
         android:hint="Message"
         android:inputType="textMultiLine"
         android:textColorLink="#FFC300"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="51dp"
         android:layout_above="@+id/sendBtn"
-        android:layout_alignStart="@+id/timePick" />
+        android:layout_alignStart="@+id/phoneNumber" />
 
 
 </RelativeLayout>
