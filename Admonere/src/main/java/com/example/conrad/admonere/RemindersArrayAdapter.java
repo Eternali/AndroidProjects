@@ -38,7 +38,8 @@ public class RemindersArrayAdapter extends ArrayAdapter<Reminder> {
     @Override
     public void notifyDataSetChanged () {
         super.notifyDataSetChanged();
-//        MainActivity.orderReminders(reminds);
+        // sort the reminders according to date and time when a new one is added.
+        MainActivity.orderReminders(reminds, true);
     }
 
     /**

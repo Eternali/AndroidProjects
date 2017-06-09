@@ -65,7 +65,7 @@
         android:hint="Choose Time"
         android:inputType="time"
         android:textColorLink="#FFC300"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="29dp"
         android:layout_below="@+id/datePick"
         android:layout_alignStart="@+id/datePick" />
 
@@ -77,9 +77,9 @@
         android:hint="Choose Contact"
         android:inputType="phone"
         android:textColorLink="#FFC300"
-        android:layout_below="@+id/timePick"
+        android:layout_above="@+id/message"
         android:layout_alignStart="@+id/timePick"
-        android:layout_marginTop="60dp" />
+        android:layout_marginBottom="46dp" />
 
     <EditText
         android:id="@+id/message"
@@ -92,6 +92,14 @@
         android:layout_marginBottom="51dp"
         android:layout_above="@+id/sendBtn"
         android:layout_alignStart="@+id/phoneNumber" />
+
+    <NumberPicker
+        android:id="@+id/repetitionFreq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timePick"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp" />
 
 
 </RelativeLayout>

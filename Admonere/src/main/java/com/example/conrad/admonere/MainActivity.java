@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Main activity screen that allows the user to see previously created reminders, edit reminders,
@@ -262,10 +263,67 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Would be used to order the reminders from soonest to furthest into the future
-//    public static void orderReminders (ArrayList<Reminder> reminds) {
-//
-//    }
+    /**
+     * This method sorts the reminders ArrayList<Reminder> according to date and time using the
+     * selection sorting method.
+     * pre: reminds parameter is of type Reminder
+     * post: reminds arrayList will be sorted.
+     * @param reminds: arraylist to sort
+     * @param order: true is ascending; false is descending
+     */
+    public static void orderReminders (ArrayList<Reminder> reminds, boolean order) {
+        if (order) {
+            for (int i = 0; i < reminds.size()-1; i++) {
+                Calendar cal1 = Calendar.getInstance();
+                Reminder tmp1 = reminds.get(i);
+                cal1.set(Calendar.YEAR, Integer.parseInt(tmp1.date[2]));
+                cal1.set(Calendar.MONTH, Integer.parseInt(tmp1.date[1]));
+                cal1.set(Calendar.DAY_OF_MONTH, Integer.parseInt(tmp1.date[0]));
+                cal1.set(Calendar.HOUR_OF_DAY, Integer.parseInt(tmp1.time[0]));
+                cal1.set(Calendar.MINUTE, Integer.parseInt(tmp1.time[1]));
+                cal1.set(Calendar.SECOND, 0);
+                for (int j = i+1; j < reminds.size(); j++) {
+                    Calendar cal2 = Calendar.getInstance();
+                    Reminder tmp2 = reminds.get(j);
+                    cal2.set(Calendar.YEAR, Integer.parseInt(tmp2.date[2]));
+                    cal2.set(Calendar.MONTH, Integer.parseInt(tmp2.date[1]));
+                    cal2.set(Calendar.DAY_OF_MONTH, Integer.parseInt(tmp2.date[0]));
+                    cal2.set(Calendar.HOUR_OF_DAY, Integer.parseInt(tmp2.time[0]));
+                    cal2.set(Calendar.MINUTE, Integer.parseInt(tmp2.time[1]));
+                    cal2.set(Calendar.SECOND, 0);
+                    if (cal1.compareTo(cal2) > 0) {
+                        reminds.set(i, tmp2);
+                        reminds.set(j, tmp1);
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < reminds.size()-1; i++) {
+                Calendar cal1 = Calendar.getInstance();
+                Reminder tmp1 = reminds.get(i);
+                cal1.set(Calendar.YEAR, Integer.parseInt(tmp1.date[2]));
+                cal1.set(Calendar.MONTH, Integer.parseInt(tmp1.date[1]));
+                cal1.set(Calendar.DAY_OF_MONTH, Integer.parseInt(tmp1.date[0]));
+                cal1.set(Calendar.HOUR_OF_DAY, Integer.parseInt(tmp1.time[0]));
+                cal1.set(Calendar.MINUTE, Integer.parseInt(tmp1.time[1]));
+                cal1.set(Calendar.SECOND, 0);
+                for (int j = i+1; j < reminds.size(); j++) {
+                    Calendar cal2 = Calendar.getInstance();
+                    Reminder tmp2 = reminds.get(j);
+                    cal2.set(Calendar.YEAR, Integer.parseInt(tmp2.date[2]));
+                    cal2.set(Calendar.MONTH, Integer.parseInt(tmp2.date[1]));
+                    cal2.set(Calendar.DAY_OF_MONTH, Integer.parseInt(tmp2.date[0]));
+                    cal2.set(Calendar.HOUR_OF_DAY, Integer.parseInt(tmp2.time[0]));
+                    cal2.set(Calendar.MINUTE, Integer.parseInt(tmp2.time[1]));
+                    cal2.set(Calendar.SECOND, 0);
+                    if (cal1.compareTo(cal2) < 0) {
+                        reminds.set(i, tmp2);
+                        reminds.set(j, tmp1);
+                    }
+                }
+            }
+        }
+    }
 
 }
 

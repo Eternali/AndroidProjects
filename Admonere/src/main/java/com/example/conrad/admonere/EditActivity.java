@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class EditActivity extends Activity {
     private EditText message;
     private Button sendBtn;
     private Button backBtn;
+    private NumberPicker repetitionFreq;
 
     // Variables for storing data the user enters
     private String[] data = new String[5];
@@ -65,6 +67,12 @@ public class EditActivity extends Activity {
         message = (EditText) findViewById(R.id.message);
         sendBtn = (Button) findViewById(R.id.sendBtn);
         backBtn = (Button) findViewById(R.id.backBtn);
+        repetitionFreq = (NumberPicker) findViewById(R.id.repetitionFreq);
+
+        // Set values for number picker to limit repetition rate
+        repetitionFreq.setMinValue(0);
+        repetitionFreq.setMaxValue(30);
+        repetitionFreq.setWrapSelectorWheel(true);
 
         // Do not show the keyboard when the user clicks on these UI elements
         // because they will be sent to a different activity/dialog
@@ -135,6 +143,14 @@ public class EditActivity extends Activity {
                 }, chour, cminute, true);
                 timePickDialog.setTitle("Select Time");
                 timePickDialog.show();
+            }
+        });
+
+        // Listen for when the user changes the repetition frequency
+        repetitionFreq.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange (NumberPicker picker, int oldVal, int newVal) {
+
             }
         });
 
