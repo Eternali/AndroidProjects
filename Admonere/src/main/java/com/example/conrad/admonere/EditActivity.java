@@ -232,7 +232,13 @@ public class EditActivity extends Activity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v) {
-                if (index >= 0) MainActivity.reminders.remove(index);
+                if (index >= 0) {
+                    AlarmManager alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    Intent rmIntent = new Intent(EditActivity.this, AlarmReceiver.class);
+                    PendingIntent pendIntent = PendingIntent.getBroadcast(EditActivity.this, index, rmIntent, 0);
+                    alarmMgr.cancel(pendIntent);
+                    MainActivity.reminders.remove(index);
+                }
                 goToMain();
             }
         });
