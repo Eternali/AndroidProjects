@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.example.conrad.admonerekt.MainActivity.Companion.context
 
 import java.util.ArrayList
 
@@ -18,7 +17,7 @@ import java.util.ArrayList
  * An array adapter of type Reminder (custom object) that takes an xml file and fits the contents
  * of each object in the array to the view.
  */
-class RemindersArrayAdapter (val context: Context, private val reminds: ArrayList<Reminder>)
+open class RemindersArrayAdapter (context: Context, private val reminds: ArrayList<Reminder>)
         : ArrayAdapter<Reminder>(context, R.layout.reminder_layout, reminds) {
 
     // created for custom actions when superclass function called

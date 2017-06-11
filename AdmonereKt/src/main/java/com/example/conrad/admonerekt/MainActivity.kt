@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         context = applicationContext
         getReminders(context!!, filename, reminders)
-        adapter = RemindersArrayAdapter(context, reminders)
+        adapter = RemindersArrayAdapter(reminders)
         // declare UI elements
         var addButton: FloatingActionButton = findViewById(R.id.addButton) as FloatingActionButton
         var remindersList: ListView = findViewById(R.id.remindersList) as ListView
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onResume() {
         super.onResume()
-        adapter.notifyDataSetChanged()
+        adapter?.notifyDataSetChanged()
     }
 
     /**
