@@ -34,13 +34,13 @@ import java.util.Calendar
  */
 class MainActivity : AppCompatActivity() {
 
-    var adapter: RemindersArrayAdapter = RemindersArrayAdapter(reminders)
-
     companion object {
         val filename: String = "reminders.xml"
         var context: Context? = null
         var reminders: ArrayList<Reminder> = ArrayList<Reminder>()
     }
+
+    var adapter: RemindersArrayAdapter? = null
 
     /**
      * Called when the activity is created (when the app is opened) and inflates the required views.
@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         context = applicationContext
         getReminders(context!!, filename, reminders)
+        adapter = RemindersArrayAdapter(context, reminders)
         // declare UI elements
         var addButton: FloatingActionButton = findViewById(R.id.addButton) as FloatingActionButton
         var remindersList: ListView = findViewById(R.id.remindersList) as ListView
