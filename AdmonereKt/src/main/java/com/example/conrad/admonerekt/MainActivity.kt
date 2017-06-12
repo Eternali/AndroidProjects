@@ -55,7 +55,8 @@ class MainActivity : AppCompatActivity() {
 
         context = applicationContext
         getReminders(context!!, filename, reminders)
-        adapter = RemindersArrayAdapter(reminders)
+        val ctx = context!!
+        adapter = RemindersArrayAdapter(ctx, reminders)
         // declare UI elements
         var addButton: FloatingActionButton = findViewById(R.id.addButton) as FloatingActionButton
         var remindersList: ListView = findViewById(R.id.remindersList) as ListView

@@ -2,6 +2,7 @@ package com.example.conrad.admonerekt
 
 
 // Import required libraries
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
@@ -39,6 +40,7 @@ open class RemindersArrayAdapter (context: Context, private val reminds: ArrayLi
      * *
      * @return
      */
+    @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var remindView: View? = null
 
@@ -50,9 +52,9 @@ open class RemindersArrayAdapter (context: Context, private val reminds: ArrayLi
         val dateTime = remindView!!.findViewById(R.id.dateTime) as TextView
         val contactName = remindView.findViewById(R.id.contactName) as TextView
         val message = remindView.findViewById(R.id.message) as TextView
-        dateTime.setText(TextUtils.join(":", reminds[position].time) + "  " + TextUtils.join("/", reminds[position].date))
-        contactName.setText(reminds[position].name)
-        message.setText(reminds[position].message)
+        dateTime.text = "${TextUtils.join(":", reminds[position].time)} ${TextUtils.join("/", reminds[position].date)}"
+        contactName.text = reminds[position].name
+        message.text = reminds[position].message
 
         // when the view is clicked start the EditActivity activity and give it the data required to
         // populate its fields
