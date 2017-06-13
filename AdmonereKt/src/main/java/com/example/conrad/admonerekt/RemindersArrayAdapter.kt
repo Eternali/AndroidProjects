@@ -18,7 +18,7 @@ import java.util.ArrayList
  * An array adapter of type Reminder (custom object) that takes an xml file and fits the contents
  * of each object in the array to the view.
  */
-open class RemindersArrayAdapter (context: Context, private val reminds: ArrayList<Reminder>)
+open class RemindersArrayAdapter (context: Context, var reminds: ArrayList<Reminder>)
         : ArrayAdapter<Reminder>(context, R.layout.reminder_layout, reminds) {
 
     // created for custom actions when superclass function called
