@@ -139,8 +139,17 @@ class EditActivity : Activity () {
 
     }
 
+    // called when an activity returns a result to this activity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // if the 
+        // if the activity returns with no errors
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                // if the user picked a contact parse it
+                RESULT_PICK_CONTACT -> parseSelectedContact(data)
+            }
+        } else {
+            Log.e("EditActivity", "Failed to pick contact")
+        }
     }
 }
 
