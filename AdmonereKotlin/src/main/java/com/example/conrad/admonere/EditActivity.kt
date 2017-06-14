@@ -137,6 +137,17 @@ class EditActivity : Activity () {
             startActivityForResult(contactsPicker, RESULT_PICK_CONTACT)
         }
 
+        // save the reminder when user taps on the send button
+        sendBtn.setOnClickListener {
+            // check for permission to send SMS messages. If not, ask user for permission
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                    != PackageManager.PERMISSION_GRANTED)
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS),
+                        PERMISSIONS_REQUEST_SEND_SMS)
+
+
+        }
+
     }
 
     // called when an activity returns a result to this activity
@@ -149,6 +160,20 @@ class EditActivity : Activity () {
             }
         } else {
             Log.e("EditActivity", "Failed to pick contact")
+        }
+    }
+
+    // called when the user replies to a permission request
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?) {
+        when (requestCode) {
+            // if the user hasn't granted SMS permission tell them the reminder will fail
+            PERMISSIONS_REQUEST_SEND_SMS -> {
+                if (grantResults != null && grantResults.isEmpty() &&
+                        grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(applicationContext, "SMS will fail: Incorrect permissions"
+                        , Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 
