@@ -28,10 +28,9 @@ class RemindersArrayAdapter (var ctx : Context, var resource : Int, var reminds 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         // inflate the remindView
         var inflater : LayoutInflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        var remindView : View? = if (convertView != null) inflater.inflate(R.layout.reminder_layout, parent, false)
-                                else null
+        var remindView : View = inflater.inflate(R.layout.reminder_layout, parent, false)
         // set components of the layout to values from the reminds array
-        val dateTime = remindView!!.findViewById(R.id.dateTime) as TextView
+        val dateTime = remindView.findViewById(R.id.dateTime) as TextView
         val contactName = remindView.findViewById(R.id.contactName) as TextView
         val message = remindView.findViewById(R.id.message) as TextView
         dateTime.text = "${reminds[position].time.joinToString(":")} ${reminds[position].date.joinToString("/")}"

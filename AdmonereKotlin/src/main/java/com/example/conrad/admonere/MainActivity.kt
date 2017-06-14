@@ -214,9 +214,9 @@ class MainActivity : AppCompatActivity () {
     internal var remindersList : ListView? = null
     internal var addButton : FloatingActionButton? = null
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         // call superclass' method and set the view to activity_main.xml
-        super.onCreate(savedInstanceState, persistentState)
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         // get context so other methods can use it

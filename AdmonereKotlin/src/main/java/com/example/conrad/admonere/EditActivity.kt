@@ -52,7 +52,7 @@ class EditActivity : Activity () {
         var backBtn = findViewById(R.id.backBtn) as Button
         dayBtns[0] = findViewById(R.id.sunBtn) as Button
         dayBtns[1] = findViewById(R.id.monBtn) as Button
-        dayBtns[2] = findViewById(R.id.thuBtn) as Button
+        dayBtns[2] = findViewById(R.id.tueBtn) as Button
         dayBtns[3] = findViewById(R.id.wedBtn) as Button
         dayBtns[4] = findViewById(R.id.thuBtn) as Button
         dayBtns[5] = findViewById(R.id.friBtn) as Button
@@ -65,9 +65,10 @@ class EditActivity : Activity () {
         contact.showSoftInputOnFocus = false
 
         // try to get infomation from previous activity (MainActivity)
-        var bundle : Bundle = intent.extras
+        var bundle : Bundle? = if (intent.extras != null) intent.extras
+                              else null
         try {
-            usrData[0] = bundle.getString("date")
+            usrData[0] = bundle!!.getString("date")
             usrData[1] = bundle.getString("time")
             usrData[2] = bundle.getString("name")
             usrData[3] = bundle.getString("number")
@@ -85,9 +86,10 @@ class EditActivity : Activity () {
 
         // loop through the day buttons and change the activation
         // variable and background for each when clicked
-        for (b in 0..dayBtns.size) {
+        for (b in 0..dayBtns.size-1) {
             dayBtns[b]!!.setOnClickListener {
-                it.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                if (!dayBtnActives[b]) it.setBackgroundResource(R.drawable.roundedbuttonselected)
+                else it.setBackgroundResource(R.drawable.roundedbutton)
                 dayBtnActives[b] = !dayBtnActives[b]
             }
         }
