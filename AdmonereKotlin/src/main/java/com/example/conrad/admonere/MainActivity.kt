@@ -211,6 +211,8 @@ class MainActivity : AppCompatActivity () {
 
     internal var context : Context? = null
     internal var adapter : RemindersArrayAdapter? = null
+    internal var remindersList : ListView? = null
+    internal var addButton : FloatingActionButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         // call superclass' method and set the view to activity_main.xml
@@ -222,6 +224,14 @@ class MainActivity : AppCompatActivity () {
         reminders = getReminders(context!!, filename)
         // create adapter that presents users with the reminders in a listview
         adapter = RemindersArrayAdapter(this, 0, reminders as ArrayList<Reminder>)
+        remindersList = findViewById(R.id.remindersList) as ListView
+        (remindersList as ListView).adapter= adapter
+
+        addButton = findViewById(R.id.addButton) as FloatingActionButton
+        (addButton as FloatingActionButton).setOnClickListener {
+            val intent : Intent = Intent(this, EditActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }
