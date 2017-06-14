@@ -232,6 +232,24 @@ class MainActivity : AppCompatActivity () {
             val intent : Intent = Intent(this, EditActivity::class.java)
             startActivity(intent)
         }
-
     }
+
+    // when activity resumes reload the arrayadapter with possible new data
+    override fun onResume() {
+        super.onResume()
+        if (adapter != null) (adapter as RemindersArrayAdapter).notifyDataSetChanged()
+    }
+
+    // when the user leaves the activity save the current reminders
+    override fun onPause() {
+        super.onPause()
+        saveReminders(context!!, filename, reminders!!)
+    }
+
+    // when the activity is destroyed save the current reminders
+    override fun onDestroy() {
+        super.onDestroy()
+        saveReminders(context!!, filename, reminders!!)
+    }
+
 }

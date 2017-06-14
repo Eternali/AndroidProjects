@@ -2,6 +2,7 @@ package com.example.conrad.admonere
 
 // import required libraries
 import android.Manifest
+import android.annotation.TargetApi
 import android.app.Activity
 import android.app.AlarmManager
 import android.app.DatePickerDialog
@@ -12,6 +13,7 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.provider.ContactsContract
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -39,6 +41,7 @@ class EditActivity : Activity () {
     private var dayBtnActives : BooleanArray = BooleanArray(dayBtns.size)
     private var index : Int = 0
 
+    @TargetApi(24)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
@@ -92,6 +95,19 @@ class EditActivity : Activity () {
                 else it.setBackgroundResource(R.drawable.roundedbutton)
                 dayBtnActives[b] = !dayBtnActives[b]
             }
+        }
+
+        // send user to a DatePickerDialog when they tap on the datePicker edittext
+        datePicker.setOnClickListener {
+            var cCurrentDate : Calendar = Calendar.getInstance()
+            val cYear : Int = cCurrentDate.get(Calendar.YEAR)
+            val cMonth : Int = cCurrentDate.get(Calendar.MONTH)
+            val cDay : Int = cCurrentDate.get(Calendar.DAY_OF_MONTH)
+
+            // create time picker dialog and set current date to today
+            var dateDialog : DatePickerDialog = DatePickerDialog(this, 0,
+                    DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth
+                        -> datePicker.setText("${dayOfMonth.toString()}/${month.toString()}/${year.toString()}") })
         }
 
     }
