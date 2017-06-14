@@ -145,10 +145,31 @@ class EditActivity : Activity () {
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 // if the user picked a contact parse it
-                RESULT_PICK_CONTACT -> parseSelectedContact(data)
+                RESULT_PICK_CONTACT -> parseSelectedContact(data!!)
             }
         } else {
             Log.e("EditActivity", "Failed to pick contact")
+        }
+    }
+
+    private fun parseSelectedContact(data : Intent) : String {
+        try {
+            // get data and cursor from intent
+            val uri: Uri = data.data
+            val cursor: Cursor = contentResolver.query(uri, null, null, null, null)
+            // move cursor to first returned result
+            cursor.moveToFirst()
+            // get the required data
+            val phoneNo: String = cursor.getString(cursor.getColumnIndex(
+                    ContactsContract.CommonDataKinds.Phone.NUMBER))
+            val name: String = cursor.getString(cursor.getColumnIndex(
+                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+
+            return "$name at $phoneNo"
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Failed to retreive contact data", Toast.LENGTH_LONG).show()
+            return ""
         }
     }
 }
