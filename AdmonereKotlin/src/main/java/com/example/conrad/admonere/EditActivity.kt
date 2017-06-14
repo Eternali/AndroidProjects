@@ -99,17 +99,48 @@ class EditActivity : Activity () {
 
         // send user to a DatePickerDialog when they tap on the datePicker edittext
         datePicker.setOnClickListener {
-            var cCurrentDate : Calendar = Calendar.getInstance()
+            // get the current date
+            val cCurrentDate : Calendar = Calendar.getInstance()
             val cYear : Int = cCurrentDate.get(Calendar.YEAR)
             val cMonth : Int = cCurrentDate.get(Calendar.MONTH)
             val cDay : Int = cCurrentDate.get(Calendar.DAY_OF_MONTH)
 
-            // create time picker dialog and set current date to today
-            var dateDialog : DatePickerDialog = DatePickerDialog(this, 0,
+            // create date picker dialog and set current date to today
+            var dateDialog : DatePickerDialog = DatePickerDialog(this,
                     DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth
-                        -> datePicker.setText("${dayOfMonth.toString()}/${month.toString()}/${year.toString()}") })
+                        -> datePicker.setText("${dayOfMonth.toString()}/${month.toString()}/${year.toString()}") }
+                    , cYear, cMonth, cDay)
+            dateDialog.setTitle("Select Date")
+            dateDialog.show()
         }
 
+        // send user to a TimePickerDialog when they tap on the timePicker edittext
+        timePicker.setOnClickListener {
+            // get the current time
+            val cCurrentTime : Calendar = Calendar.getInstance()
+            val cHour : Int = cCurrentTime.get(Calendar.HOUR_OF_DAY)
+            val cMinute : Int = cCurrentTime.get(Calendar.MINUTE)
+
+            // create time picker dialog and set current time to now
+            var timeDialog : TimePickerDialog = TimePickerDialog(this,
+                    TimePickerDialog.OnTimeSetListener { view, hour, minute
+                        -> timePicker.setText("${hour.toString()}:${minute.toString()}") }
+                    , cHour, cMinute, true)
+            timeDialog.setTitle("Select Time")
+            timeDialog.show()
+        }
+
+        // send user to the contacts contract activity to get the phone number to send reminder to
+        contact.setOnClickListener {
+            val contactsPicker : Intent = Intent(Intent.ACTION_PICK
+                                        , ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
+            startActivityForResult(contactsPicker, RESULT_PICK_CONTACT)
+        }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // if the 
     }
 }
 
