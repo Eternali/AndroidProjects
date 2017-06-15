@@ -8,6 +8,7 @@ import android.app.AlarmManager
 import android.app.DatePickerDialog
 import android.app.PendingIntent
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -41,7 +42,7 @@ class EditActivity : Activity () {
     private var dayBtnActives : BooleanArray = BooleanArray(dayBtns.size)
     private var index : Int = 0
 
-    @TargetApi(24)
+    @TargetApi(24)  // don't know why it has to be 24, in java this min is 21
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
@@ -145,7 +146,64 @@ class EditActivity : Activity () {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS),
                         PERMISSIONS_REQUEST_SEND_SMS)
 
+            // get data from UI elements and alert user if an error occurs
+            val calendar : Calendar = Calendar.getInstance()
+            var date : List<String>? = null
+            var time : List<String>? = null
+            var name = ""
+            var phoneNo = ""
+            var msg = ""
+            try {
+                date = datePicker.text.toString().split("/")
+                time = timePicker.text.toString().split(":")
+                val info = contact.text.toString().replace("\\s", "").split("at")
+                name = info[0]
+                phoneNo = info[1]
+                msg = message.text.toString()
 
+                // set calendar to entered time and date
+                calendar.set(date[2].toInt(), date[1].toInt(), date[0].toInt(), time[0].toInt(), time[1].toInt(), 0)
+
+                // test if desired time is after current time
+                val curCal : Calendar = Calendar.getInstance()
+                if (curCal >= calendar)
+                    Toast.makeText(this, "Please choose a time in the future", Toast.LENGTH_LONG).show()
+            } catch (e : Exception) {
+                e.printStackTrace()
+                Toast.makeText(this, "Please enter valid input.", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            // create alarm manager to schedule reminders
+            val alarmMgr : AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent : Intent = Intent(this, AlarmReceiver::class.java)
+            intent.putExtra("number", phoneNo)
+            intent.putExtra("message", msg)
+            var alarmIntent : PendingIntent?
+            // check if it's a new reminder
+            if (index < 0) {
+                alarmIntent = PendingIntent.getBroadcast(this, if (reminders != null) reminders!!.size else 0, intent, 0)
+                reminders!!.add(Reminder(date.toTypedArray(), time.toTypedArray(), name, phoneNo, msg))
+            } else {
+                alarmIntent = PendingIntent.getBroadcast(this, index, intent, 0)
+                reminders!!.set(index, Reminder(date.toTypedArray(), time.toTypedArray(), name, phoneNo, msg))
+            }
+
+            // set alarm and go back to main activity
+            alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, alarmIntent)
+            goToMain()
+        }
+
+        // go back to main screen without saving the reminder
+        backBtn.setOnClickListener {
+            if (index >= 0) {
+                val alarmMgr = getSystemService(ALARM_SERVICE) as AlarmManager
+                val rmIntent = Intent(this, AlarmReceiver::class.java)
+                val pendIntent = PendingIntent.getBroadcast(this, index, rmIntent, 0)
+                alarmMgr.cancel(pendIntent)
+                reminders!!.removeAt(index)
+            }
+            goToMain()
         }
 
     }
@@ -197,6 +255,9 @@ class EditActivity : Activity () {
             return ""
         }
     }
+
+    // close this activity and return to main activity
+    private inline fun goToMain () = this.finish()
 }
 
 
