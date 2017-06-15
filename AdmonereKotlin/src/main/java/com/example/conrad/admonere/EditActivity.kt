@@ -111,7 +111,7 @@ class EditActivity : Activity () {
             val cDay : Int = cCurrentDate.get(Calendar.DAY_OF_MONTH)
 
             // create date picker dialog and set current date to today
-            var dateDialog : DatePickerDialog = DatePickerDialog(this,
+            val dateDialog : DatePickerDialog = DatePickerDialog(this,
                     DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth
                         -> datePicker.setText("${dayOfMonth.toString()}/${month.toString()}/${year.toString()}") }
                     , cYear, cMonth, cDay)
@@ -160,7 +160,7 @@ class EditActivity : Activity () {
             try {
                 date = datePicker.text.toString().split("/")
                 time = timePicker.text.toString().split(":")
-                val info = (contact as EditText).text.toString().replace("\\s+", "").split("at")
+                val info = (contact as EditText).text.toString().replace(" ", "").split("at")
                 name = info[0]
                 phoneNo = info[1]
                 msg = message.text.toString()
@@ -170,8 +170,10 @@ class EditActivity : Activity () {
 
                 // test if desired time is after current time
                 val curCal : Calendar = Calendar.getInstance()
-                if (curCal >= calendar)
+                if (curCal >= calendar) {
                     Toast.makeText(this, "Please choose a time in the future", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
             } catch (e : Exception) {
                 e.printStackTrace()
                 Toast.makeText(this, "Please enter valid input.", Toast.LENGTH_LONG).show()
