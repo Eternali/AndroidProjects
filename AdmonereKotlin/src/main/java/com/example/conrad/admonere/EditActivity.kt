@@ -42,6 +42,9 @@ class EditActivity : Activity () {
     private var dayBtnActives : BooleanArray = BooleanArray(dayBtns.size)
     private var index : Int = 0
 
+    // must initialize contact UI element outside of onCreate because of ActivityResult
+    var contact : EditText? = null
+
     @TargetApi(24)  // don't know why it has to be 24, in java this min is 21
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +53,7 @@ class EditActivity : Activity () {
         // set UI elements
         var datePicker = findViewById(R.id.datePick) as EditText
         var timePicker = findViewById(R.id.timePick) as EditText
-        var contact = findViewById(R.id.phoneNumber) as EditText
+        contact = findViewById(R.id.phoneNumber) as EditText
         var message = findViewById(R.id.message) as EditText
         var sendBtn = findViewById(R.id.sendBtn) as Button
         var backBtn = findViewById(R.id.backBtn) as Button
@@ -66,7 +69,7 @@ class EditActivity : Activity () {
         // (they will be sent to a different activity/dialog
         datePicker.showSoftInputOnFocus = false
         timePicker.showSoftInputOnFocus = false
-        contact.showSoftInputOnFocus = false
+        (contact as EditText).showSoftInputOnFocus = false
 
         // try to get infomation from previous activity (MainActivity)
         var bundle : Bundle? = if (intent.extras != null) intent.extras
@@ -85,8 +88,9 @@ class EditActivity : Activity () {
 
         if (usrData[0] != null) datePicker.setText(usrData[0])
         if (usrData[1] != null) timePicker.setText(usrData[1])
-        if (usrData[2] != null && usrData[3] != null) contact.setText(usrData[2] + " at " + usrData[3])
-        if (usrData[4] != null) datePicker.setText(usrData[0])
+        if (usrData[2] != null && usrData[3] != null)
+            (contact as EditText).setText("${usrData[2]} at ${usrData[3]}")
+        if (usrData[4] != null) message.setText(usrData[4])
 
         // loop through the day buttons and change the activation
         // variable and background for each when clicked
@@ -132,7 +136,7 @@ class EditActivity : Activity () {
         }
 
         // send user to the contacts contract activity to get the phone number to send reminder to
-        contact.setOnClickListener {
+        (contact as EditText).setOnClickListener {
             val contactsPicker : Intent = Intent(Intent.ACTION_PICK
                                         , ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
             startActivityForResult(contactsPicker, RESULT_PICK_CONTACT)
@@ -156,7 +160,7 @@ class EditActivity : Activity () {
             try {
                 date = datePicker.text.toString().split("/")
                 time = timePicker.text.toString().split(":")
-                val info = contact.text.toString().replace("\\s", "").split("at")
+                val info = (contact as EditText).text.toString().replace("\\s+", "").split("at")
                 name = info[0]
                 phoneNo = info[1]
                 msg = message.text.toString()
@@ -214,7 +218,7 @@ class EditActivity : Activity () {
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 // if the user picked a contact parse it
-                RESULT_PICK_CONTACT -> parseSelectedContact(data!!)
+                RESULT_PICK_CONTACT -> (contact as EditText).setText(parseSelectedContact(data!!))
             }
         } else {
             Log.e("EditActivity", "Failed to pick contact")
