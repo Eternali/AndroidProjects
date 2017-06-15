@@ -12,6 +12,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.util.Xml
 import android.view.View
+import android.view.ViewConfiguration
 import android.widget.ListView
 
 import org.xmlpull.v1.XmlPullParser
@@ -201,6 +202,18 @@ internal fun orderReminders (reminds : ArrayList<Reminder>, order : Boolean) {
     }
 }
 
+// get the overflow menu that hides other options
+fun getOverflowMenu (context : Context?) = try {
+    val config : ViewConfiguration = ViewConfiguration.get(context)
+    val menuKeyField = ViewConfiguration::class.java.getDeclaredField("sHasPermanentMenuKey")
+    if (menuKeyField != null) {
+        menuKeyField.isAccessible = true
+        menuKeyField.setBoolean(config, true)
+    } else {}
+} catch (e : Exception) {
+    e.printStackTrace()
+}
+
 /**
  * Main activity that allows user to see previously created reminders, edit reminders, and
  * create new ones
@@ -216,10 +229,11 @@ class MainActivity : AppCompatActivity () {
         // call superclass' method and set the view to activity_main.xml
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val viewPager = findViewById(R.id.pager) as ViewPager
+//        val viewPager = findViewById(R.id.pager) as ViewPager
         // get context so other methods can use it
         context = applicationContext
-        viewPager.adapter = RemindersTimeAdapter(context!!)
+        getOverflowMenu(context)
+//        viewPager.adapter = RemindersTimeAdapter(context!!)
 
         reminders = getReminders(context!!, filename)
         // create adapter that presents users with the reminders in a listview
