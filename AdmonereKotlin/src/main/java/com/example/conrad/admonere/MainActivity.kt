@@ -6,7 +6,8 @@ import android.content.Intent
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.support.v4.view.ViewPager
+import android.support.v7.app.ActionBar
 import android.text.TextUtils
 import android.util.Log
 import android.util.Xml
@@ -16,12 +17,9 @@ import android.widget.ListView
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
-import org.xmlpull.v1.XmlSerializer
 
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileNotFoundException
-import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
 import java.io.StringReader
@@ -218,9 +216,11 @@ class MainActivity : AppCompatActivity () {
         // call superclass' method and set the view to activity_main.xml
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        val viewPager = findViewById(R.id.pager) as ViewPager
         // get context so other methods can use it
         context = applicationContext
+        viewPager.adapter = RemindersTimeAdapter(context!!)
+
         reminders = getReminders(context!!, filename)
         // create adapter that presents users with the reminders in a listview
         adapter = RemindersArrayAdapter(this, 0, reminders as ArrayList<Reminder>)

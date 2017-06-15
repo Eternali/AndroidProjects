@@ -45,7 +45,6 @@ class EditActivity : Activity () {
     // must initialize contact UI element outside of onCreate because of ActivityResult
     var contact : EditText? = null
 
-    @TargetApi(24)  // don't know why it has to be 24, in java this min is 21
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)

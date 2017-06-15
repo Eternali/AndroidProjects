@@ -6,32 +6,30 @@
     android:layout_height="match_parent"
     tools:context="com.example.conrad.admonere.MainActivity">
 
-    <LinearLayout
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <ListView
-            android:id="@+id/remindersList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="3dp"></ListView>
-    </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="22dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:clickable="true"
-        android:hapticFeedbackEnabled="true"
-        android:src="@drawable/ic_add_black_24dp"
-        app:backgroundTint="#FFC300"
-        app:fabSize="normal" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="22dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:hapticFeedbackEnabled="true"
+            android:src="@drawable/ic_add_black_24dp"
+            app:backgroundTint="#FFC300"
+            app:fabSize="normal" />
+    </RelativeLayout>
 
 </RelativeLayout>
