@@ -85,6 +85,8 @@ class EditActivity : Activity () {
             index = -1
         }
 
+        // note this is the ONE time the month will be already user formatted
+        // when sent between activities
         if (usrData[0] != null) datePicker.setText(usrData[0])
         if (usrData[1] != null) timePicker.setText(usrData[1])
         if (usrData[2] != null && usrData[3] != null)
@@ -151,8 +153,8 @@ class EditActivity : Activity () {
 
             // get data from UI elements and alert user if an error occurs
             val calendar : Calendar = Calendar.getInstance()
-            var date : MutableList<String>? = null
-            var time : List<String>? = null
+            var date : MutableList<String>?
+            var time : List<String>?
             var name = ""
             var phoneNo = ""
             var msg = ""

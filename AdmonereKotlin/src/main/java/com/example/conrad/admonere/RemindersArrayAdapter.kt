@@ -3,8 +3,6 @@ package com.example.conrad.admonere
 // import required libraries
 import android.content.Context
 import android.content.Intent
-import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,16 +33,16 @@ class RemindersArrayAdapter (var ctx : Context, var resource : Int, var reminds 
         val contactName = remindView.findViewById(R.id.contactName) as TextView
         val message = remindView.findViewById(R.id.message) as TextView
         // temporarily add 1 to the month (calendar months are indexed from 0)
-        val tmpDate = reminds[position].date
-        Log.i("ArrayAdapter", "Month is ${tmpDate[1]}")
-        tmpDate.set(1, (tmpDate.get(1).toInt()+1).toString())
-        dateTime.text = "${reminds[position].time.joinToString(":")} ${tmpDate.joinToString("/")}"
+        reminds[position].date.set(1, (reminds[position].date.get(1).toInt()+1).toString())
+        dateTime.text = "${reminds[position].time.joinToString(":")} ${reminds[position].date.joinToString("/")}"
+        reminds[position].date.set(1, (reminds[position].date.get(1).toInt()-1).toString())
         contactName.text = reminds[position].name
         message.text = reminds[position].message
 
         // when a element is tapped, start an intent to EditActivity and put its data into it.
         remindView!!.setOnClickListener({
             val r = reminds[position]
+            r.date[1] = (r.date[1].toInt()+1).toString()  // send the user formatted month
             val editIntent = Intent(context, EditActivity::class.java)
             editIntent.putExtra("date", r.date.joinToString("/"))
             editIntent.putExtra("time", r.time.joinToString(":"))
