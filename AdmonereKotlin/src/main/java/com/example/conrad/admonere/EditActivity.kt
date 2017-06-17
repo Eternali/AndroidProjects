@@ -112,7 +112,7 @@ class EditActivity : Activity () {
             // create date picker dialog and set current date to today
             val dateDialog : DatePickerDialog = DatePickerDialog(this,
                     DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth
-                        -> datePicker.setText("${dayOfMonth.toString()}/${month.toString()}/${year.toString()}") }
+                        -> datePicker.setText("${dayOfMonth.toString()}/${(month+1).toString()}/${year.toString()}") }
                     , cYear, cMonth, cDay)
             dateDialog.setTitle("Select Date")
             dateDialog.show()
@@ -151,13 +151,15 @@ class EditActivity : Activity () {
 
             // get data from UI elements and alert user if an error occurs
             val calendar : Calendar = Calendar.getInstance()
-            var date : List<String>? = null
+            var date : MutableList<String>? = null
             var time : List<String>? = null
             var name = ""
             var phoneNo = ""
             var msg = ""
             try {
-                date = datePicker.text.toString().split("/")
+                date = datePicker.text.toString().split("/") as MutableList<String>
+                // must set month -1 because data shown to user is indexed from 1, not 0
+                date[1] = (date[1].toInt()-1).toString()
                 time = timePicker.text.toString().split(":")
                 val info = (contact as EditText).text.toString().replace(" ", "").split("at")
                 name = info[0]
@@ -184,6 +186,7 @@ class EditActivity : Activity () {
             val intent : Intent = Intent(this, AlarmReceiver::class.java)
             intent.putExtra("number", phoneNo)
             intent.putExtra("message", msg)
+            intent.putExtra("index", index)
             var alarmIntent : PendingIntent?
             // check if it's a new reminder
             if (index < 0) {

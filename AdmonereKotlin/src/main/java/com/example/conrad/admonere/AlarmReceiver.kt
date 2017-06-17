@@ -1,7 +1,9 @@
 package com.example.conrad.admonere
 
 // import required libraries
+import android.app.Notification
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,12 +17,19 @@ class AlarmReceiver : BroadcastReceiver () {
         // get data sent with intent
         var number : String? = null
         var msg : String? = null
+        var index : Int? = null
         if (intent != null) {
             number = intent.getStringExtra("number")
             msg = intent.getStringExtra("message")
-        }
+            index = intent.getIntExtra("index", 0)
+        } else return
 
         try {
+            val notiIntent : Intent = Intent(context, EditActivity::class.java)
+            val notiPendIntent : PendingIntent =
+                    PendingIntent.getActivity(context, index, notiIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT)
+
             val smsMgr : SmsManager = SmsManager.getDefault()
             smsMgr.sendTextMessage(number, null, msg, null, null)
 
@@ -30,6 +39,8 @@ class AlarmReceiver : BroadcastReceiver () {
                     .setContentTitle("Admonere Sent Reminder Alert")
                     .setContentText("Sent reminder to: $number")
                     .setTicker("Alert")
+                    .setContentIntent(notiPendIntent)
+                    .setAutoCancel(true)
             if (context != null) {
                 val notiMgr = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 notiMgr.notify(0, builder.build())
