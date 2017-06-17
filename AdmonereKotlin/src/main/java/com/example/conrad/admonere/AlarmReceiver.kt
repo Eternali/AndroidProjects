@@ -26,7 +26,7 @@ class AlarmReceiver : BroadcastReceiver () {
 
             // build notification to show user that message has been sent
             val builder = NotificationCompat.Builder(context)
-                    .setSmallIcon(R.drawable.ic_stat_name)
+                    .setSmallIcon(R.drawable.ic_icon)
                     .setContentTitle("Admonere Sent Reminder Alert")
                     .setContentText("Sent reminder to: $number")
                     .setTicker("Alert")

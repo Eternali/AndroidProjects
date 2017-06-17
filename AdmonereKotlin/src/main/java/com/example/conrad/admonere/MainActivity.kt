@@ -11,6 +11,8 @@ import android.support.v7.app.ActionBar
 import android.text.TextUtils
 import android.util.Log
 import android.util.Xml
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewConfiguration
 import android.widget.ListView
@@ -202,18 +204,6 @@ internal fun orderReminders (reminds : ArrayList<Reminder>, order : Boolean) {
     }
 }
 
-// get the overflow menu that hides other options
-fun getOverflowMenu (context : Context?) = try {
-    val config : ViewConfiguration = ViewConfiguration.get(context)
-    val menuKeyField = ViewConfiguration::class.java.getDeclaredField("sHasPermanentMenuKey")
-    if (menuKeyField != null) {
-        menuKeyField.isAccessible = true
-        menuKeyField.setBoolean(config, true)
-    } else {}
-} catch (e : Exception) {
-    e.printStackTrace()
-}
-
 /**
  * Main activity that allows user to see previously created reminders, edit reminders, and
  * create new ones
@@ -232,7 +222,6 @@ class MainActivity : AppCompatActivity () {
 //        val viewPager = findViewById(R.id.pager) as ViewPager
         // get context so other methods can use it
         context = applicationContext
-        getOverflowMenu(context)
 //        viewPager.adapter = RemindersTimeAdapter(context!!)
 
         reminders = getReminders(context!!, filename)
@@ -246,6 +235,13 @@ class MainActivity : AppCompatActivity () {
             val intent : Intent = Intent(this, EditActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    //
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater : MenuInflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return true
     }
 
     // when activity resumes reload the arrayadapter with possible new data
