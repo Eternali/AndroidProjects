@@ -219,7 +219,8 @@ class EditActivity : Activity () {
                 val rmIntent = Intent(this, AlarmReceiver::class.java)
                 val pendIntent = PendingIntent.getBroadcast(this, index, rmIntent, 0)
                 alarmMgr.cancel(pendIntent)
-                reminders!!.removeAt(index)
+                if (reminders == null) reminders = getReminders(this, filename)
+                (reminders as ArrayList<Reminder>).removeAt(index)
             }
             goToMain()
         }

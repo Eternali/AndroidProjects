@@ -11,10 +11,7 @@ import android.support.v7.app.ActionBar
 import android.text.TextUtils
 import android.util.Log
 import android.util.Xml
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewConfiguration
+import android.view.*
 import android.widget.ListView
 
 import org.xmlpull.v1.XmlPullParser
@@ -241,6 +238,19 @@ class MainActivity : AppCompatActivity () {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater : MenuInflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    // handles option menu item selection
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item == null) return false
+        when (item.itemId) {
+            R.id.action_settings -> {
+                val setIntent : Intent = Intent(this, SettingsActivity::class.java)
+                startActivity(setIntent)
+            }
+        }
+
         return true
     }
 
