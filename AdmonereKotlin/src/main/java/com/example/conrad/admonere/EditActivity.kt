@@ -186,6 +186,14 @@ class EditActivity : Activity () {
             // create alarm manager to schedule reminders
             val alarmMgr : AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val intent : Intent = Intent(this, AlarmReceiver::class.java)
+            // send the user formatted month to the alarm receiver (because it does not
+            // depend on this as the alarm manager handles this)
+            // the alarm manager only depends on the reminders ArrayList
+            date[1] = (date[1].toInt()+1).toString()
+            intent.putExtra("date", date.joinToString("/"))
+            date[1] = (date[1].toInt()-1).toString()
+            intent.putExtra("time", time.joinToString(":"))
+            intent.putExtra("name", name)
             intent.putExtra("number", phoneNo)
             intent.putExtra("message", msg)
             intent.putExtra("index", index)

@@ -15,17 +15,30 @@ class AlarmReceiver : BroadcastReceiver () {
     // called when the broadcast receiver gets a broadcast
     override fun onReceive(context: Context?, intent: Intent?) {
         // get data sent with intent
-        var number : String? = null
-        var msg : String? = null
-        var index : Int? = null
+        var date : String?
+        var time : String?
+        var name : String?
+        var number : String?
+        var msg : String?
+        var index : Int?
         if (intent != null) {
+            date = intent.getStringExtra("date")
+            time = intent.getStringExtra("time")
+            name = intent.getStringExtra("name")
             number = intent.getStringExtra("number")
             msg = intent.getStringExtra("message")
             index = intent.getIntExtra("index", 0)
         } else return
 
         try {
+            // send user to edit activity of the reminder that was sent
             val notiIntent : Intent = Intent(context, EditActivity::class.java)
+            notiIntent.putExtra("date", date)
+            notiIntent.putExtra("time", time)
+            notiIntent.putExtra("name", name)
+            notiIntent.putExtra("number", number)
+            notiIntent.putExtra("message", msg)
+            notiIntent.putExtra("index", index)
             val notiPendIntent : PendingIntent =
                     PendingIntent.getActivity(context, index, notiIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT)
