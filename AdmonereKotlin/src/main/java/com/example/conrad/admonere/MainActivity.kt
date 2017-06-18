@@ -1,6 +1,7 @@
 package com.example.conrad.admonere
 
 // import required libraries
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.support.design.widget.FloatingActionButton
@@ -10,6 +11,7 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBar
 import android.text.TextUtils
 import android.util.Log
+import android.util.TypedValue
 import android.util.Xml
 import android.view.*
 import android.widget.ListView
@@ -202,6 +204,25 @@ internal fun orderReminders (reminds : ArrayList<Reminder>, order : Boolean) {
     }
 }
 
+// check if the theme needs to change and if so apply it and restart the activity
+internal fun setTheme (activity : Activity) {
+    // get current theme
+    var currentTheme : TypedValue = TypedValue()
+    activity.theme.resolveAttribute(R.attr.themeName, currentTheme, true)
+    // get the desired theme
+    
+    if (isDark && "dark" != currentTheme.string) {
+        activity.setTheme(R.style.AppThemeDark)
+//        activity.finish()
+//        activity.startActivity(activity.intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+    } else if (!isDark && "dark" == currentTheme.string) {
+        activity.setTheme(R.style.AppTheme)
+//        activity.finish()
+//        activity.startActivity(activity.intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+    }
+}
+
+
 /**
  * Main activity that allows user to see previously created reminders, edit reminders, and
  * create new ones
@@ -215,7 +236,7 @@ class MainActivity : AppCompatActivity () {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // set the theme
-        if (!isDark) setTheme(R.style.AppTheme) else setTheme(R.style.AppThemeDark)
+        setTheme(this)
         // call superclass' method and set the view to activity_main.xml
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

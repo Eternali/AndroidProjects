@@ -47,7 +47,7 @@ class EditActivity : Activity () {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // set the theme
-        if (!isDark) setTheme(R.style.AppTheme) else setTheme(R.style.AppThemeDark)
+        setTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
