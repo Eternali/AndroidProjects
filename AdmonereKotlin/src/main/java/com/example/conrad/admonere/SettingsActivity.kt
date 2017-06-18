@@ -18,10 +18,9 @@ class SettingsActivity : Activity () {
 
         val darkSwitch : Switch = findViewById(R.id.darkSwitch) as Switch
         darkSwitch.setOnCheckedChangeListener { compoundButton, b -> run {
-            isDark = !isDark
             val sharePref : SharedPreferences = getPreferences(Context.MODE_PRIVATE)
             val spEditor : SharedPreferences.Editor = sharePref.edit()
-            spEditor.putBoolean(getString(R.string.isdark), isDark)
+            spEditor.putBoolean(getString(R.string.isdark), b)
             spEditor.commit()
             finish()
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))

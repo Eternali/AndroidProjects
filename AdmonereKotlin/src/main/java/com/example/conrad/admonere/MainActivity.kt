@@ -4,6 +4,7 @@ package com.example.conrad.admonere
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -33,7 +34,6 @@ import java.util.Calendar
 // package wide arrayList to hold reminders
 internal var reminders : ArrayList<Reminder>? = null
 internal var filename : String = "reminders.xml"
-internal var isDark : Boolean = false
 
 
 // gets the data stored in fname and returns it in a arraylist<Reminder>
@@ -210,7 +210,8 @@ internal fun setTheme (activity : Activity) {
     var currentTheme : TypedValue = TypedValue()
     activity.theme.resolveAttribute(R.attr.themeName, currentTheme, true)
     // get the desired theme
-    
+    val sharedPref : SharedPreferences = activity.getPreferences(Context.MODE_PRIVATE)
+    val isDark = sharedPref.getBoolean(activity.getString(R.string.isdark), false)
     if (isDark && "dark" != currentTheme.string) {
         activity.setTheme(R.style.AppThemeDark)
 //        activity.finish()
