@@ -8,4 +8,10 @@
         <item name="colorAccent">#FFC300</item>
     </style>
 
+    <style name="AppThemeDark" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">#FFC300</item>
+    </style>
+
 </resources>

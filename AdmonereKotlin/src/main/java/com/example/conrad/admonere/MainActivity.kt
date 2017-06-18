@@ -31,6 +31,7 @@ import java.util.Calendar
 // package wide arrayList to hold reminders
 internal var reminders : ArrayList<Reminder>? = null
 internal var filename : String = "reminders.xml"
+internal var isDark : Boolean = false
 
 
 // gets the data stored in fname and returns it in a arraylist<Reminder>
@@ -213,6 +214,8 @@ class MainActivity : AppCompatActivity () {
     internal var addButton : FloatingActionButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // set the theme
+        if (!isDark) setTheme(R.style.AppTheme) else setTheme(R.style.AppThemeDark)
         // call superclass' method and set the view to activity_main.xml
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

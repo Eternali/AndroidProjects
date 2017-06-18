@@ -46,6 +46,8 @@ class EditActivity : Activity () {
     var contact : EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // set the theme
+        if (!isDark) setTheme(R.style.AppTheme) else setTheme(R.style.AppThemeDark)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
