@@ -13,4 +13,6 @@
     <string name="message">Message</string>
     <string name="join_the_dark_side">Join the Dark Side?</string>
     <string name="isdark">isDark</string>
+    <string name="dark">dark</string>
+    <string name="light">light</string>
 </resources>
