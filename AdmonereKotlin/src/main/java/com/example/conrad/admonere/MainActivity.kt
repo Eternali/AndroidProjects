@@ -212,14 +212,14 @@ internal fun setTheme (activity : Activity) : Boolean {
     // get the desired theme
     val sharedPref : SharedPreferences = activity.getPreferences(Context.MODE_PRIVATE)
     val isDark = sharedPref.getBoolean(activity.getString(R.string.isdark), false)
-    if (isDark && R.string.dark != currentTheme.string) {
+    if (isDark && activity.getString(R.string.dark) != currentTheme.string) {
         activity.setTheme(R.style.AppThemeDark)
-//        activity.finish()
-//        activity.startActivity(activity.intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-    } else if (!isDark && R.string.dark == currentTheme.string) {
+        activity.finish()
+        activity.startActivity(activity.intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+    } else if (!isDark && activity.getString(R.string.dark) == currentTheme.string) {
         activity.setTheme(R.style.AppTheme)
-//        activity.finish()
-//        activity.startActivity(activity.intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+        activity.finish()
+        activity.startActivity(activity.intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
     }
 
     return isDark
