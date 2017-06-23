@@ -207,19 +207,21 @@ internal fun orderReminders (reminds : ArrayList<Reminder>, order : Boolean) {
 // check if the theme needs to change and if so apply it and restart the activity
 internal fun setTheme (activity : Activity) : Boolean {
     // get current theme
-    var currentTheme : TypedValue = TypedValue()
+    var currentTheme: TypedValue = TypedValue()
     activity.theme.resolveAttribute(R.attr.themeName, currentTheme, true)
     // get the desired theme
-    val sharedPref : SharedPreferences = activity.getPreferences(Context.MODE_PRIVATE)
+    val sharedPref: SharedPreferences = activity.getPreferences(Context.MODE_PRIVATE)
     val isDark = sharedPref.getBoolean(activity.getString(R.string.isdark), false)
     if (isDark && activity.getString(R.string.dark) != currentTheme.string) {
         activity.setTheme(R.style.AppThemeDark)
         activity.finish()
         activity.startActivity(activity.intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+        return isDark
     } else if (!isDark && activity.getString(R.string.dark) == currentTheme.string) {
         activity.setTheme(R.style.AppTheme)
         activity.finish()
         activity.startActivity(activity.intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+        return isDark
     }
 
     return isDark
