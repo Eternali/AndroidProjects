@@ -23,8 +23,7 @@ class SettingsActivity : Activity () {
             val spEditor : SharedPreferences.Editor = sharePref.edit()
             spEditor.putBoolean(getString(R.string.isdark), b)
             spEditor.commit()
-            finish()
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+            recreate()
         } }
 
     }
