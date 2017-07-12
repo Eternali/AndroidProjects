@@ -28,11 +28,11 @@ class RemindersArrayAdapter (var ctx : Context, var resource : Int, var reminds 
         // inflate the remindView
         if (convertView == null) {
             val inflater: LayoutInflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val convertView: View = inflater.inflate(R.layout.reminder_layout, parent, false)
+            val remindView: View = inflater.inflate(R.layout.reminder_layout, parent, false)
             // set components of the layout to values from the reminds array
-            val dateTime = convertView.findViewById(R.id.dateTime) as TextView
-            val contactName = convertView.findViewById(R.id.contactName) as TextView
-            val message = convertView.findViewById(R.id.message) as TextView
+            val dateTime = remindView.findViewById(R.id.dateTime) as TextView
+            val contactName = remindView.findViewById(R.id.contactName) as TextView
+            val message = remindView.findViewById(R.id.message) as TextView
             // temporarily add 1 to the month (calendar months are indexed from 0)
             reminds[position].date.set(1, (reminds[position].date.get(1).toInt() + 1).toString())
             dateTime.text = "${reminds[position].time.joinToString(":")} ${reminds[position].date.joinToString("/")}"
@@ -41,7 +41,7 @@ class RemindersArrayAdapter (var ctx : Context, var resource : Int, var reminds 
             message.text = reminds[position].message
 
             // when a element is tapped, start an intent to EditActivity and put its data into it.
-            convertView.setOnClickListener({
+            remindView.setOnClickListener({
                 val r = reminds[position]
                 r.date[1] = (r.date[1].toInt() + 1).toString()  // send the user formatted month
                 val editIntent = Intent(context, EditActivity::class.java)
@@ -53,9 +53,11 @@ class RemindersArrayAdapter (var ctx : Context, var resource : Int, var reminds 
                 editIntent.putExtra("index", position)
                 context.startActivity(editIntent)
             })
+
+            return remindView
         }
 
-        return convertView!!
+        return convertView
     }
 
 }

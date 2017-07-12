@@ -20,7 +20,7 @@ class BootReceiver : BroadcastReceiver () {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent == null) {
             this.alertFailed(context!!)
-        } else if (intent.action == "android.intent.action.BOOT_COMPLETED") {
+        } else if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             this.alertFailed(context!!)
         }
         // create reminders from saved xml file and log
