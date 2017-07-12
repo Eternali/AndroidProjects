@@ -38,8 +38,9 @@ class EditActivity : Activity () {
 
     // variables for storing data user enters
     private var usrData = arrayOfNulls<String>(5)
-    private var dayBtns = arrayOfNulls<Button>(7)
-    private var dayBtnActives : BooleanArray = BooleanArray(dayBtns.size)
+    // temporarily disable the dayBtns because I can't use them at this point
+//    private var dayBtns = arrayOfNulls<Button>(7)
+//    private var dayBtnActives : BooleanArray = BooleanArray(dayBtns.size)
     private var index : Int = 0
 
     // must initialize contact UI element outside of onCreate because of ActivityResult
@@ -47,7 +48,7 @@ class EditActivity : Activity () {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // set the theme
-        setTheme(this)
+        setTheme(this) // or try setTheme(this.applicationContext)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
@@ -58,16 +59,16 @@ class EditActivity : Activity () {
         var message = findViewById(R.id.message) as EditText
         var sendBtn = findViewById(R.id.sendBtn) as Button
         var backBtn = findViewById(R.id.backBtn) as Button
-        dayBtns[0] = findViewById(R.id.sunBtn) as Button
-        dayBtns[1] = findViewById(R.id.monBtn) as Button
-        dayBtns[2] = findViewById(R.id.tueBtn) as Button
-        dayBtns[3] = findViewById(R.id.wedBtn) as Button
-        dayBtns[4] = findViewById(R.id.thuBtn) as Button
-        dayBtns[5] = findViewById(R.id.friBtn) as Button
-        dayBtns[6] = findViewById(R.id.satBtn) as Button
+//        dayBtns[0] = findViewById(R.id.sunBtn) as Button
+//        dayBtns[1] = findViewById(R.id.monBtn) as Button
+//        dayBtns[2] = findViewById(R.id.tueBtn) as Button
+//        dayBtns[3] = findViewById(R.id.wedBtn) as Button
+//        dayBtns[4] = findViewById(R.id.thuBtn) as Button
+//        dayBtns[5] = findViewById(R.id.friBtn) as Button
+//        dayBtns[6] = findViewById(R.id.satBtn) as Button
 
         // don't show the keyboard when user taps these UI elements
-        // (they will be sent to a different activity/dialog
+        // (they will be sent to a different activity/dialog)
         datePicker.showSoftInputOnFocus = false
         timePicker.showSoftInputOnFocus = false
         (contact as EditText).showSoftInputOnFocus = false
@@ -75,6 +76,7 @@ class EditActivity : Activity () {
         // try to get infomation from previous activity (MainActivity)
         var bundle : Bundle? = if (intent.extras != null) intent.extras
                               else null
+        // if we don't get any data then make the index -1 to let the rest of the activity know
         try {
             usrData[0] = bundle!!.getString("date")
             usrData[1] = bundle.getString("time")
@@ -87,7 +89,7 @@ class EditActivity : Activity () {
             index = -1
         }
 
-        // note this is the ONE time the month will be already user formatted
+        // NOTE this is the ONE time the month will be already user formatted
         // when sent between activities
         if (usrData[0] != null) datePicker.setText(usrData[0])
         if (usrData[1] != null) timePicker.setText(usrData[1])
@@ -97,17 +99,18 @@ class EditActivity : Activity () {
 
         // loop through the day buttons and change the activation
         // variable and background for each when clicked
-        for (b in 0..dayBtns.size-1) {
-            dayBtns[b]!!.setOnClickListener {
-                if (!dayBtnActives[b]) it.setBackgroundResource(R.drawable.roundedbuttonselected)
-                else it.setBackgroundResource(R.drawable.roundedbutton)
-                dayBtnActives[b] = !dayBtnActives[b]
-            }
-        }
+//        for (b in 0..dayBtns.size-1) {
+//            dayBtns[b]!!.setOnClickListener {
+//                if (!dayBtnActives[b]) it.setBackgroundResource(R.drawable.roundedbuttonselected)
+//                else it.setBackgroundResource(R.drawable.roundedbutton)
+//                dayBtnActives[b] = !dayBtnActives[b]
+//            }
+//        }
 
         // send user to a DatePickerDialog when they tap on the datePicker edittext
         datePicker.setOnClickListener {
             // get the current date
+            // NOTE should add the ability to have it initialize to the previously set date if possible
             val cCurrentDate : Calendar = Calendar.getInstance()
             val cYear : Int = cCurrentDate.get(Calendar.YEAR)
             val cMonth : Int = cCurrentDate.get(Calendar.MONTH)
@@ -130,7 +133,7 @@ class EditActivity : Activity () {
             val cMinute : Int = cCurrentTime.get(Calendar.MINUTE)
 
             // create time picker dialog and set current time to now
-            var timeDialog : TimePickerDialog = TimePickerDialog(this,
+            val timeDialog : TimePickerDialog = TimePickerDialog(this,
                     TimePickerDialog.OnTimeSetListener { view, hour, minute
                         -> timePicker.setText("${hour.toString()}:${minute.toString()}") }
                     , cHour, cMinute, true)
@@ -155,8 +158,8 @@ class EditActivity : Activity () {
 
             // get data from UI elements and alert user if an error occurs
             val calendar : Calendar = Calendar.getInstance()
-            var date : MutableList<String>?
-            var time : List<String>?
+            val date : MutableList<String>?  // note that a list is required because that is what is returned
+            val time : List<String>?
             var name = ""
             var phoneNo = ""
             var msg = ""
@@ -216,11 +219,14 @@ class EditActivity : Activity () {
 
         // go back to main screen without saving the reminder
         backBtn.setOnClickListener {
+            // we only have to remove a reminder if we are editing a current one
             if (index >= 0) {
+                // get the alarm manager corresponding to this reminder and cancel its pendingIntent
                 val alarmMgr = getSystemService(ALARM_SERVICE) as AlarmManager
                 val rmIntent = Intent(this, AlarmReceiver::class.java)
                 val pendIntent = PendingIntent.getBroadcast(this, index, rmIntent, 0)
                 alarmMgr.cancel(pendIntent)
+                // ensure reminders isn't null and remove the reminder we are editing
                 if (reminders == null) reminders = getReminders(this, filename)
                 (reminders as ArrayList<Reminder>).removeAt(index)
             }
@@ -238,7 +244,7 @@ class EditActivity : Activity () {
                 RESULT_PICK_CONTACT -> (contact as EditText).setText(parseSelectedContact(data!!))
             }
         } else {
-            Log.e("EditActivity", "Failed to pick contact")
+            Log.e("EditActivity", "Failed to pick contact") // log that the user hasn't selected a contact
         }
     }
 
@@ -278,6 +284,7 @@ class EditActivity : Activity () {
     }
 
     // close this activity and return to main activity
+    // (without reloading the main activity as the RemindersArrayAdapter will detect a change in reminders)
     private inline fun goToMain () = this.finish()
 }
 

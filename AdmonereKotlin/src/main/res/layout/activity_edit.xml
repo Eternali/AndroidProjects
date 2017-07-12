@@ -98,7 +98,7 @@
         android:layout_above="@+id/sendBtn"
         android:layout_alignStart="@+id/phoneNumber" />
 
-    <Button
+    <!--Button
         android:id="@+id/sunBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -221,6 +221,6 @@
         android:layout_alignBaseline="@+id/wedBtn"
         android:layout_alignBottom="@+id/wedBtn"
         android:layout_toEndOf="@+id/wedBtn"
-        android:layout_marginStart="120dp" />
+        android:layout_marginStart="120dp" /-->
 
 </RelativeLayout>

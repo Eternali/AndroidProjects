@@ -31,14 +31,15 @@ import java.util.ArrayList
 import java.util.Calendar
 
 
-// package wide arrayList to hold reminders
+// package wide arrayList to hold reminders and filename where they are stored across app restarts
 internal var reminders : ArrayList<Reminder>? = null
 internal var filename : String = "reminders.xml"
 
 
 // gets the data stored in fname and returns it in a arraylist<Reminder>
 internal fun getReminders (ctx : Context, fname : String) : ArrayList<Reminder> {
-    var reminds : ArrayList<Reminder> = ArrayList()
+    // temporary variables to hold the reminders and data
+    val reminds : ArrayList<Reminder> = ArrayList()
     val data: String
     // get the data from the XML file and read it into a string
     try {
@@ -69,7 +70,7 @@ internal fun getReminders (ctx : Context, fname : String) : ArrayList<Reminder> 
         factory.isNamespaceAware = true
         xpp = factory.newPullParser()
         xpp.setInput(StringReader(data))
-        // used to determine location in XML file
+        // used to determine location in XML file (i.e. current tag type we're parsing)
         eventType = xpp.eventType
     } catch (e: XmlPullParserException) {
         e.printStackTrace()
@@ -87,7 +88,9 @@ internal fun getReminders (ctx : Context, fname : String) : ArrayList<Reminder> 
     // look through the XML file until the end is reached
     while (eventType != XmlPullParser.END_DOCUMENT) {
         try {
+            // get the current name of the tag we're on
             val name = xpp.name
+            // if we're on a text tag then store the text in a temporary variable until we reach the end tag
             when (eventType) {
                 XmlPullParser.START_TAG -> {
                 }
@@ -127,7 +130,7 @@ internal fun saveReminders (ctx : Context, fname : String, reminds : ArrayList<R
     saveFile.createNewFile()
     //            FileOutputStream fos = new FileOutputStream(saveFile);
     val fos = ctx.openFileOutput(fname, Context.MODE_PRIVATE)
-    // create the serializer and writer objects
+    // create the XML serializer and writer objects
     val xmlSerial = Xml.newSerializer()
     val writer = StringWriter()
     xmlSerial.setOutput(writer)
@@ -153,7 +156,7 @@ internal fun saveReminders (ctx : Context, fname : String, reminds : ArrayList<R
         xmlSerial.endTag(null, "message")
         xmlSerial.endTag(null, "reminder")
     }
-    // end and write to document and close streams
+    // end, write to document and close streams
     xmlSerial.endTag(null, "reminders")
     xmlSerial.endDocument()
     xmlSerial.flush()
@@ -171,40 +174,41 @@ internal fun saveReminders (ctx : Context, fname : String, reminds : ArrayList<R
     e.printStackTrace()
 }
 
+// order the reminders according to order: true = old to new; false = new to old
+// NOTE this is a custom sorting function because I'm sorting a custom object (based on ____ sort method)
 internal fun orderReminders (reminds : ArrayList<Reminder>, order : Boolean) {
-    if (order) {
-        for (i in 0..reminds.size-1) {
-            var cal1 = Calendar.getInstance()
-            var tmp1 = reminds.get(i)
-            cal1.set(Calendar.YEAR, tmp1.date[2].toInt())
-            cal1.set(Calendar.MONTH, tmp1.date[1].toInt())
-            cal1.set(Calendar.DAY_OF_MONTH, tmp1.date[0].toInt())
-            cal1.set(Calendar.HOUR_OF_DAY, tmp1.time[0].toInt())
-            cal1.set(Calendar.MINUTE, tmp1.time[1].toInt())
-            cal1.set(Calendar.SECOND, 0)
-            for (j in i + 1..reminds.size - 1) {
-                val cal2 = Calendar.getInstance()
-                val tmp2 = reminds[j]
-                cal2.set(Calendar.YEAR, tmp2.date[2].toInt())
-                cal2.set(Calendar.MONTH, tmp2.date[1].toInt())
-                cal2.set(Calendar.DAY_OF_MONTH, tmp2.date[0].toInt())
-                cal2.set(Calendar.HOUR_OF_DAY, tmp2.time[0].toInt())
-                cal2.set(Calendar.MINUTE, tmp2.time[1].toInt())
-                cal2.set(Calendar.SECOND, 0)
-                if (order && cal1 > cal2) {
-                    reminds[i] = tmp2
-                    reminds[j] = tmp1
-                }
-                if (!order && cal1 < cal2) {
-                    reminds[i] = tmp2
-                    reminds[j] = tmp1
-                }
+    for (i in 0..reminds.size-1) {
+        val cal1 = Calendar.getInstance()
+        val tmp1 = reminds.get(i)
+        cal1.set(Calendar.YEAR, tmp1.date[2].toInt())
+        cal1.set(Calendar.MONTH, tmp1.date[1].toInt())
+        cal1.set(Calendar.DAY_OF_MONTH, tmp1.date[0].toInt())
+        cal1.set(Calendar.HOUR_OF_DAY, tmp1.time[0].toInt())
+        cal1.set(Calendar.MINUTE, tmp1.time[1].toInt())
+        cal1.set(Calendar.SECOND, 0)
+        for (j in i + 1..reminds.size - 1) {
+            val cal2 = Calendar.getInstance()
+            val tmp2 = reminds[j]
+            cal2.set(Calendar.YEAR, tmp2.date[2].toInt())
+            cal2.set(Calendar.MONTH, tmp2.date[1].toInt())
+            cal2.set(Calendar.DAY_OF_MONTH, tmp2.date[0].toInt())
+            cal2.set(Calendar.HOUR_OF_DAY, tmp2.time[0].toInt())
+            cal2.set(Calendar.MINUTE, tmp2.time[1].toInt())
+            cal2.set(Calendar.SECOND, 0)
+            if (order && cal1 > cal2) {
+                reminds[i] = tmp2
+                reminds[j] = tmp1
+            }
+            if (!order && cal1 < cal2) {
+                reminds[i] = tmp2
+                reminds[j] = tmp1
             }
         }
     }
 }
 
-// check if the theme needs to change and if so apply it and restart the activity
+// check if the theme needs to change (by getting it from shared preferences) and if so apply it and restart the activity
+// NOTE the functionality of this function is currently disabled because it causes a massive memory leak!
 internal fun setTheme (activity : Any) : Boolean {
     // get current theme
     var currentTheme: TypedValue = TypedValue()
@@ -214,14 +218,14 @@ internal fun setTheme (activity : Any) : Boolean {
         val sharedPref: SharedPreferences = activity.getPreferences(Context.MODE_PRIVATE)
         val isDark = sharedPref.getBoolean(activity.getString(R.string.isdark), false)
         if (isDark && activity.getString(R.string.dark) != currentTheme.string) {
-            activity.setTheme(R.style.AppThemeDark)
-            activity.recreate()
+//            activity.setTheme(R.style.AppThemeDark)
+//            activity.recreate()
 //        activity.finish()
 //        activity.startActivity(activity.intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
             return isDark
         } else if (!isDark && activity.getString(R.string.dark) == currentTheme.string) {
-            activity.setTheme(R.style.AppTheme)
-            activity.recreate()
+//            activity.setTheme(R.style.AppTheme)
+//            activity.recreate()
             return isDark
         }
 
@@ -232,14 +236,14 @@ internal fun setTheme (activity : Any) : Boolean {
         val sharedPref: SharedPreferences = activity.getPreferences(Context.MODE_PRIVATE)
         val isDark = sharedPref.getBoolean(activity.getString(R.string.isdark), false)
         if (isDark && activity.getString(R.string.dark) != currentTheme.string) {
-            activity.setTheme(R.style.AppThemeDark)
-            activity.recreate()
+//            activity.setTheme(R.style.AppThemeDark)
+//            activity.recreate()
 //        activity.finish()
 //        activity.startActivity(activity.intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
             return isDark
         } else if (!isDark && activity.getString(R.string.dark) == currentTheme.string) {
-            activity.setTheme(R.style.AppTheme)
-            activity.recreate()
+//            activity.setTheme(R.style.AppTheme)
+//            activity.recreate()
             return isDark
         }
 
@@ -256,15 +260,15 @@ internal fun setTheme (activity : Any) : Boolean {
  */
 class MainActivity : AppCompatActivity () {
 
+    // package wide variables for use in other classes
     internal var context : Context? = null
     internal var adapter : RemindersArrayAdapter? = null
     internal var remindersList : ListView? = null
     internal var addButton : FloatingActionButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // set the theme
+        // set the theme, call the superclass method and set the view
         setTheme(this)
-        // call superclass' method and set the view to activity_main.xml
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 //        val viewPager = findViewById(R.id.pager) as ViewPager
@@ -272,12 +276,14 @@ class MainActivity : AppCompatActivity () {
         context = applicationContext
 //        viewPager.adapter = RemindersTimeAdapter(context!!)
 
+        // NOTE we'll assert that context will never be null which should occur but is not an ideal solution
         reminders = getReminders(context!!, filename)
         // create adapter that presents users with the reminders in a listview
         adapter = RemindersArrayAdapter(this, 0, reminders as ArrayList<Reminder>)
         remindersList = findViewById(R.id.remindersList) as ListView
         (remindersList as ListView).adapter= adapter
 
+        // FAB that lets users add reminders
         addButton = findViewById(R.id.addButton) as FloatingActionButton
         (addButton as FloatingActionButton).setOnClickListener {
             val intent : Intent = Intent(this, EditActivity::class.java)
