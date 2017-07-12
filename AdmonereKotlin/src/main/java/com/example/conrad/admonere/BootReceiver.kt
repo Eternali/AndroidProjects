@@ -6,15 +6,23 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.util.Log
+import android.widget.Toast
 
 import java.util.ArrayList
 import java.util.Calendar
+
 
 class BootReceiver : BroadcastReceiver () {
 
     // called when the broadcast receiver gets a broadcast
     override fun onReceive(context: Context?, intent: Intent?) {
+        if (intent == null) {
+            this.alertFailed(context!!)
+        } else if (intent.action == "android.intent.action.BOOT_COMPLETED") {
+            this.alertFailed(context!!)
+        }
         // create reminders from saved xml file and log
         Log.d("BootReceiver", "onReceive called")
         reminders = ArrayList<Reminder>()
@@ -40,6 +48,11 @@ class BootReceiver : BroadcastReceiver () {
             ne.printStackTrace()
             Log.e("BootRecevier", "Null pointer called")
         }
+    }
+
+    fun alertFailed(ctx : Context) {
+        Log.e("BootReceiver", "Failed to initialize: Invalid action")
+        Toast.makeText(ctx, "ADMONERE: Alarm manager failed to initialize", Toast.LENGTH_LONG).show()
     }
 
 }
