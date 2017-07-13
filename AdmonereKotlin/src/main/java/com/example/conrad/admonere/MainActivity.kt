@@ -210,33 +210,23 @@ internal fun orderReminders (reminds : ArrayList<Reminder>, order : Boolean) {
 // check if the theme needs to change (by getting it from shared preferences) and if so apply it and restart the activity
 //
 // NOTE the functionality of this function is currently disabled because it causes a massive memory leak!
-internal fun setTheme (activity : Any) : Boolean {
+internal fun setTheme (ctx : Context) : Boolean {
     // get current theme and the desired theme
-    // note that checking the type is neccessary because theme and getPreferences functions won't work otherwise
-    var typedActivity = activity
     val currentTheme: TypedValue = TypedValue()
-    val sharedPref : SharedPreferences
-    if (activity is Activity) typedActivity = activity as Activity
-    else if (activity is AppCompatActivity) typedActivity = activity as AppCompatActivity
-    else return false
+    ctx.theme.resolveAttribute(R.attr.themeName, currentTheme, true)
 
-    activity.theme.resolveAttribute(R.attr.themeName, currentTheme, true)
-    sharedPref = activity.getPreferences(Context.MODE_PRIVATE)
-    val isDark = sharedPref.getBoolean(activity.getString(R.string.isdark), false)
+    val sharedPref : SharedPreferences = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE)
+    val isDark : Boolean = sharedPref.getBoolean(ctx.getString(R.string.isdark), false)
 
-    if (isDark && activity.getString(R.string.dark) != currentTheme.string) {
-//            activity.setTheme(R.style.AppThemeDark)
-//            activity.recreate()
-//        activity.finish()
-//        activity.startActivity(activity.intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-        return isDark
-    } else if (!isDark && activity.getString(R.string.dark) == currentTheme.string) {
-//            activity.setTheme(R.style.AppTheme)
-//            activity.recreate()
-        return isDark
+    if (isDark && ctx.getString(R.string.dark) != currentTheme.string) {
+            ctx.setTheme(R.style.AppThemeDark)
+        return true
+    } else if (!isDark && ctx.getString(R.string.dark) == currentTheme.string) {
+            ctx.setTheme(R.style.AppTheme)
+        return true
     }
 
-    return isDark
+    return false
 }
 
 
@@ -254,6 +244,8 @@ class MainActivity : AppCompatActivity () {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // set the theme, call the superclass method and set the view
+        // note the memory leak could be caused by: recreate being called from onCreate() or
+        // recreate always being called (setTheme always returning true)
         setTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
