@@ -7,6 +7,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">#FFC300</item>
+        <item name="android:navigationBarColor">#FFC300</item>
     </style>
 
     <style name="AppThemeDark" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -14,6 +15,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">#FFC300</item>
+        <item name="colorReminderDateTime">@color/colorReminderDateTime_dark</item>
     </style>
 
 </resources>
