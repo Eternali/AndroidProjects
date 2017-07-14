@@ -36,19 +36,6 @@ class SettingsActivity : Activity () {
         val darkSwitch = findViewById(R.id.darkSwitch) as Switch
         val navbarSwitch = findViewById(R.id.navbarSwitch) as Switch
         val sharedPref : SharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
-        val theme : String = sharedPref.getString(getString(R.string.theme), getString(R.string.lightno))
-
-        when (theme) {
-            getString(R.string.lightno) -> { darkSwitch.isChecked = false; navbarSwitch.isChecked = false }
-            getString(R.string.lightyes) -> { darkSwitch.isChecked = false; navbarSwitch.isChecked = true }
-            getString(R.string.darkno) -> { darkSwitch.isChecked = true; navbarSwitch.isChecked = false }
-            getString(R.string.darkyes) -> { darkSwitch.isChecked = true; navbarSwitch.isChecked = true }
-        }
-
-        darkSwitch.setOnCheckedChangeListener { compoundButton, b -> run {
-            val spEditor : SharedPreferences.Editor = sharedPref.edit()
-            spEditor.putString()
-        } }
 
         val isDark : Boolean = sharedPref.getBoolean(getString(R.string.isdark), false)
         val isNav : Boolean = sharedPref.getBoolean(getString(R.string.navcolor), false)
