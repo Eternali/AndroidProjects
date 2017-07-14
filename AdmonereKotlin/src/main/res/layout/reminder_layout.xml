@@ -22,7 +22,7 @@
             android:gravity="start"
             android:paddingStart="10dp"
             android:text="TextView"
-            android:textColor="@color/colorReminderDateTime_light"
+            android:textColor="?dateTimeColor"
             android:textSize="24sp" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:gravity="end"
             android:paddingEnd="10dp"
             android:text="TextView"
-            android:textColor="@color/colorReminderContact_light"
+            android:textColor="?contactColor"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -45,6 +45,6 @@
         android:paddingLeft="30dp"
         android:paddingTop="0dp"
         android:text="TextView"
-        android:textColor="@color/colorReminderMessage_light"
+        android:textColor="?messageColor"
         android:textSize="14sp" />
 </LinearLayout>

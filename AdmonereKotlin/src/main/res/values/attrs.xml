@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="themeName" format="string" />
+    <attr name="navColorEnabled" format="string" />
+
+    <attr name="dateTimeColor" format="reference|color" />
+    <attr name="contactColor" format="reference|color" />
+    <attr name="messageColor" format="reference|color" />
 </resources>

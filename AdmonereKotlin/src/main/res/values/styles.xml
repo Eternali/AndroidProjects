@@ -2,20 +2,48 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="themeName">light</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">#FFC300</item>
-        <item name="android:navigationBarColor">#FFC300</item>
+        <item name="dateTimeColor">@color/colorReminderDateTime_light</item>
+        <item name="contactColor">@color/colorReminderContact_light</item>
+        <item name="messageColor">@color/colorReminderMessage_light</item>
     </style>
 
+    <!-- Light theme with navigation bar a different color -->
+    <style name="AppThemeYes" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="themeName">light</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">#FFC300</item>
+        <item name="dateTimeColor">@color/colorReminderDateTime_light</item>
+        <item name="contactColor">@color/colorReminderContact_light</item>
+        <item name="messageColor">@color/colorReminderMessage_light</item>
+        <item name="android:navigationBarColor">@android:color/holo_blue_bright</item>
+    </style>
+
+    <!-- Dark theme with navigation bar the default color (black) -->
     <style name="AppThemeDark" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="themeName">dark</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">#FFC300</item>
-        <item name="colorReminderDateTime">@color/colorReminderDateTime_dark</item>
+        <item name="dateTimeColor">@color/colorReminderDateTime_dark</item>
+        <item name="contactColor">@color/colorReminderContact_dark</item>
+        <item name="messageColor">@color/colorReminderMessage_dark</item>
+    </style>
+
+    <!-- Dark theme with navigation bar a different color -->
+    <style name="AppThemeDarkYes" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="themeName">dark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">#FFC300</item>
+        <item name="dateTimeColor">@color/colorReminderDateTime_dark</item>
+        <item name="contactColor">@color/colorReminderContact_dark</item>
+        <item name="messageColor">@color/colorReminderMessage_dark</item>
+        <item name="android:navigationBarColor">@android:color/holo_blue_dark</item>
     </style>
 
 </resources>

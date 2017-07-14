@@ -13,6 +13,13 @@
     <string name="message">Message</string>
     <string name="join_the_dark_side">Join the Dark Side?</string>
     <string name="isdark">isDark</string>
+    <string name="navcolor">navColor</string>
+    <string name="theme">theme</string>
+    <string name="darkno">darkno</string>
+    <string name="darkyes">darkyes</string>
+    <string name="lightno">lightno</string>
+    <string name="lightyes">lightyes</string>
     <string name="dark">dark</string>
     <string name="light">light</string>
+    <string name="enable_navigation_bar_color">Enable Navigation Bar Color?</string>
 </resources>

@@ -210,21 +210,51 @@ internal fun orderReminders (reminds : ArrayList<Reminder>, order : Boolean) {
 // check if the theme needs to change (by getting it from shared preferences) and if so apply it and restart the activity
 //
 // NOTE the functionality of this function is currently disabled because it causes a massive memory leak!
-internal fun setTheme (ctx : Context) : Boolean {
+internal fun setTheme (ctx : Context) {
     // get current theme and the desired theme
     val currentTheme: TypedValue = TypedValue()
     ctx.theme.resolveAttribute(R.attr.themeName, currentTheme, true)
 
+    // get the settings shared preferences
     val sharedPref : SharedPreferences = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE)
-    val isDark : Boolean = sharedPref.getBoolean(ctx.getString(R.string.isdark), false)
 
-    if (isDark && ctx.getString(R.string.dark) != currentTheme.string) {
-            ctx.setTheme(R.style.AppThemeDark)
-        return true
-    } else if (!isDark && ctx.getString(R.string.dark) == currentTheme.string) {
-            ctx.setTheme(R.style.AppTheme)
-        return true
+    // get the theme (string) from the preferences (default is light with no navbar color)
+    val theme : String = sharedPref.getString(ctx.getString(R.string.theme), ctx.getString(R.string.lightno))
+    // if the current theme is not the desired one then change it between the four
+    if (theme != currentTheme.string) {
+        when (theme) {
+            ctx.getString(R.string.lightno) -> ctx.setTheme(R.style.AppTheme)
+            ctx.getString(R.string.lightyes) -> ctx.setTheme(R.style.AppThemeYes)
+            ctx.getString(R.string.darkno) -> ctx.setTheme(R.style.AppThemeDark)
+            ctx.getString(R.string.darkyes) -> ctx.setTheme(R.style.AppThemeDarkYes)
+
+        }
     }
+
+//    val isDark : Boolean = sharedPref.getBoolean(ctx.getString(R.string.isdark), false)
+//
+//    if (isDark && ctx.getString(R.string.dark) != currentTheme.string) {
+//            ctx.setTheme(R.style.AppThemeDark)
+//        return true
+//    } else if (!isDark && ctx.getString(R.string.dark) == currentTheme.string) {
+//            ctx.setTheme(R.style.AppTheme)
+//        return true
+//    }
+//
+//    return false
+}
+
+
+internal fun setNavColor (ctx : Context) : Boolean {
+    // get current setting and the desired one
+    val curEnabled : TypedValue = TypedValue()
+    ctx.theme.resolveAttribute(R.attr.navColorEnabled, curEnabled, true)
+
+    val sharedPref : SharedPreferences = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE)
+    val isNavEnabled: Boolean = sharedPref.getBoolean(ctx.getString(R.string.navcolor), false)
+
+    if (isNavEnabled && ctx.getString(R.string.navcolor) != curEnabled.string) return true
+    else if (!isNavEnabled && ctx.getString(R.string.navcolor) == curEnabled.string) return true
 
     return false
 }
