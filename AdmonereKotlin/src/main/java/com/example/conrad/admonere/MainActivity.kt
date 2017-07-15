@@ -220,6 +220,7 @@ internal fun setTheme (ctx : Context) {
 
     // get the theme, default to light with no navbar customization
     val theme : String = sharedPref.getString(ctx.getString(R.string.theme), ctx.getString(R.string.lightno))
+    // if we need to change the theme then do so
     if (currentTheme.string != theme) {
         when (theme) {
             ctx.getString(R.string.lightno) -> ctx.setTheme(R.style.AppTheme)
@@ -228,17 +229,6 @@ internal fun setTheme (ctx : Context) {
             ctx.getString(R.string.darkyes) -> ctx.setTheme(R.style.AppThemeDarkYes)
         }
     }
-
-
-    // get the theme and if the navbar color is enabled, default is light theme with no navbar customization
-//    val isDark : Boolean = sharedPref.getBoolean(ctx.getString(R.string.isdark), false)
-//    val isNav : Boolean = sharedPref.getBoolean(ctx.getString(R.string.navcolor), false)
-//
-//    if (isDark && ctx.getString(R.string.dark) != currentTheme.string) ctx.setTheme(R.style.AppThemeDark)
-//    else if (!isDark && ctx.getString(R.string.dark) == currentTheme.string) ctx.setTheme(R.style.AppTheme)
-//
-//    if (isNav && (ctx as Activity).window.navigationBarColor == ctx.resources.getColor(R.color.black))
-//        (ctx as Activity).window.navigationBarColor = ctx.resources.getColor(R.color)
 
 }
 

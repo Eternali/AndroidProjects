@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.widget.Switch
 
+// this will return the theme that corresponds to the states of the preference switches
 internal fun getNewTheme (ctx : Context, dark : Boolean, nav : Boolean) : String {
     if (!dark && !nav) return ctx.getString(R.string.lightno)
     else if (!dark && nav) return ctx.getString(R.string.lightyes)
@@ -21,7 +22,8 @@ class SettingsActivity : Activity () {
 
     // this is to override back button behaviour so that if the user changes the theme,
     // the mainActivity will reload to apply the theme.
-    var shouldReload : Boolean = false
+    var srtheme : Boolean = false
+    var srnav : Boolean = false
 
     // method for overriding backbutton pressed
     override fun onBackPressed() {
@@ -39,17 +41,22 @@ class SettingsActivity : Activity () {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_layout)
 
+        srtheme = false
+        srnav = false
+
         // get the two switches to control overall theme and the enabling of changing the navbar color
         // (some might not like it but I know some who will)
         val darkSwitch = findViewById(R.id.darkSwitch) as Switch
         val navbarSwitch = findViewById(R.id.navbarSwitch) as Switch
         val sharedPref : SharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
 
+        // get the saved settings from preferences and set the switches to match them
         val isDark : Boolean = sharedPref.getBoolean(getString(R.string.isdark), false)
         val isNav : Boolean = sharedPref.getBoolean(getString(R.string.navcolor), false)
-
         darkSwitch.isChecked = isDark
         navbarSwitch.isChecked = isNav
+
+        // set the listeners for the switches and change the settings accordingly
         darkSwitch.setOnCheckedChangeListener { compoundButton, b -> run {
             val theme = getNewTheme(this, b, isNav)
             val spEditor : SharedPreferences.Editor = sharedPref.edit()
@@ -60,7 +67,7 @@ class SettingsActivity : Activity () {
 
             spEditor.apply()
             recreate()
-            shouldReload = !shouldReload
+            srtheme = !srtheme
         } }
 
         navbarSwitch.setOnCheckedChangeListener { compoundButton, b -> run {
@@ -73,7 +80,7 @@ class SettingsActivity : Activity () {
 
             spEditor.apply()
             recreate()
-            shouldReload = !shouldReload
+            srnav = !srnav
         } }
 
     }
@@ -82,7 +89,7 @@ class SettingsActivity : Activity () {
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         // I will check if we want to reload the application before the user leaves (presses back button)
         // and if so restart the mainActivity
-        if (event != null && keyCode == KeyEvent.KEYCODE_BACK && event.repeatCount == 0 && shouldReload) {
+        if (event != null && keyCode == KeyEvent.KEYCODE_BACK && event.repeatCount == 0 && (srtheme || srnav)) {
             onBackPressed()
             return true
         }
