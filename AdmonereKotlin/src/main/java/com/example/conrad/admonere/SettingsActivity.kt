@@ -9,6 +9,14 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.widget.Switch
 
+internal fun getNewTheme (ctx : Context, dark : Boolean, nav : Boolean) : String {
+    if (!dark && !nav) return ctx.getString(R.string.lightno)
+    else if (!dark && nav) return ctx.getString(R.string.lightyes)
+    else if (dark && !nav) return ctx.getString(R.string.darkno)
+    else if (dark && nav) return ctx.getString(R.string.darkyes)
+    else return ""
+}
+
 class SettingsActivity : Activity () {
 
     // this is to override back button behaviour so that if the user changes the theme,
@@ -39,19 +47,30 @@ class SettingsActivity : Activity () {
 
         val isDark : Boolean = sharedPref.getBoolean(getString(R.string.isdark), false)
         val isNav : Boolean = sharedPref.getBoolean(getString(R.string.navcolor), false)
+
         darkSwitch.isChecked = isDark
         navbarSwitch.isChecked = isNav
         darkSwitch.setOnCheckedChangeListener { compoundButton, b -> run {
+            val theme = getNewTheme(this, b, isNav)
             val spEditor : SharedPreferences.Editor = sharedPref.edit()
-            spEditor.putBoolean(getString(R.string.isdark), b)
+            if (theme.isNotEmpty()) {
+                spEditor.putBoolean(getString(R.string.isdark), b)
+                spEditor.putString(getString(R.string.theme), theme)
+            }
+
             spEditor.apply()
             recreate()
             shouldReload = !shouldReload
         } }
 
         navbarSwitch.setOnCheckedChangeListener { compoundButton, b -> run {
+            val theme = getNewTheme(this, isDark, b)
             val spEditor : SharedPreferences.Editor = sharedPref.edit()
-            spEditor.putBoolean(getString(R.string.navcolor), b)
+            if (theme.isNotEmpty()) {
+                spEditor.putBoolean(getString(R.string.navcolor), b)
+                spEditor.putString(getString(R.string.theme), theme)
+            }
+
             spEditor.apply()
             recreate()
             shouldReload = !shouldReload
