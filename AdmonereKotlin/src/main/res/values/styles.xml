@@ -5,10 +5,12 @@
         <item name="themeName">light</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#FFC300</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="dateTimeColor">@color/colorReminderDateTime_light</item>
         <item name="contactColor">@color/colorReminderContact_light</item>
         <item name="messageColor">@color/colorReminderMessage_light</item>
+        <item name="android:datePickerDialogTheme">@style/LightDatePickerTheme</item>
+        <item name="android:timePickerDialogTheme">@style/LightTimePickerTheme</item>
     </style>
 
     <!-- Light theme with navigation bar a different color -->
@@ -16,34 +18,78 @@
         <item name="themeName">light</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#FFC300</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="dateTimeColor">@color/colorReminderDateTime_light</item>
         <item name="contactColor">@color/colorReminderContact_light</item>
         <item name="messageColor">@color/colorReminderMessage_light</item>
         <item name="android:navigationBarColor">@android:color/holo_blue_bright</item>
+        <item name="android:datePickerDialogTheme">@style/LightDatePickerTheme</item>
+        <item name="android:timePickerDialogTheme">@style/LightTimePickerTheme</item>
     </style>
 
     <!-- Dark theme with navigation bar the default color (black) -->
-    <style name="AppThemeDark" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="AppThemeDark" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="themeName">dark</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#FFC300</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="dateTimeColor">@color/colorReminderDateTime_dark</item>
         <item name="contactColor">@color/colorReminderContact_dark</item>
         <item name="messageColor">@color/colorReminderMessage_dark</item>
+        <item name="android:datePickerDialogTheme">@style/DarkDatePickerTheme</item>
+        <item name="android:timePickerDialogTheme">@style/DarkTimePickerTheme</item>
     </style>
 
     <!-- Dark theme with navigation bar a different color -->
-    <style name="AppThemeDarkYes" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="AppThemeDarkYes" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="themeName">dark</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#FFC300</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="dateTimeColor">@color/colorReminderDateTime_dark</item>
         <item name="contactColor">@color/colorReminderContact_dark</item>
         <item name="messageColor">@color/colorReminderMessage_dark</item>
         <item name="android:navigationBarColor">@android:color/holo_blue_dark</item>
+        <item name="android:datePickerDialogTheme">@style/DarkDatePickerTheme</item>
+        <item name="android:timePickerDialogTheme">@style/DarkTimePickerTheme</item>
+    </style>
+
+    <!-- Light date picker dialog theme -->
+    <style name="LightDatePickerTheme" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:datePickerStyle">@style/LightDatePickerStyle</item>
+    </style>
+
+    <!-- Dark date picker dialog theme -->
+    <style name="DarkDatePickerTheme" parent="android:Theme.Material.Dialog">
+        <item name="android:datePickerStyle">@style/DarkDatePickerStyle</item>
+    </style>
+
+    <!-- Light time picker dialog theme -->
+    <style name="LightTimePickerTheme" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:timePickerStyle">@style/LightTimePickerStyle</item>
+    </style>
+
+    <!-- Dark time picker dialog theme -->
+    <style name="DarkTimePickerTheme" parent="android:Theme.Material.Dialog">
+        <item name="android:timePickerStyle">@style/DarkTimePickerStyle</item>
+    </style>
+
+    <!-- Supplementary styles for the dialogs -->
+    <style name="LightDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
+        <item name="android:headerBackground">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+    <style name="DarkDatePickerStyle" parent="@android:style/Widget.Material.DatePicker">
+        <item name="android:headerBackground">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+    <style name="LightTimePickerStyle" parent="@android:style/Widget.Material.Light.TimePicker">
+        <item name="android:headerBackground">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+    <style name="DarkTimePickerStyle" parent="@android:style/Widget.Material.TimePicker">
+        <item name="android:headerBackground">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
 </resources>

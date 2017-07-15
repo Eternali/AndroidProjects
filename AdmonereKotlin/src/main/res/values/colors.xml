@@ -4,7 +4,7 @@
     <color name="white">#FFFFFF</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#ff4081</color>
+    <color name="colorAccent">#FFC300</color>
     <color name="colorReminderDateTime_light">#212121</color>
     <color name="colorReminderContact_light">#454545</color>
     <color name="colorReminderMessage_light">#757575</color>

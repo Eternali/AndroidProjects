@@ -18,7 +18,7 @@
             android:id="@+id/remindersList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:dividerHeight="3dp"></ListView>
+            android:dividerHeight="3dp" />
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/addButton"
             android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
             android:focusable="true"
             android:hapticFeedbackEnabled="true"
             android:src="@drawable/ic_add_black_24dp"
-            app:backgroundTint="#FFC300"
+            app:backgroundTint="@color/colorAccent"
             app:fabSize="normal" />
     </RelativeLayout>
 
