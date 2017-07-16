@@ -10,20 +10,18 @@
         android:id="@+id/sendBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="28dp"
         android:background="@drawable/roundedbutton"
         android:clickable="true"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="@string/set_reminder"
+        android:textColor="?btnText"
         android:textColorLink="#FFC300"
         tools:layout_editor_absoluteX="113dp"
         tools:layout_editor_absoluteY="411dp"
-        android:layout_marginRight="22dp"
-        android:layout_marginEnd="22dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignStart="@+id/thuBtn" />
 
     <Button
         android:id="@+id/backBtn"
@@ -31,15 +29,14 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/sendBtn"
         android:layout_alignBottom="@+id/sendBtn"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="51dp"
         android:layout_marginStart="51dp"
         android:background="@drawable/roundedbutton"
         android:clickable="true"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="@string/delete"
+        android:textColor="?btnText"
         android:textColorLink="#FFC300"
         tools:layout_editor_absoluteX="100dp"
         tools:layout_editor_absoluteY="100dp" />
@@ -72,6 +69,27 @@
         android:layout_below="@+id/datePick"
         android:layout_alignStart="@+id/datePick" />
 
+    <TextView
+        android:id="@+id/freqLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/maxFreq"
+        android:layout_alignEnd="@+id/maxFreq"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/mx_remind_reps"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/maxFreq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="2"
+        android:inputType="number"
+        android:layout_marginBottom="23dp"
+        android:layout_above="@+id/thuBtn"
+        android:layout_alignEnd="@+id/timePick" />
+
     <EditText
         android:id="@+id/phoneNumber"
         android:layout_width="wrap_content"
@@ -82,9 +100,9 @@
         android:hint="@string/choose_contact"
         android:inputType="phone"
         android:textColorLink="#FFC300"
+        android:layout_marginBottom="16dp"
         android:layout_above="@+id/message"
-        android:layout_alignStart="@+id/timePick"
-        android:layout_marginBottom="46dp" />
+        android:layout_alignStart="@+id/timePick" />
 
     <EditText
         android:id="@+id/message"
@@ -94,11 +112,11 @@
         android:hint="@string/message"
         android:inputType="textMultiLine"
         android:textColorLink="#FFC300"
-        android:layout_marginBottom="51dp"
+        android:layout_marginBottom="34dp"
         android:layout_above="@+id/sendBtn"
         android:layout_alignStart="@+id/phoneNumber" />
 
-    <!--Button
+    <Button
         android:id="@+id/sunBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,6 +128,7 @@
         android:minWidth="0dp"
         android:padding="7dp"
         android:text="Sun"
+        android:textColor="?btnText"
         android:textColorLink="#FFC300"
         android:layout_marginStart="-73dp"
         android:layout_alignBaseline="@+id/wedBtn"
@@ -128,6 +147,7 @@
         android:minWidth="0dp"
         android:padding="7dp"
         android:text="Mon"
+        android:textColor="?btnText"
         android:textColorLink="#FFC300"
         android:layout_marginStart="-20dp"
         android:layout_alignBaseline="@+id/wedBtn"
@@ -146,6 +166,7 @@
         android:minWidth="0dp"
         android:padding="7dp"
         android:text="Tue"
+        android:textColor="?btnText"
         android:textColorLink="#FFC300"
         android:layout_marginStart="34dp"
         android:layout_alignBaseline="@+id/wedBtn"
@@ -164,10 +185,10 @@
         android:minWidth="0dp"
         android:padding="7dp"
         android:text="Wed"
+        android:textColor="?btnText"
         android:textColorLink="#FFC300"
-        android:layout_below="@+id/timePick"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/thuBtn"
@@ -181,6 +202,7 @@
         android:minWidth="0dp"
         android:padding="7dp"
         android:text="Thu"
+        android:textColor="?btnText"
         android:textColorLink="#FFC300"
         android:layout_alignBaseline="@+id/wedBtn"
         android:layout_alignBottom="@+id/wedBtn"
@@ -199,6 +221,7 @@
         android:minWidth="0dp"
         android:padding="7dp"
         android:text="Fri"
+        android:textColor="?btnText"
         android:textColorLink="#FFC300"
         android:layout_alignBaseline="@+id/wedBtn"
         android:layout_alignBottom="@+id/wedBtn"
@@ -217,10 +240,11 @@
         android:minWidth="0dp"
         android:padding="7dp"
         android:text="Sat"
+        android:textColor="?btnText"
         android:textColorLink="#FFC300"
         android:layout_alignBaseline="@+id/wedBtn"
         android:layout_alignBottom="@+id/wedBtn"
         android:layout_toEndOf="@+id/wedBtn"
-        android:layout_marginStart="120dp" /-->
+        android:layout_marginStart="120dp" />
 
 </RelativeLayout>

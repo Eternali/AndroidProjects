@@ -38,9 +38,8 @@ class EditActivity : Activity () {
 
     // variables for storing data user enters
     private var usrData = arrayOfNulls<String>(5)
-    // temporarily disable the dayBtns because I can't use them at this point
-//    private var dayBtns = arrayOfNulls<Button>(7)
-//    private var dayBtnActives : BooleanArray = BooleanArray(dayBtns.size)
+    private var dayBtns = arrayOfNulls<Button>(7)
+    private var dayBtnActives : BooleanArray = BooleanArray(dayBtns.size)
     private var index : Int = 0
 
     // must initialize contact UI element outside of onCreate because of ActivityResult
@@ -59,13 +58,13 @@ class EditActivity : Activity () {
         var message = findViewById(R.id.message) as EditText
         var sendBtn = findViewById(R.id.sendBtn) as Button
         var backBtn = findViewById(R.id.backBtn) as Button
-//        dayBtns[0] = findViewById(R.id.sunBtn) as Button
-//        dayBtns[1] = findViewById(R.id.monBtn) as Button
-//        dayBtns[2] = findViewById(R.id.tueBtn) as Button
-//        dayBtns[3] = findViewById(R.id.wedBtn) as Button
-//        dayBtns[4] = findViewById(R.id.thuBtn) as Button
-//        dayBtns[5] = findViewById(R.id.friBtn) as Button
-//        dayBtns[6] = findViewById(R.id.satBtn) as Button
+        dayBtns[0] = findViewById(R.id.sunBtn) as Button
+        dayBtns[1] = findViewById(R.id.monBtn) as Button
+        dayBtns[2] = findViewById(R.id.tueBtn) as Button
+        dayBtns[3] = findViewById(R.id.wedBtn) as Button
+        dayBtns[4] = findViewById(R.id.thuBtn) as Button
+        dayBtns[5] = findViewById(R.id.friBtn) as Button
+        dayBtns[6] = findViewById(R.id.satBtn) as Button
 
         // don't show the keyboard when user taps these UI elements
         // (they will be sent to a different activity/dialog)
@@ -99,13 +98,13 @@ class EditActivity : Activity () {
 
         // loop through the day buttons and change the activation
         // variable and background for each when clicked
-//        for (b in 0..dayBtns.size-1) {
-//            dayBtns[b]!!.setOnClickListener {
-//                if (!dayBtnActives[b]) it.setBackgroundResource(R.drawable.roundedbuttonselected)
-//                else it.setBackgroundResource(R.drawable.roundedbutton)
-//                dayBtnActives[b] = !dayBtnActives[b]
-//            }
-//        }
+        for (b in 0..dayBtns.size-1) {
+            dayBtns[b]!!.setOnClickListener {
+                if (!dayBtnActives[b]) it.setBackgroundResource(R.drawable.roundedbuttonselected)
+                else it.setBackgroundResource(R.drawable.roundedbutton)
+                dayBtnActives[b] = !dayBtnActives[b]
+            }
+        }
 
         // send user to a DatePickerDialog when they tap on the datePicker edittext
         datePicker.setOnClickListener {

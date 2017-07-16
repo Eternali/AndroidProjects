@@ -6,4 +6,5 @@
     <attr name="dateTimeColor" format="reference|color" />
     <attr name="contactColor" format="reference|color" />
     <attr name="messageColor" format="reference|color" />
+    <attr name="btnText" format="reference|color" />
 </resources>
