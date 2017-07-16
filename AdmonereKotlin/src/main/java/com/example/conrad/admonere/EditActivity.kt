@@ -26,7 +26,6 @@ import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.NumberPicker
 import android.widget.TimePicker
-import android.widget.Toast
 
 import java.util.Calendar
 
@@ -65,6 +64,9 @@ class EditActivity : Activity () {
         dayBtns[4] = findViewById(R.id.thuBtn) as Button
         dayBtns[5] = findViewById(R.id.friBtn) as Button
         dayBtns[6] = findViewById(R.id.satBtn) as Button
+
+        // just to make sure no NullPointerExceptions check if there are any nulls in dayBtns or dayBtnActives
+        if (null in dayBtns) { displayWarning(this, "Failed to load UI."); finish() }
 
         // don't show the keyboard when user taps these UI elements
         // (they will be sent to a different activity/dialog)
@@ -109,7 +111,7 @@ class EditActivity : Activity () {
         // send user to a DatePickerDialog when they tap on the datePicker edittext
         datePicker.setOnClickListener {
             // get the current date
-            // NOTE should add the ability to have it initialize to the previously set date if possible
+            // TODO add the ability to have it initialize to the previously set date if possible
             val cCurrentDate : Calendar = Calendar.getInstance()
             val cYear : Int = cCurrentDate.get(Calendar.YEAR)
             val cMonth : Int = cCurrentDate.get(Calendar.MONTH)
@@ -118,7 +120,18 @@ class EditActivity : Activity () {
             // create date picker dialog and set current date to today
             val dateDialog : DatePickerDialog = DatePickerDialog(this,
                     DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth
-                        -> datePicker.setText("${dayOfMonth.toString()}/${(month+1).toString()}/${year.toString()}") }
+                        -> run {
+                            // first set the text of the edittext to reflect the change
+                            datePicker.setText("${dayOfMonth.toString()}/${(month+1).toString()}/${year.toString()}")
+                            // then get the day of the week by creating a Calendar instance with the passed
+                            // data and set the day repetition buttons accordingly
+                            val setCalendar : Calendar = Calendar.getInstance()
+                            setCalendar.set(year, month, dayOfMonth)
+                            val day = setCalendar.get(Calendar.DAY_OF_WEEK) - 1
+                            dayBtns[day]!!.setBackgroundResource(R.drawable.roundedbuttonselected)
+                            dayBtnActives[day] = true
+
+                        } }
                     , cYear, cMonth, cDay)
             dateDialog.setTitle("Select Date")
             dateDialog.show()
@@ -178,12 +191,12 @@ class EditActivity : Activity () {
                 // test if desired time is after current time
                 val curCal : Calendar = Calendar.getInstance()
                 if (curCal >= calendar) {
-                    Toast.makeText(this, "Please choose a time in the future", Toast.LENGTH_LONG).show()
+                    displayWarning(this, "Please choose a time in the future")
                     return@setOnClickListener
                 }
             } catch (e : Exception) {
                 e.printStackTrace()
-                Toast.makeText(this, "Please enter valid input.", Toast.LENGTH_LONG).show()
+                displayWarning(this, "Please enter valid input.")
                 return@setOnClickListener
             }
 
@@ -254,8 +267,7 @@ class EditActivity : Activity () {
             PERMISSIONS_REQUEST_SEND_SMS -> {
                 if (grantResults != null && grantResults.isEmpty() &&
                         grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(applicationContext, "SMS will fail: Incorrect permissions"
-                        , Toast.LENGTH_LONG).show()
+                    displayWarning(this, "SMS will fail: Incorrect permissions")
                 }
             }
         }
@@ -277,7 +289,7 @@ class EditActivity : Activity () {
             return "$name at $phoneNo"
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(this, "Failed to retreive contact data", Toast.LENGTH_LONG).show()
+            displayWarning(this, "Failed to retreive contact data")
             return ""
         }
     }

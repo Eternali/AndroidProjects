@@ -16,6 +16,7 @@ import android.util.TypedValue
 import android.util.Xml
 import android.view.*
 import android.widget.ListView
+import android.widget.Toast
 
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
@@ -231,6 +232,10 @@ internal fun setTheme (ctx : Context) {
     }
 
 }
+
+// This is a general function to make long toasts to display to the user if/when things go wrong
+internal fun displayWarning (ctx : Context, warning : String = "A critical error occurred!") =
+        Toast.makeText(ctx, warning, Toast.LENGTH_LONG).show()
 
 
 /**
