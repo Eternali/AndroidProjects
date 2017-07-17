@@ -104,7 +104,8 @@ internal fun getReminders (ctx : Context, fname : String) : ArrayList<Reminder> 
                         "name" -> contact = text
                         "number" -> number = text
                         "message" -> message = text
-                        "reminder" -> reminds.add(Reminder(dates.split(",").toTypedArray().forEach((date) -> date.split("/")),
+                        "reminder" -> reminds.add(
+                                Reminder(dates.split(",").map { it.split("/").toTypedArray() }.toTypedArray(),
                                 time.split(":").toTypedArray(), contact, number, message))
                     }
             }
@@ -138,10 +139,10 @@ internal fun saveReminders (ctx : Context, fname : String, reminds : ArrayList<R
     xmlSerial.startDocument("UTF-8", null)
     xmlSerial.startTag(null, "reminders")
     // for each reminder write its data into a XML structure
-    for ((date, time, name, number, message) in reminds) {
+    for ((dates, time, name, number, message) in reminds) {
         xmlSerial.startTag(null, "reminder")
         xmlSerial.startTag(null, "date")
-        xmlSerial.text(TextUtils.join("/", date))
+        xmlSerial.text(TextUtils.join(",", dates.map { TextUtils.join("/", it) }))
         xmlSerial.endTag(null, "date")
         xmlSerial.startTag(null, "time")
         xmlSerial.text(TextUtils.join(":", time))
@@ -180,19 +181,19 @@ internal fun saveReminders (ctx : Context, fname : String, reminds : ArrayList<R
 internal fun orderReminders (reminds : ArrayList<Reminder>, order : Boolean) {
     for (i in 0..reminds.size-1) {
         val cal1 = Calendar.getInstance()
-        val tmp1 = reminds.get(i)
-        cal1.set(Calendar.YEAR, tmp1.date[2].toInt())
-        cal1.set(Calendar.MONTH, tmp1.date[1].toInt())
-        cal1.set(Calendar.DAY_OF_MONTH, tmp1.date[0].toInt())
+        val tmp1 = reminds[i]
+        cal1.set(Calendar.YEAR, tmp1.dates[0][2].toInt())
+        cal1.set(Calendar.MONTH, tmp1.dates[0][1].toInt())
+        cal1.set(Calendar.DAY_OF_MONTH, tmp1.dates[0][0].toInt())
         cal1.set(Calendar.HOUR_OF_DAY, tmp1.time[0].toInt())
         cal1.set(Calendar.MINUTE, tmp1.time[1].toInt())
         cal1.set(Calendar.SECOND, 0)
         for (j in i + 1..reminds.size - 1) {
             val cal2 = Calendar.getInstance()
             val tmp2 = reminds[j]
-            cal2.set(Calendar.YEAR, tmp2.date[2].toInt())
-            cal2.set(Calendar.MONTH, tmp2.date[1].toInt())
-            cal2.set(Calendar.DAY_OF_MONTH, tmp2.date[0].toInt())
+            cal2.set(Calendar.YEAR, tmp2.dates[0][2].toInt())
+            cal2.set(Calendar.MONTH, tmp2.dates[0][1].toInt())
+            cal2.set(Calendar.DAY_OF_MONTH, tmp2.dates[0][0].toInt())
             cal2.set(Calendar.HOUR_OF_DAY, tmp2.time[0].toInt())
             cal2.set(Calendar.MINUTE, tmp2.time[1].toInt())
             cal2.set(Calendar.SECOND, 0)

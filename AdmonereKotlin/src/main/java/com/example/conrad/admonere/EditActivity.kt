@@ -55,6 +55,7 @@ class EditActivity : Activity () {
         // set UI elements
         var datePicker = findViewById(R.id.datePick) as EditText
         var timePicker = findViewById(R.id.timePick) as EditText
+        val maxRepsET = findViewById(R.id.maxFreq) as EditText
         contact = findViewById(R.id.phoneNumber) as EditText
         var message = findViewById(R.id.message) as EditText
         var sendBtn = findViewById(R.id.sendBtn) as Button
@@ -176,6 +177,7 @@ class EditActivity : Activity () {
             val calendar : Calendar = Calendar.getInstance()
             val date : MutableList<String>?  // note that a list is required because that is what is returned
             val time : List<String>?
+            val maxReps = maxRepsET.text.toString().toInt()
             var name = ""
             var phoneNo = ""
             var msg = ""
@@ -210,9 +212,7 @@ class EditActivity : Activity () {
             // send the user formatted month to the alarm receiver (because it does not
             // depend on this as the alarm manager handles this)
             // the alarm manager only depends on the reminders ArrayList
-            date[1] = (date[1].toInt()+1).toString()
-            intent.putExtra("date", date.joinToString("/"))
-            date[1] = (date[1].toInt()-1).toString()
+            intent.putExtra("dates", this.getDates(date, dayBtnActives, maxReps))
             intent.putExtra("time", time.joinToString(":"))
             intent.putExtra("name", name)
             intent.putExtra("number", phoneNo)
@@ -222,10 +222,14 @@ class EditActivity : Activity () {
             // check if it's a new reminder
             if (index < 0) {
                 alarmIntent = PendingIntent.getBroadcast(this, if (reminders != null) reminders!!.size else 0, intent, 0)
-                reminders!!.add(Reminder(date.toTypedArray(), time.toTypedArray(), name, phoneNo, msg))
+                reminders!!.add(Reminder(this.getDates(date, dayBtnActives, maxReps)
+                                .split(",").map { it.split("/").toTypedArray() }.toTypedArray(), time.toTypedArray(),
+                        name, phoneNo, msg))
             } else {
                 alarmIntent = PendingIntent.getBroadcast(this, index, intent, 0)
-                reminders!!.set(index, Reminder(date.toTypedArray(), time.toTypedArray(), name, phoneNo, msg))
+                reminders!!.set(index, Reminder(this.getDates(date, dayBtnActives, maxReps)
+                                .split(",").map { it.split("/").toTypedArray() }.toTypedArray(), time.toTypedArray(),
+                        name, phoneNo, msg))
             }
 
             // set alarm and go back to main activity
@@ -275,6 +279,18 @@ class EditActivity : Activity () {
                 }
             }
         }
+    }
+
+    private fun getDates(startDate : MutableList<String>, dayOfWeeks : BooleanArray, maxRepetitions : Int) : String {
+        var retDates : Array<Array<String>> = emptyArray()
+        for (m in 0..maxRepetitions-1) {
+            retDates.append([])
+
+        }
+
+        date[1] = (date[1].toInt()+1).toString()
+        intent.putExtra("date", date.joinToString("/"))
+        date[1] = (date[1].toInt()-1).toString()
     }
 
     private fun parseSelectedContact(data : Intent) : String {
