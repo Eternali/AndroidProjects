@@ -18,11 +18,8 @@ class BootReceiver : BroadcastReceiver () {
 
     // called when the broadcast receiver gets a broadcast
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (intent == null) {
+        if (intent == null || intent.action != Intent.ACTION_BOOT_COMPLETED)
             this.alertFailed(context!!)
-        } else if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
-            this.alertFailed(context!!)
-        }
         // create reminders from saved xml file and log
         Log.d("BootReceiver", "onReceive called")
         reminders = ArrayList<Reminder>()

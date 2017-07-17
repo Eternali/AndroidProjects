@@ -39,6 +39,8 @@ class EditActivity : Activity () {
     private var usrData = arrayOfNulls<String>(5)
     private var dayBtns = arrayOfNulls<Button>(7)
     private var dayBtnActives : BooleanArray = BooleanArray(dayBtns.size)
+    // array for checking if the user is allowed to change the state of the buttons (initialized to true)
+    private var dayBtnAllows : BooleanArray = BooleanArray(dayBtns.size, { x -> true })
     private var index : Int = 0
 
     // must initialize contact UI element outside of onCreate because of ActivityResult
@@ -102,6 +104,7 @@ class EditActivity : Activity () {
         // variable and background for each when clicked
         for (b in 0..dayBtns.size-1) {
             dayBtns[b]!!.setOnClickListener {
+                if (!dayBtnAllows[b]) return@setOnClickListener
                 if (!dayBtnActives[b]) it.setBackgroundResource(R.drawable.roundedbuttonselected)
                 else it.setBackgroundResource(R.drawable.roundedbutton)
                 dayBtnActives[b] = !dayBtnActives[b]
@@ -130,7 +133,8 @@ class EditActivity : Activity () {
                             val day = setCalendar.get(Calendar.DAY_OF_WEEK) - 1
                             dayBtns[day]!!.setBackgroundResource(R.drawable.roundedbuttonselected)
                             dayBtnActives[day] = true
-
+                            dayBtnAllows = BooleanArray(dayBtns.size, { x -> true })
+                            dayBtnAllows[day] = false  // do not allow the user to change the button unless the date is changed
                         } }
                     , cYear, cMonth, cDay)
             dateDialog.setTitle("Select Date")

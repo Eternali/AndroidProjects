@@ -5,19 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context="com.example.conrad.admonere.EditActivity">
 
     <EditText
         android:id="@+id/datePick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout
-        android:layout_marginTop="25dp"
+        android:layout_weight="1"
         android:clickable="true"
         android:ems="10"
         android:focusable="false"
         android:hint="@string/choose_date"
         android:inputType="date"
+        android:gravity="center"
         android:textAlignment="center"
         android:textColorLink="#FFC300" />
 
@@ -25,21 +26,23 @@
         android:id="@+id/timePick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
+        android:layout_weight="1"
         android:clickable="true"
         android:ems="10"
         android:focusable="false"
         android:hint="@string/choose_time"
         android:inputType="time"
+        android:gravity="center"
         android:textAlignment="center"
         android:textColorLink="#FFC300" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal"
         android:layout_below="@+id/timePick"
-        android:layout_marginTop="30dp">
+        android:gravity="center">
         <TextView
             android:id="@+id/freqLabel"
             android:layout_width="wrap_content"
@@ -69,7 +72,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center">
         <Button
             android:id="@+id/sunBtn"
             android:layout_width="wrap_content"
@@ -79,6 +84,7 @@
             android:fontFamily="monospace"
             android:minHeight="0dp"
             android:minWidth="0dp"
+            android:layout_margin="5dp"
             android:padding="7dp"
             android:text="Sun"
             android:textColor="?btnText"
@@ -93,6 +99,7 @@
             android:fontFamily="monospace"
             android:minHeight="0dp"
             android:minWidth="0dp"
+            android:layout_margin="5dp"
             android:padding="7dp"
             android:text="Mon"
             android:textColor="?btnText"
@@ -107,6 +114,7 @@
             android:fontFamily="monospace"
             android:minHeight="0dp"
             android:minWidth="0dp"
+            android:layout_margin="5dp"
             android:padding="7dp"
             android:text="Tue"
             android:textColor="?btnText"
@@ -121,6 +129,7 @@
             android:fontFamily="monospace"
             android:minHeight="0dp"
             android:minWidth="0dp"
+            android:layout_margin="5dp"
             android:padding="7dp"
             android:text="Wed"
             android:textColor="?btnText"
@@ -135,6 +144,7 @@
             android:fontFamily="monospace"
             android:minHeight="0dp"
             android:minWidth="0dp"
+            android:layout_margin="5dp"
             android:padding="7dp"
             android:text="Thu"
             android:textColor="?btnText"
@@ -149,6 +159,7 @@
             android:fontFamily="monospace"
             android:minHeight="0dp"
             android:minWidth="0dp"
+            android:layout_margin="5dp"
             android:padding="7dp"
             android:text="Fri"
             android:textColor="?btnText"
@@ -163,6 +174,7 @@
             android:fontFamily="monospace"
             android:minHeight="0dp"
             android:minWidth="0dp"
+            android:layout_margin="5dp"
             android:padding="7dp"
             android:text="Sat"
             android:textColor="?btnText"
@@ -173,12 +185,13 @@
         android:id="@+id/phoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
         android:clickable="true"
         android:ems="10"
         android:focusable="false"
         android:hint="@string/choose_contact"
         android:inputType="phone"
+        android:gravity="center"
         android:textAlignment="center"
         android:textColorLink="#FFC300" />
 
@@ -186,16 +199,19 @@
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="34dp"
+        android:layout_weight="1"
         android:ems="10"
         android:hint="@string/message"
         android:inputType="textMultiLine"
+        android:gravity="center"
         android:textAlignment="center"
         android:textColorLink="#FFC300" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
         <Button
             android:id="@+id/sendBtn"
             android:layout_width="wrap_content"
@@ -228,270 +244,3 @@
 
 </LinearLayout>
 
-
-    <!--?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.example.conrad.admonere.EditActivity">
-
-        <Button
-            android:id="@+id/sendBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="28dp"
-            android:background="@drawable/roundedbutton"
-            android:clickable="true"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="@string/set_reminder"
-            android:textColor="?btnText"
-            android:textColorLink="#FFC300"
-            tools:layout_editor_absoluteX="113dp"
-            tools:layout_editor_absoluteY="411dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/thuBtn" />
-
-        <Button
-            android:id="@+id/backBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/sendBtn"
-            android:layout_alignBottom="@+id/sendBtn"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="51dp"
-            android:background="@drawable/roundedbutton"
-            android:clickable="true"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="@string/delete"
-            android:textColor="?btnText"
-            android:textColorLink="#FFC300"
-            tools:layout_editor_absoluteX="100dp"
-            tools:layout_editor_absoluteY="100dp" />
-
-        <EditText
-            android:id="@+id/datePick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
-            android:clickable="true"
-            android:ems="10"
-            android:focusable="false"
-            android:hint="@string/choose_date"
-            android:inputType="date"
-            android:textAlignment="center"
-            android:textColorLink="#FFC300" />
-
-        <EditText
-            android:id="@+id/timePick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/datePick"
-            android:layout_below="@+id/datePick"
-            android:layout_marginTop="29dp"
-            android:clickable="true"
-            android:ems="10"
-            android:focusable="false"
-            android:hint="@string/choose_time"
-            android:inputType="time"
-            android:textAlignment="center"
-            android:textColorLink="#FFC300" />
-
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_centerHorizontal="true"
-                android:orientation="horizontal"
-                android:layout_below="@+id/timePick"
-                android:layout_marginTop="30dp">
-            <TextView
-                android:id="@+id/freqLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/mx_remind_reps"
-                android:textSize="20sp"
-                android:layout_marginEnd="5dp" />
-
-            <EditText
-                android:id="@+id/maxFreq"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="2"
-                android:inputType="number"
-                android:text="1"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/dayLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/day"
-                android:textSize="20sp"
-                android:layout_marginStart="5dp" />
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/phoneNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/message"
-            android:layout_alignStart="@+id/timePick"
-            android:layout_marginBottom="16dp"
-            android:clickable="true"
-            android:ems="10"
-            android:focusable="false"
-            android:hint="@string/choose_contact"
-            android:inputType="phone"
-            android:textAlignment="center"
-            android:textColorLink="#FFC300" />
-
-        <EditText
-            android:id="@+id/message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/sendBtn"
-            android:layout_alignStart="@+id/phoneNumber"
-            android:layout_marginBottom="34dp"
-            android:ems="10"
-            android:hint="@string/message"
-            android:inputType="textMultiLine"
-            android:textAlignment="center"
-            android:textColorLink="#FFC300" />
-
-        <Button
-            android:id="@+id/sunBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="51dp"
-            android:background="@drawable/roundedbutton"
-            android:clickable="true"
-            android:fontFamily="monospace"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:padding="7dp"
-            android:text="Sun"
-            android:textColor="?btnText"
-            android:textColorLink="#FFC300"
-            android:layout_marginStart="-73dp"
-            android:layout_alignBaseline="@+id/wedBtn"
-            android:layout_alignBottom="@+id/wedBtn"
-            android:layout_alignStart="@+id/phoneNumber" />
-
-        <Button
-            android:id="@+id/monBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="51dp"
-            android:background="@drawable/roundedbutton"
-            android:clickable="true"
-            android:fontFamily="monospace"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:padding="7dp"
-            android:text="Mon"
-            android:textColor="?btnText"
-            android:textColorLink="#FFC300"
-            android:layout_marginStart="-20dp"
-            android:layout_alignBaseline="@+id/wedBtn"
-            android:layout_alignBottom="@+id/wedBtn"
-            android:layout_alignStart="@+id/phoneNumber" />
-
-        <Button
-            android:id="@+id/tueBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="51dp"
-            android:background="@drawable/roundedbutton"
-            android:clickable="true"
-            android:fontFamily="monospace"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:padding="7dp"
-            android:text="Tue"
-            android:textColor="?btnText"
-            android:textColorLink="#FFC300"
-            android:layout_marginStart="34dp"
-            android:layout_alignBaseline="@+id/wedBtn"
-            android:layout_alignBottom="@+id/wedBtn"
-            android:layout_alignStart="@+id/phoneNumber" />
-
-        <Button
-            android:id="@+id/wedBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="51dp"
-            android:background="@drawable/roundedbutton"
-            android:clickable="true"
-            android:fontFamily="monospace"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:padding="7dp"
-            android:text="Wed"
-            android:textColor="?btnText"
-            android:textColorLink="#FFC300"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-
-        <Button
-            android:id="@+id/thuBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="51dp"
-            android:background="@drawable/roundedbutton"
-            android:clickable="true"
-            android:fontFamily="monospace"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:padding="7dp"
-            android:text="Thu"
-            android:textColor="?btnText"
-            android:textColorLink="#FFC300"
-            android:layout_alignBaseline="@+id/wedBtn"
-            android:layout_alignBottom="@+id/wedBtn"
-            android:layout_toEndOf="@+id/wedBtn"
-            android:layout_marginStart="13dp" />
-
-        <Button
-            android:id="@+id/friBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="51dp"
-            android:background="@drawable/roundedbutton"
-            android:clickable="true"
-            android:fontFamily="monospace"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:padding="7dp"
-            android:text="Fri"
-            android:textColor="?btnText"
-            android:textColorLink="#FFC300"
-            android:layout_alignBaseline="@+id/wedBtn"
-            android:layout_alignBottom="@+id/wedBtn"
-            android:layout_toEndOf="@+id/wedBtn"
-            android:layout_marginStart="66dp" />
-
-        <Button
-            android:id="@+id/satBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="51dp"
-            android:background="@drawable/roundedbutton"
-            android:clickable="true"
-            android:fontFamily="monospace"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:padding="7dp"
-            android:text="Sat"
-            android:textColor="?btnText"
-            android:textColorLink="#FFC300"
-            android:layout_alignBaseline="@+id/wedBtn"
-            android:layout_alignBottom="@+id/wedBtn"
-            android:layout_toEndOf="@+id/wedBtn"
-            android:layout_marginStart="120dp" />
-
-    </RelativeLayout-->
