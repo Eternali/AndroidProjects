@@ -80,7 +80,7 @@ internal fun getReminders (ctx : Context, fname : String) : ArrayList<Reminder> 
     }
 
     // initialize all information variables
-    var date = ""
+    var dates = ""
     var time = ""
     var contact = ""
     var number = ""
@@ -99,12 +99,12 @@ internal fun getReminders (ctx : Context, fname : String) : ArrayList<Reminder> 
                 XmlPullParser.END_TAG ->
                     // get information from the tag
                     when (name) {
-                        "date" -> date = text
+                        "dates" -> dates = text
                         "time" -> time = text
                         "name" -> contact = text
                         "number" -> number = text
                         "message" -> message = text
-                        "reminder" -> reminds.add(Reminder(date.split("/").toTypedArray(),
+                        "reminder" -> reminds.add(Reminder(dates.split(",").toTypedArray().forEach((date) -> date.split("/")),
                                 time.split(":").toTypedArray(), contact, number, message))
                     }
             }
