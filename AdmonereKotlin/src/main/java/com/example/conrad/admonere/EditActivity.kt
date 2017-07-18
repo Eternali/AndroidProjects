@@ -26,6 +26,7 @@ import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.NumberPicker
 import android.widget.TimePicker
+import java.math.BigDecimal
 
 import java.util.Calendar
 
@@ -55,7 +56,7 @@ class EditActivity : Activity () {
         // set UI elements
         var datePicker = findViewById(R.id.datePick) as EditText
         var timePicker = findViewById(R.id.timePick) as EditText
-        val maxRepsET = findViewById(R.id.maxFreq) as EditText
+        val numRepsET = findViewById(R.id.maxFreq) as EditText
         contact = findViewById(R.id.phoneNumber) as EditText
         var message = findViewById(R.id.message) as EditText
         var sendBtn = findViewById(R.id.sendBtn) as Button
@@ -109,6 +110,7 @@ class EditActivity : Activity () {
                 if (!dayBtnActives[b]) it.setBackgroundResource(R.drawable.roundedbuttonselected)
                 else it.setBackgroundResource(R.drawable.roundedbutton)
                 dayBtnActives[b] = !dayBtnActives[b]
+                if (numRepsET.text.toString().toInt() < dayBtnActives.count()) numRepsET.setText(dayBtnActives.count().toString())
             }
         }
 
@@ -212,7 +214,7 @@ class EditActivity : Activity () {
             // send the user formatted month to the alarm receiver (because it does not
             // depend on this as the alarm manager handles this)
             // the alarm manager only depends on the reminders ArrayList
-            intent.putExtra("dates", this.getDates(date, dayBtnActives, maxReps))
+            intent.putExtra("dates", this.getDates(calendar, dayBtnActives))
             intent.putExtra("time", time.joinToString(":"))
             intent.putExtra("name", name)
             intent.putExtra("number", phoneNo)
@@ -222,9 +224,9 @@ class EditActivity : Activity () {
             // check if it's a new reminder
             if (index < 0) {
                 alarmIntent = PendingIntent.getBroadcast(this, if (reminders != null) reminders!!.size else 0, intent, 0)
-                reminders!!.add(Reminder(this.getDates(date, dayBtnActives, maxReps)
+                reminders!!.add(Reminder(this.getDates(calendar, dayBtnActives)
                                 .split(",").map { it.split("/").toTypedArray() }.toTypedArray(), time.toTypedArray(),
-                        name, phoneNo, msg))
+                        maxReps, name, phoneNo, msg))
             } else {
                 alarmIntent = PendingIntent.getBroadcast(this, index, intent, 0)
                 reminders!!.set(index, Reminder(this.getDates(date, dayBtnActives, maxReps)
@@ -281,16 +283,25 @@ class EditActivity : Activity () {
         }
     }
 
-    private fun getDates(startDate : MutableList<String>, dayOfWeeks : BooleanArray, maxRepetitions : Int) : String {
-        var retDates : Array<Array<String>> = emptyArray()
-        for (m in 0..maxRepetitions-1) {
-            retDates.append([])
-
+    // function to set the repeating alarms (will return a string array of length true dayOfWeeks
+    private fun getDates(startDate : Calendar, dayOfWeeks : BooleanArray) : ArrayList<String> {
+        val retDates : Array<Calendar?> = arrayOfNulls(dayOfWeeks.count { it })
+        retDates[0] = startDate
+        for (r in 1..retDates.size-1) {
+            retDates[r] = retDates[r-1]
+            (0..dayOfWeeks.size)
+                    .filter { dayOfWeeks[it] }
+                    .forEach { retDates[r]!!.set(Calendar.DAY_OF_WEEK, it +1) }
         }
 
-        date[1] = (date[1].toInt()+1).toString()
-        intent.putExtra("date", date.joinToString("/"))
-        date[1] = (date[1].toInt()-1).toString()
+        val dates = arrayListOf<String>()
+        (0..retDates.size-1).mapTo(dates) {
+            arrayOf(retDates[it]!!.get(Calendar.DAY_OF_MONTH).toString(),
+                    retDates[it]!!.get(Calendar.MONTH).toString(),
+                    retDates[it]!!.get(Calendar.YEAR).toString()).joinToString("/")
+        }
+
+        return dates
     }
 
     private fun parseSelectedContact(data : Intent) : String {
