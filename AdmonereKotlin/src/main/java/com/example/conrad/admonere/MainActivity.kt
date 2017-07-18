@@ -187,18 +187,20 @@ internal fun orderReminders (reminds : ArrayList<Reminder>, order : Boolean) {
     for (i in 0..reminds.size-1) {
         val cal1 = Calendar.getInstance()
         val tmp1 = reminds[i]
-        cal1.set(Calendar.YEAR, tmp1.dates[0][2].toInt())
-        cal1.set(Calendar.MONTH, tmp1.dates[0][1].toInt())
-        cal1.set(Calendar.DAY_OF_MONTH, tmp1.dates[0][0].toInt())
+        val date1 = tmp1.dates[0].split("/")
+        cal1.set(Calendar.YEAR, date1[2].toInt())
+        cal1.set(Calendar.MONTH, date1[1].toInt())
+        cal1.set(Calendar.DAY_OF_MONTH, date1[0].toInt())
         cal1.set(Calendar.HOUR_OF_DAY, tmp1.time[0].toInt())
         cal1.set(Calendar.MINUTE, tmp1.time[1].toInt())
         cal1.set(Calendar.SECOND, 0)
         for (j in i + 1..reminds.size - 1) {
             val cal2 = Calendar.getInstance()
             val tmp2 = reminds[j]
-            cal2.set(Calendar.YEAR, tmp2.dates[0][2].toInt())
-            cal2.set(Calendar.MONTH, tmp2.dates[0][1].toInt())
-            cal2.set(Calendar.DAY_OF_MONTH, tmp2.dates[0][0].toInt())
+            val date2 = tmp2.dates[0].split("/")
+            cal2.set(Calendar.YEAR, date2[2].toInt())
+            cal2.set(Calendar.MONTH, date2[1].toInt())
+            cal2.set(Calendar.DAY_OF_MONTH, date2[0].toInt())
             cal2.set(Calendar.HOUR_OF_DAY, tmp2.time[0].toInt())
             cal2.set(Calendar.MINUTE, tmp2.time[1].toInt())
             cal2.set(Calendar.SECOND, 0)
@@ -273,7 +275,7 @@ class MainActivity : AppCompatActivity () {
         // create adapter that presents users with the reminders in a listview
         adapter = RemindersArrayAdapter(this, 0, reminders as ArrayList<Reminder>)
         remindersList = findViewById(R.id.remindersList) as ListView
-        (remindersList as ListView).adapter= adapter
+        (remindersList as ListView).adapter = adapter
 
         // FAB that lets users add reminders
         addButton = findViewById(R.id.addButton) as FloatingActionButton

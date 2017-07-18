@@ -19,6 +19,7 @@ import android.provider.ContactsContract
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -37,7 +38,7 @@ class EditActivity : Activity () {
     private val PERMISSIONS_REQUEST_SEND_SMS : Int = 0
 
     // variables for storing data user enters
-    private var usrData = arrayOfNulls<String>(5)
+    private val usrData : Reminder? = null
     private var dayBtns = arrayOfNulls<Button>(7)
     private var dayBtnActives : BooleanArray = BooleanArray(dayBtns.size)
     // array for checking if the user is allowed to change the state of the buttons (initialized to true)
@@ -54,13 +55,13 @@ class EditActivity : Activity () {
         setContentView(R.layout.activity_edit)
 
         // set UI elements
-        var datePicker = findViewById(R.id.datePick) as EditText
-        var timePicker = findViewById(R.id.timePick) as EditText
+        val datePicker = findViewById(R.id.datePick) as EditText
+        val timePicker = findViewById(R.id.timePick) as EditText
         val numRepsET = findViewById(R.id.maxFreq) as EditText
         contact = findViewById(R.id.phoneNumber) as EditText
-        var message = findViewById(R.id.message) as EditText
-        var sendBtn = findViewById(R.id.sendBtn) as Button
-        var backBtn = findViewById(R.id.backBtn) as Button
+        val message = findViewById(R.id.message) as EditText
+        val sendBtn = findViewById(R.id.sendBtn) as Button
+        val backBtn = findViewById(R.id.backBtn) as Button
         dayBtns[0] = findViewById(R.id.sunBtn) as Button
         dayBtns[1] = findViewById(R.id.monBtn) as Button
         dayBtns[2] = findViewById(R.id.tueBtn) as Button
@@ -82,25 +83,25 @@ class EditActivity : Activity () {
         var bundle : Bundle? = if (intent.extras != null) intent.extras
                               else null
         // if we don't get any data then make the index -1 to let the rest of the activity know
-        try {
-            usrData[0] = bundle!!.getString("date")
-            usrData[1] = bundle.getString("time")
-            usrData[2] = bundle.getString("name")
-            usrData[3] = bundle.getString("number")
-            usrData[4] = bundle.getString("message")
-            index = bundle.getInt("index")
-        } catch (e : Exception) {
-            e.printStackTrace()
-            index = -1
-        }
+        if (bundle != null) index = bundle.getInt("index")
+        else index = -1
 
         // NOTE this is the ONE time the month will be already user formatted
         // when sent between activities
-        if (usrData[0] != null) datePicker.setText(usrData[0])
-        if (usrData[1] != null) timePicker.setText(usrData[1])
-        if (usrData[2] != null && usrData[3] != null)
-            (contact as EditText).setText("${usrData[2]} at ${usrData[3]}")
-        if (usrData[4] != null) message.setText(usrData[4])
+        if (usrData != null) {
+            datePicker.setText(usrData.dates[0])
+            timePicker.setText(TextUtils.join(":", usrData.time))
+            (contact as EditText).setText("${usrData.name} at ${usrData.number}")
+            message.setText(usrData.message)
+            for (date in usrData.dates) {
+                val cal = Calendar.getInstance()
+                cal.set(Calendar.DAY_OF_MONTH, date.split("/")[0].toInt(),
+                        Calendar.MONTH, date.split("/")[1].toInt(),
+                        Calendar.YEAR, date.split("/")[2].toInt())
+                dayBtns[cal.get(Calendar.DAY_OF_WEEK)].setBackgroundResource(R.drawable.roundedbutton)
+                dayBtnsActive
+            }
+        }
 
         // loop through the day buttons and change the activation
         // variable and background for each when clicked
@@ -214,13 +215,13 @@ class EditActivity : Activity () {
             // send the user formatted month to the alarm receiver (because it does not
             // depend on this as the alarm manager handles this)
             // the alarm manager only depends on the reminders ArrayList
-            intent.putExtra("dates", this.getDates(calendar, dayBtnActives))
-            intent.putExtra("time", time.joinToString(":"))
-            intent.putExtra("name", name)
-            intent.putExtra("number", phoneNo)
-            intent.putExtra("message", msg)
+//            intent.putExtra("dates", this.getDates(calendar, dayBtnActives))
+//            intent.putExtra("time", time.joinToString(":"))
+//            intent.putExtra("name", name)
+//            intent.putExtra("number", phoneNo)
+//            intent.putExtra("message", msg)
             intent.putExtra("index", index)
-            var alarmIntent : PendingIntent?
+            val alarmIntent : PendingIntent?
             // check if it's a new reminder
             if (index < 0) {
                 alarmIntent = PendingIntent.getBroadcast(this, if (reminders != null) reminders!!.size else 0, intent, 0)
