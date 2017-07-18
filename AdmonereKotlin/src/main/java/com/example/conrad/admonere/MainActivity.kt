@@ -81,6 +81,7 @@ internal fun getReminders (ctx : Context, fname : String) : ArrayList<Reminder> 
 
     // initialize all information variables
     var dates = ""
+    var numReminds = 0
     var time = ""
     var contact = ""
     var number = ""
@@ -100,12 +101,13 @@ internal fun getReminders (ctx : Context, fname : String) : ArrayList<Reminder> 
                     // get information from the tag
                     when (name) {
                         "dates" -> dates = text
+                        "numReminds" -> numReminds = text.toInt()
                         "time" -> time = text
                         "name" -> contact = text
                         "number" -> number = text
                         "message" -> message = text
                         "reminder" -> reminds.add(
-                                Reminder(dates.split(",").map { it.split("/").toTypedArray() }.toTypedArray(),
+                                Reminder(dates.split(",").toTypedArray(), numReminds,
                                 time.split(":").toTypedArray(), contact, number, message))
                     }
             }
@@ -139,11 +141,14 @@ internal fun saveReminders (ctx : Context, fname : String, reminds : ArrayList<R
     xmlSerial.startDocument("UTF-8", null)
     xmlSerial.startTag(null, "reminders")
     // for each reminder write its data into a XML structure
-    for ((dates, time, name, number, message) in reminds) {
+    for ((dates, numReminds, time, name, number, message) in reminds) {
         xmlSerial.startTag(null, "reminder")
         xmlSerial.startTag(null, "date")
-        xmlSerial.text(TextUtils.join(",", dates.map { TextUtils.join("/", it) }))
+        xmlSerial.text(TextUtils.join(",", dates))
         xmlSerial.endTag(null, "date")
+        xmlSerial.startTag(null, "numReminds")
+        xmlSerial.text(numReminds.toString())
+        xmlSerial.endTag(null, "numReminds")
         xmlSerial.startTag(null, "time")
         xmlSerial.text(TextUtils.join(":", time))
         xmlSerial.endTag(null, "time")

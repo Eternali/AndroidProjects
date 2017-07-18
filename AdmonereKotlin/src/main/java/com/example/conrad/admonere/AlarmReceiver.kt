@@ -23,7 +23,7 @@ class AlarmReceiver : BroadcastReceiver () {
         val index : Int?
         val maxReminds : Int?
         val curReminds :Int?
-        val remind : Reminder?
+        val reminds : ArrayList<Reminder>?
         if (intent != null && context != null) {
             date = intent.getStringExtra("date")
             time = intent.getStringExtra("time")
@@ -31,8 +31,7 @@ class AlarmReceiver : BroadcastReceiver () {
             number = intent.getStringExtra("number")
             msg = intent.getStringExtra("message")
             index = intent.getIntExtra("index", 0)
-            remind = getReminders(context, filename)[index]
-
+            reminds = getReminders(context, filename)
         } else return
 
         try {
@@ -44,18 +43,22 @@ class AlarmReceiver : BroadcastReceiver () {
                             PendingIntent.FLAG_UPDATE_CURRENT)
 
             val smsMgr : SmsManager = SmsManager.getDefault()
-            smsMgr.sendTextMessage(remind.number, null, remind.message, null, null)
+            smsMgr.sendTextMessage(reminds[index].number, null, reminds[index].message, null, null)
 
             // build notification to show user that message has been sent
             val builder = NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.ic_icon)
                     .setContentTitle("Admonere Sent Reminder Alert")
-                    .setContentText("Sent reminder to: ${remind.name}")
+                    .setContentText("Sent reminder to: ${reminds[index].name}")
                     .setTicker("Alert")
                     .setContentIntent(notiPendIntent)
                     .setAutoCancel(true)
             val notiMgr = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notiMgr.notify(0, builder.build())
+
+            // when we're done decrement the numReminds and save it
+            reminds[index].numReminds--
+            saveReminders(context, filename, reminds)
 
         } catch (ne : NullPointerException) {
             // tell user notification has failed
