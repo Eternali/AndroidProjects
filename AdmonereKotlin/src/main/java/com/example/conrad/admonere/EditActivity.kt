@@ -38,15 +38,28 @@ class EditActivity : Activity () {
     private val PERMISSIONS_REQUEST_SEND_SMS : Int = 0
 
     // variables for storing data user enters
-    private val usrData : Reminder? = null
+    private var usrData : Reminder? = null
     private var dayBtns = arrayOfNulls<Button>(7)
     private var dayBtnActives : BooleanArray = BooleanArray(dayBtns.size)
     // array for checking if the user is allowed to change the state of the buttons (initialized to true)
-    private var dayBtnAllows : BooleanArray = BooleanArray(dayBtns.size, { x -> true })
+    private var dayBtnAllows : BooleanArray = BooleanArray(dayBtns.size, { _ -> true })
     private var index : Int = 0
 
     // must initialize contact UI element outside of onCreate because of ActivityResult
     var contact : EditText? = null
+
+    // private function to reset all the day arrays according to the days array
+    // (length n, where each value is between 0 and 6, and the first value is the starting date (can't be changed))
+    private fun setDays (days : IntArray) {
+        if (null in dayBtns) return
+        dayBtnAllows = BooleanArray(dayBtns.size, { _ -> true })
+        dayBtnAllows[days[0]] = false
+        dayBtnActives = BooleanArray(dayBtns.size)
+        (0..days.size-1).forEach { d -> dayBtnActives[days[d]] = true }
+        (0..dayBtnActives.size-1).forEach { d -> if (dayBtnActives[d])
+                dayBtns[d]!!.setBackgroundResource(R.drawable.roundedbuttonselected) else
+                dayBtns[d]!!.setBackgroundResource(R.drawable.roundedbutton) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // set the theme
@@ -80,27 +93,33 @@ class EditActivity : Activity () {
         (contact as EditText).showSoftInputOnFocus = false
 
         // try to get infomation from previous activity (MainActivity)
-        var bundle : Bundle? = if (intent.extras != null) intent.extras
-                              else null
+        var bundle : Bundle? = if (intent.extras != null) intent.extras else null
         // if we don't get any data then make the index -1 to let the rest of the activity know
-        if (bundle != null) index = bundle.getInt("index")
-        else index = -1
+        if (bundle != null) {
+            index = bundle.getInt("index")
+            usrData = getReminders(applicationContext, filename)[index]
+        } else index = -1
 
-        // NOTE this is the ONE time the month will be already user formatted
-        // when sent between activities
         if (usrData != null) {
-            datePicker.setText(usrData.dates[0])
-            timePicker.setText(TextUtils.join(":", usrData.time))
-            (contact as EditText).setText("${usrData.name} at ${usrData.number}")
-            message.setText(usrData.message)
-            for (date in usrData.dates) {
+            val ud = (usrData as Reminder)
+            // must reformat date for user (month + 1)
+            val date = ud.dates[0].split("/").map { it -> it.toInt() } as ArrayList
+            date[1] += 1
+            datePicker.setText(TextUtils.join("/", date))
+            timePicker.setText(TextUtils.join(":", ud.time))
+            numRepsET.setText(ud.numReminds)
+            (contact as EditText).setText("${ud.name} at ${ud.number}")
+            message.setText(ud.message)
+            val days = IntArray(ud.dates.size)
+            for (d in 0..ud.dates.size-1) {
                 val cal = Calendar.getInstance()
-                cal.set(Calendar.DAY_OF_MONTH, date.split("/")[0].toInt(),
-                        Calendar.MONTH, date.split("/")[1].toInt(),
-                        Calendar.YEAR, date.split("/")[2].toInt())
-                dayBtns[cal.get(Calendar.DAY_OF_WEEK)].setBackgroundResource(R.drawable.roundedbutton)
-                dayBtnsActive
+                cal.set(Calendar.DAY_OF_MONTH, ud.dates[d].split("/")[0].toInt(),
+                        Calendar.MONTH, ud.dates[d].split("/")[1].toInt(),
+                        Calendar.YEAR, ud.dates[d].split("/")[2].toInt())
+                days[d] = cal.get(Calendar.DAY_OF_WEEK)
             }
+            setDays(days)
+            if (numRepsET.text.toString().toInt() < dayBtnActives.count()) numRepsET.setText(dayBtnActives.count().toString())
         }
 
         // loop through the day buttons and change the activation
@@ -180,7 +199,7 @@ class EditActivity : Activity () {
             val calendar : Calendar = Calendar.getInstance()
             val date : MutableList<String>?  // note that a list is required because that is what is returned
             val time : List<String>?
-            val maxReps = maxRepsET.text.toString().toInt()
+            val numReps = numRepsET.text.toString().toInt()
             var name = ""
             var phoneNo = ""
             var msg = ""
@@ -225,18 +244,21 @@ class EditActivity : Activity () {
             // check if it's a new reminder
             if (index < 0) {
                 alarmIntent = PendingIntent.getBroadcast(this, if (reminders != null) reminders!!.size else 0, intent, 0)
-                reminders!!.add(Reminder(this.getDates(calendar, dayBtnActives)
-                                .split(",").map { it.split("/").toTypedArray() }.toTypedArray(), time.toTypedArray(),
-                        maxReps, name, phoneNo, msg))
+                reminders!!.add(Reminder(this.getDates(calendar, dayBtnActives).toTypedArray(),
+                        numReps, time.toTypedArray(), name, phoneNo, msg))
             } else {
                 alarmIntent = PendingIntent.getBroadcast(this, index, intent, 0)
-                reminders!!.set(index, Reminder(this.getDates(date, dayBtnActives, maxReps)
-                                .split(",").map { it.split("/").toTypedArray() }.toTypedArray(), time.toTypedArray(),
-                        name, phoneNo, msg))
+                reminders!!.set(index, Reminder(this.getDates(calendar, dayBtnActives).toTypedArray(),
+                        numReps, time.toTypedArray(), name, phoneNo, msg))
             }
 
             // set alarm and go back to main activity
-            alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, alarmIntent)
+            for (day in this.getDates(calendar, dayBtnActives)) {
+                val cal = Calendar.getInstance()
+                val d = day.split("/")
+                cal.set(d[2].toInt(), d[1].toInt(), d[0].toInt(), time[0].toInt(), time[1].toInt(), 0)
+                alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, cal.timeInMillis, AlarmManager.INTERVAL_DAY * 7, alarmIntent)
+            }
             goToMain()
         }
 
@@ -321,7 +343,7 @@ class EditActivity : Activity () {
             return "$name at $phoneNo"
         } catch (e: Exception) {
             e.printStackTrace()
-            displayWarning(this, "Failed to retreive contact data")
+            displayWarning(this, "Failed to retrieve contact data")
             return ""
         }
     }

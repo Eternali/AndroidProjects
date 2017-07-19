@@ -34,22 +34,15 @@ class RemindersArrayAdapter (var ctx : Context, var resource : Int, var reminds 
             val contactName = remindView.findViewById(R.id.contactName) as TextView
             val message = remindView.findViewById(R.id.message) as TextView
             // temporarily add 1 to the month (calendar months are indexed from 0)
-            reminds[position].date.set(1, (reminds[position].date.get(1).toInt() + 1).toString())
-            dateTime.text = "${reminds[position].time.joinToString(":")} ${reminds[position].date.joinToString("/")}"
-            reminds[position].date.set(1, (reminds[position].date.get(1).toInt() - 1).toString())
+            val tmpdate = reminds[position].dates[0].split("/") as ArrayList
+            tmpdate[1] = (tmpdate[1].toInt() + 1).toString()
+            dateTime.text = "${reminds[position].time.joinToString(":")} ${tmpdate.joinToString("/")}"
             contactName.text = reminds[position].name
             message.text = reminds[position].message
 
             // when a element is tapped, start an intent to EditActivity and put its data into it.
             remindView.setOnClickListener({
-                val r = reminds[position]
-                r.date[1] = (r.date[1].toInt() + 1).toString()  // send the user formatted month
                 val editIntent = Intent(context, EditActivity::class.java)
-                editIntent.putExtra("date", r.date.joinToString("/"))
-                editIntent.putExtra("time", r.time.joinToString(":"))
-                editIntent.putExtra("name", r.name)
-                editIntent.putExtra("number", r.number)
-                editIntent.putExtra("message", r.message)
                 editIntent.putExtra("index", position)
                 context.startActivity(editIntent)
             })

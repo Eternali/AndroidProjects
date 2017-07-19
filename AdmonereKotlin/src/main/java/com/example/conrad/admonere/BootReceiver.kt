@@ -27,27 +27,41 @@ class BootReceiver : BroadcastReceiver () {
             if (context != null) reminders = getReminders(context, filename)
             else throw NullPointerException()
 
+            val almMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             // for each reminder set an alarm manager that will trigger alarm receiver
-            (reminders as ArrayList<Reminder>).forEach {
-                val calendar : Calendar = Calendar.getInstance()
-                calendar.set(it.date[2].toInt(), it.date[1].toInt(), it.date[0].toInt(),
-                        it.time[0].toInt(), it.time[1].toInt(), 0)
-                val almMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                val almIntent = Intent(context, AlarmReceiver::class.java)
-                almIntent.putExtra("number", it.number)
-                almIntent.putExtra("message", it.message)
-                val pendIntent = PendingIntent.getBroadcast(context
-                        , (reminders as ArrayList<Reminder>).indexOf(it), almIntent, 0)
-                almMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendIntent)
+            for (reminder in (reminders as ArrayList<Reminder>)) {
+                reminder.dates.forEach {
+                    val calendar = Calendar.getInstance()
+                    calendar.set(it)
+                    val almIntent = Intent(context, AlarmReceiver::class.java)
+                    almIntent.putExtra("index", (reminders as ArrayList<Reminder>).indexOf(reminder))
+                    val pendIntent = PendingIntent.getBroadcast(context,
+                            (reminders as ArrayList<Reminder>).indexOf(reminder), almIntent, 0)
+                    almMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendIntent)
 
+                    reminders!!.set(index, Reminder(this.getDates(calendar, dayBtnActives).toTypedArray(),
+                            numReps, time.toTypedArray(), name, phoneNo, msg))
+
+                    val calendar: Calendar = Calendar.getInstance()
+                    calendar.set(it.date[2].toInt(), it.date[1].toInt(), it.date[0].toInt(),
+                            it.time[0].toInt(), it.time[1].toInt(), 0)
+                    val almMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                    val almIntent = Intent(context, AlarmReceiver::class.java)
+                    almIntent.putExtra("number", it.number)
+                    almIntent.putExtra("message", it.message)
+                    val pendIntent = PendingIntent.getBroadcast(context
+                            , (reminders as ArrayList<Reminder>).indexOf(it), almIntent, 0)
+                    almMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendIntent)
+                }
             }
         } catch (ne : NullPointerException) {
             ne.printStackTrace()
             Log.e("BootRecevier", "Null pointer called")
+            alertFailed(context)
         }
     }
 
-    fun alertFailed(ctx : Context) {
+    fun alertFailed(ctx : Context?) {
         Log.e("BootReceiver", "Failed to initialize: Invalid action")
         Toast.makeText(ctx, "ADMONERE: Alarm manager failed to initialize", Toast.LENGTH_LONG).show()
     }
