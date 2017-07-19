@@ -32,26 +32,24 @@ class BootReceiver : BroadcastReceiver () {
             for (reminder in (reminders as ArrayList<Reminder>)) {
                 reminder.dates.forEach {
                     val calendar = Calendar.getInstance()
-                    calendar.set(it)
+                    calendar.set(it.split("/")[2].toInt(), it.split("/")[1].toInt(), it.split("/")[0].toInt(),
+                            reminder.time[0].toInt(), reminder.time[1].toInt(), 0)
                     val almIntent = Intent(context, AlarmReceiver::class.java)
                     almIntent.putExtra("index", (reminders as ArrayList<Reminder>).indexOf(reminder))
                     val pendIntent = PendingIntent.getBroadcast(context,
                             (reminders as ArrayList<Reminder>).indexOf(reminder), almIntent, 0)
-                    almMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendIntent)
+                    almMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
+                            AlarmManager.INTERVAL_DAY*7, pendIntent)
 
-                    reminders!!.set(index, Reminder(this.getDates(calendar, dayBtnActives).toTypedArray(),
-                            numReps, time.toTypedArray(), name, phoneNo, msg))
-
-                    val calendar: Calendar = Calendar.getInstance()
-                    calendar.set(it.date[2].toInt(), it.date[1].toInt(), it.date[0].toInt(),
-                            it.time[0].toInt(), it.time[1].toInt(), 0)
-                    val almMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                    val almIntent = Intent(context, AlarmReceiver::class.java)
-                    almIntent.putExtra("number", it.number)
-                    almIntent.putExtra("message", it.message)
-                    val pendIntent = PendingIntent.getBroadcast(context
-                            , (reminders as ArrayList<Reminder>).indexOf(it), almIntent, 0)
-                    almMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendIntent)
+//                    reminders!!.set(index, Reminder(this.getDates(calendar, dayBtnActives).toTypedArray(),
+//                            numReps, time.toTypedArray(), name, phoneNo, msg))
+//
+//                    val almMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//                    almIntent.putExtra("number", it.number)
+//                    almIntent.putExtra("message", it.message)
+//                    val pendIntent = PendingIntent.getBroadcast(context
+//                            , (reminders as ArrayList<Reminder>).indexOf(it), almIntent, 0)
+//                    almMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendIntent)
                 }
             }
         } catch (ne : NullPointerException) {

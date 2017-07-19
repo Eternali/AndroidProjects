@@ -25,11 +25,7 @@ class AlarmReceiver : BroadcastReceiver () {
         val curReminds :Int?
         val reminds : ArrayList<Reminder>?
         if (intent != null && context != null) {
-            date = intent.getStringExtra("date")
-            time = intent.getStringExtra("time")
-            name = intent.getStringExtra("name")
-            number = intent.getStringExtra("number")
-            msg = intent.getStringExtra("message")
+
             index = intent.getIntExtra("index", 0)
             reminds = getReminders(context, filename)
         } else return

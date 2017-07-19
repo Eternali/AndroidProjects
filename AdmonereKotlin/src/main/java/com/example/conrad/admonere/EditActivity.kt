@@ -130,7 +130,7 @@ class EditActivity : Activity () {
                 if (!dayBtnActives[b]) it.setBackgroundResource(R.drawable.roundedbuttonselected)
                 else it.setBackgroundResource(R.drawable.roundedbutton)
                 dayBtnActives[b] = !dayBtnActives[b]
-                if (numRepsET.text.toString().toInt() < dayBtnActives.count()) numRepsET.setText(dayBtnActives.count().toString())
+                if (numRepsET.text.toString().toInt() < dayBtnActives.count(true)) numRepsET.setText(dayBtnActives.count().toString())
             }
         }
 

@@ -184,6 +184,7 @@ internal fun saveReminders (ctx : Context, fname : String, reminds : ArrayList<R
 // order the reminders according to order: true = old to new; false = new to old
 // NOTE this is a custom sorting function because I'm sorting a custom object (based on ____ sort method)
 internal fun orderReminders (reminds : ArrayList<Reminder>, order : Boolean) {
+    if (reminds.size <= 1) return
     for (i in 0..reminds.size-1) {
         val cal1 = Calendar.getInstance()
         val tmp1 = reminds[i]
