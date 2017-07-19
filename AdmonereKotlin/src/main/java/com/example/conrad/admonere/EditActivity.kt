@@ -119,7 +119,7 @@ class EditActivity : Activity () {
                 days[d] = cal.get(Calendar.DAY_OF_WEEK)
             }
             setDays(days)
-            if (numRepsET.text.toString().toInt() < dayBtnActives.count()) numRepsET.setText(dayBtnActives.count().toString())
+            if (numRepsET.text.toString().toInt() < dayBtnActives.filter { it }.size) numRepsET.setText(dayBtnActives.filter { it }.size.toString())
         }
 
         // loop through the day buttons and change the activation
@@ -130,7 +130,7 @@ class EditActivity : Activity () {
                 if (!dayBtnActives[b]) it.setBackgroundResource(R.drawable.roundedbuttonselected)
                 else it.setBackgroundResource(R.drawable.roundedbutton)
                 dayBtnActives[b] = !dayBtnActives[b]
-                if (numRepsET.text.toString().toInt() < dayBtnActives.count(true)) numRepsET.setText(dayBtnActives.count().toString())
+                if (numRepsET.text.toString().toInt() < dayBtnActives.filter { it }.size) numRepsET.setText(dayBtnActives.filter { it }.size.toString())
             }
         }
 
@@ -308,7 +308,7 @@ class EditActivity : Activity () {
 
     // function to set the repeating alarms (will return a string array of length true dayOfWeeks
     private fun getDates(startDate : Calendar, dayOfWeeks : BooleanArray) : ArrayList<String> {
-        val retDates : Array<Calendar?> = arrayOfNulls(dayOfWeeks.count { it })
+        val retDates : Array<Calendar?> = arrayOfNulls(dayOfWeeks.filter { it }.size)
         retDates[0] = startDate
         for (r in 1..retDates.size-1) {
             retDates[r] = retDates[r-1]
