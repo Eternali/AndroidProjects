@@ -239,18 +239,22 @@ class EditActivity : Activity () {
 //            intent.putExtra("name", name)
 //            intent.putExtra("number", phoneNo)
 //            intent.putExtra("message", msg)
-            intent.putExtra("index", index)
             val alarmIntent : PendingIntent?
             // check if it's a new reminder
             if (index < 0) {
-                alarmIntent = PendingIntent.getBroadcast(this, if (reminders != null) reminders!!.size else 0, intent, 0)
                 reminders!!.add(Reminder(this.getDates(calendar, dayBtnActives).toTypedArray(),
                         numReps, time.toTypedArray(), name, phoneNo, msg))
+                intent.putExtra("index", (reminders as ArrayList).size-1)
+                alarmIntent = PendingIntent.getBroadcast(this, if (reminders != null) reminders!!.size-1 else 0, intent, 0)
+
             } else {
-                alarmIntent = PendingIntent.getBroadcast(this, index, intent, 0)
                 reminders!!.set(index, Reminder(this.getDates(calendar, dayBtnActives).toTypedArray(),
                         numReps, time.toTypedArray(), name, phoneNo, msg))
+                intent.putExtra("index", index)
+                alarmIntent = PendingIntent.getBroadcast(this, index, intent, 0)
             }
+
+            saveReminders(this, filename, reminders as ArrayList)
 
             // set alarm and go back to main activity
             for (day in this.getDates(calendar, dayBtnActives)) {
@@ -312,7 +316,7 @@ class EditActivity : Activity () {
         retDates[0] = startDate
         for (r in 1..retDates.size-1) {
             retDates[r] = retDates[r-1]
-            (0..dayOfWeeks.size)
+            (0..dayOfWeeks.size-1)
                     .filter { dayOfWeeks[it] }
                     .forEach { retDates[r]!!.set(Calendar.DAY_OF_WEEK, it +1) }
         }
@@ -324,6 +328,7 @@ class EditActivity : Activity () {
                     retDates[it]!!.get(Calendar.YEAR).toString()).joinToString("/")
         }
 
+        Log.i("DATES", dates.joinToString(", "))
         return dates
     }
 

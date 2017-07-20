@@ -18,7 +18,7 @@ class AlarmReceiver : BroadcastReceiver () {
         val date : String?
         val time : String?
         val name : String?
-        val number : String?
+        val number : String? // MAKE SURE SAVING AND GETTING REMINDERS AFTER EVERYTHING
         val msg : String?
         val index : Int?
         val maxReminds : Int?
