@@ -31,6 +31,12 @@ class AlarmReceiver : BroadcastReceiver () {
         } else return
 
         try {
+            // check if we can still send reminders
+            if (reminds[index].numReminds <= 0) {
+                // cancel the alarm manager and exit
+
+                return
+            }
             // send user to edit activity of the reminder that was sent
             val notiIntent : Intent = Intent(context, EditActivity::class.java)
             notiIntent.putExtra("index", index)

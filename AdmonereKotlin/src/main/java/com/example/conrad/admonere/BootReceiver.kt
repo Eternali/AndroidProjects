@@ -18,11 +18,10 @@ class BootReceiver : BroadcastReceiver () {
 
     // called when the broadcast receiver gets a broadcast
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (intent == null || intent.action != Intent.ACTION_BOOT_COMPLETED)
-            this.alertFailed(context!!)
+        if (intent == null || intent.action != Intent.ACTION_BOOT_COMPLETED) {
+            this.alertFailed(context!!); return }
         // create reminders from saved xml file and log
         Log.d("BootReceiver", "onReceive called")
-        reminders = ArrayList<Reminder>()
         try {
             if (context != null) reminders = getReminders(context, filename)
             else throw NullPointerException()
@@ -39,7 +38,7 @@ class BootReceiver : BroadcastReceiver () {
                     val pendIntent = PendingIntent.getBroadcast(context,
                             (reminders as ArrayList<Reminder>).indexOf(reminder), almIntent, 0)
                     almMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
-                            AlarmManager.INTERVAL_DAY*7, pendIntent)
+                            AlarmManager.INTERVAL_DAY * 7, pendIntent)
 
 //                    reminders!!.set(index, Reminder(this.getDates(calendar, dayBtnActives).toTypedArray(),
 //                            numReps, time.toTypedArray(), name, phoneNo, msg))
