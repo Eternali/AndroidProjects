@@ -314,12 +314,14 @@ class EditActivity : Activity () {
     private fun getDates(startDate : Calendar, dayOfWeeks : BooleanArray) : ArrayList<String> {
         val retDates : Array<Calendar?> = arrayOfNulls(dayOfWeeks.filter { it }.size)
         retDates[0] = startDate
+        dayOfWeeks[startDate.get(Calendar.DAY_OF_WEEK)-1] = false
         for (r in 1..retDates.size-1) {
             retDates[r] = retDates[r-1]
             for (day in 0..dayOfWeeks.size-1) {
                 if (dayOfWeeks[day]) {
                     retDates[r]!!.set(Calendar.DAY_OF_WEEK, day + 1)
                     dayOfWeeks[day] = false
+                    break
                 }
             }
             if (retDates[r]!! < Calendar.getInstance()) retDates[r]!!.add(Calendar.DAY_OF_MONTH, 7)
