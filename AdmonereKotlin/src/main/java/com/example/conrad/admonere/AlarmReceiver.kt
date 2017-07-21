@@ -1,6 +1,7 @@
 package com.example.conrad.admonere
 
 // import required libraries
+import android.app.AlarmManager
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -34,7 +35,8 @@ class AlarmReceiver : BroadcastReceiver () {
             // check if we can still send reminders
             if (reminds[index].numReminds <= 0) {
                 // cancel the alarm manager and exit
-
+                val alarmIntent = PendingIntent.getBroadcast(context, index, intent, 0)
+                (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager).cancel(alarmIntent)
                 return
             }
             // send user to edit activity of the reminder that was sent
