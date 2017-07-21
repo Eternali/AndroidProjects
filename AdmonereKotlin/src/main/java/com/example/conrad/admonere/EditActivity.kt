@@ -116,7 +116,7 @@ class EditActivity : Activity () {
                 cal.set(Calendar.DAY_OF_MONTH, ud.dates[d].split("/")[0].toInt(),
                         Calendar.MONTH, ud.dates[d].split("/")[1].toInt(),
                         Calendar.YEAR, ud.dates[d].split("/")[2].toInt())
-                days[d] = cal.get(Calendar.DAY_OF_WEEK)
+                days[d] = cal.get(Calendar.DAY_OF_WEEK)-1
             }
             setDays(days)
             if (numRepsET.text.toString().toInt() < dayBtnActives.filter { it }.size) numRepsET.setText(dayBtnActives.filter { it }.size.toString())
@@ -316,9 +316,14 @@ class EditActivity : Activity () {
         retDates[0] = startDate
         for (r in 1..retDates.size-1) {
             retDates[r] = retDates[r-1]
-            (0..dayOfWeeks.size-1)
-                    .filter { dayOfWeeks[it] }
-                    .forEach { retDates[r]!!.set(Calendar.DAY_OF_WEEK, it +1) }
+            for (day in 0..dayOfWeeks.size-1) {
+                if (dayOfWeeks[day]) {
+                    retDates[r]!!.set(Calendar.DAY_OF_WEEK, day + 1)
+                    dayOfWeeks[day] = false
+                }
+            }
+            if (retDates[r]!! < Calendar.getInstance()) retDates[r]!!.add(Calendar.DAY_OF_MONTH, 7)
+            // or try retDates[r].roll(Calendar.DATE, 7)
         }
 
         val dates = arrayListOf<String>()
@@ -328,7 +333,7 @@ class EditActivity : Activity () {
                     retDates[it]!!.get(Calendar.YEAR).toString()).joinToString("/")
         }
 
-        Log.i("DATES", dates.joinToString(", "))
+        Log.i("DATES", dates.joinToString(","))
         return dates
     }
 
