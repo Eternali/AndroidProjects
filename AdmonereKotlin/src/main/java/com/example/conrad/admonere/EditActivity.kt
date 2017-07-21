@@ -107,7 +107,7 @@ class EditActivity : Activity () {
             date[1] += 1
             datePicker.setText(TextUtils.join("/", date))
             timePicker.setText(TextUtils.join(":", ud.time))
-            numRepsET.setText(ud.numReminds)
+            numRepsET.setText(ud.numReminds.toString())
             (contact as EditText).setText("${ud.name} at ${ud.number}")
             message.setText(ud.message)
             val days = IntArray(ud.dates.size)

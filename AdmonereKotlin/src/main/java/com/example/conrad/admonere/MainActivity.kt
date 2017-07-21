@@ -143,9 +143,9 @@ internal fun saveReminders (ctx : Context, fname : String, reminds : ArrayList<R
     // for each reminder write its data into a XML structure
     for ((dates, numReminds, time, name, number, message) in reminds) {
         xmlSerial.startTag(null, "reminder")
-        xmlSerial.startTag(null, "date")
+        xmlSerial.startTag(null, "dates")
         xmlSerial.text(TextUtils.join(",", dates))
-        xmlSerial.endTag(null, "date")
+        xmlSerial.endTag(null, "dates")
         xmlSerial.startTag(null, "numReminds")
         xmlSerial.text(numReminds.toString())
         xmlSerial.endTag(null, "numReminds")
