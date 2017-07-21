@@ -16,20 +16,12 @@ class AlarmReceiver : BroadcastReceiver () {
     // called when the broadcast receiver gets a broadcast
     override fun onReceive(context: Context?, intent: Intent?) {
         // get data sent with intent
-        val date : String?
-        val time : String?
-        val name : String?
-        val number : String? // MAKE SURE SAVING AND GETTING REMINDERS AFTER EVERYTHING
-        val msg : String?
         val index : Int?
-        val maxReminds : Int?
-        val curReminds :Int?
         val reminds : ArrayList<Reminder>?
-        if (intent != null && context != null) {
+        if (intent == null || context == null) return
 
-            index = intent.getIntExtra("index", 0)
-            reminds = getReminders(context, filename)
-        } else return
+        index = intent.getIntExtra("index", 0)
+        reminds = getReminders(context, filename)
 
         try {
             // check if we can still send reminders
