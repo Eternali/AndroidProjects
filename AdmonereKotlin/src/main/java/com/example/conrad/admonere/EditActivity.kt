@@ -156,7 +156,7 @@ class EditActivity : Activity () {
                             val day = setCalendar.get(Calendar.DAY_OF_WEEK) - 1
                             dayBtns[day]!!.setBackgroundResource(R.drawable.roundedbuttonselected)
                             dayBtnActives[day] = true
-                            dayBtnAllows = BooleanArray(dayBtns.size, { x -> true })
+                            dayBtnAllows = BooleanArray(dayBtns.size, { _ -> true })
                             dayBtnAllows[day] = false  // do not allow the user to change the button unless the date is changed
                         } }
                     , cYear, cMonth, cDay)
@@ -241,14 +241,16 @@ class EditActivity : Activity () {
 //            intent.putExtra("message", msg)
             val alarmIntent : PendingIntent?
             // check if it's a new reminder
+            // TODO: must get dates only once because the array empties after that for some reason
+            val dayOfWeeks = this.getDates(calendar, dayBtnActives)
             if (index < 0) {
-                reminders!!.add(Reminder(this.getDates(calendar, dayBtnActives).toTypedArray(),
+                reminders!!.add(Reminder(dayOfWeeks.toTypedArray(),
                         numReps, time.toTypedArray(), name, phoneNo, msg))
                 intent.putExtra("index", (reminders as ArrayList).size-1)
                 alarmIntent = PendingIntent.getBroadcast(this, if (reminders != null) reminders!!.size-1 else 0, intent, 0)
 
             } else {
-                reminders!!.set(index, Reminder(this.getDates(calendar, dayBtnActives).toTypedArray(),
+                reminders!!.set(index, Reminder(dayOfWeeks.toTypedArray(),
                         numReps, time.toTypedArray(), name, phoneNo, msg))
                 intent.putExtra("index", index)
                 alarmIntent = PendingIntent.getBroadcast(this, index, intent, 0)
@@ -257,7 +259,7 @@ class EditActivity : Activity () {
             saveReminders(this, filename, reminders as ArrayList)
 
             // set alarm and go back to main activity
-            for (day in this.getDates(calendar, dayBtnActives)) {
+            for (day in dayOfWeeks.toTypedArray()) {
                 val cal = Calendar.getInstance()
                 val d = day.split("/")
                 cal.set(d[2].toInt(), d[1].toInt(), d[0].toInt(), time[0].toInt(), time[1].toInt(), 0)
