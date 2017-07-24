@@ -118,6 +118,7 @@ class EditActivity : Activity () {
                         Calendar.YEAR, ud.dates[d].split("/")[2].toInt())
                 days[d] = cal.get(Calendar.DAY_OF_WEEK)-1
             }
+            Log.i("days", days.joinToString(", "))
             setDays(days)
             if (numRepsET.text.toString().toInt() < dayBtnActives.filter { it }.size) numRepsET.setText(dayBtnActives.filter { it }.size.toString())
         }
