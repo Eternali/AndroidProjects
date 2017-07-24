@@ -200,9 +200,9 @@ class EditActivity : Activity () {
             val date : MutableList<String>?  // note that a list is required because that is what is returned
             val time : List<String>?
             val numReps = numRepsET.text.toString().toInt()
-            var name = ""
-            var phoneNo = ""
-            var msg = ""
+            val name : String
+            val phoneNo : String
+            val msg : String
             try {
                 date = datePicker.text.toString().split("/") as MutableList<String>
                 // must set month -1 because data shown to user is indexed from 1, not 0
@@ -231,26 +231,19 @@ class EditActivity : Activity () {
             // create alarm manager to schedule reminders
             val alarmMgr : AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val intent : Intent = Intent(this, AlarmReceiver::class.java)
-            // send the user formatted month to the alarm receiver (because it does not
-            // depend on this as the alarm manager handles this)
             // the alarm manager only depends on the reminders ArrayList
-//            intent.putExtra("dates", this.getDates(calendar, dayBtnActives))
-//            intent.putExtra("time", time.joinToString(":"))
-//            intent.putExtra("name", name)
-//            intent.putExtra("number", phoneNo)
-//            intent.putExtra("message", msg)
             val alarmIntent : PendingIntent?
             // check if it's a new reminder
             // TODO: must get dates only once because the array empties after that for some reason
-            val dayOfWeeks = this.getDates(calendar, dayBtnActives)
+            val daysOfWeek = this.getDates(calendar, dayBtnActives)
             if (index < 0) {
-                reminders!!.add(Reminder(dayOfWeeks.toTypedArray(),
+                reminders!!.add(Reminder(daysOfWeek.toTypedArray(),
                         numReps, time.toTypedArray(), name, phoneNo, msg))
                 intent.putExtra("index", (reminders as ArrayList).size-1)
                 alarmIntent = PendingIntent.getBroadcast(this, if (reminders != null) reminders!!.size-1 else 0, intent, 0)
 
             } else {
-                reminders!!.set(index, Reminder(dayOfWeeks.toTypedArray(),
+                reminders!!.set(index, Reminder(daysOfWeek.toTypedArray(),
                         numReps, time.toTypedArray(), name, phoneNo, msg))
                 intent.putExtra("index", index)
                 alarmIntent = PendingIntent.getBroadcast(this, index, intent, 0)
@@ -259,7 +252,7 @@ class EditActivity : Activity () {
             saveReminders(this, filename, reminders as ArrayList)
 
             // set alarm and go back to main activity
-            for (day in dayOfWeeks.toTypedArray()) {
+            for (day in daysOfWeek.toTypedArray()) {
                 val cal = Calendar.getInstance()
                 val d = day.split("/")
                 cal.set(d[2].toInt(), d[1].toInt(), d[0].toInt(), time[0].toInt(), time[1].toInt(), 0)
@@ -314,27 +307,33 @@ class EditActivity : Activity () {
 
     // function to set the repeating alarms (will return a string array of length true dayOfWeeks
     private fun getDates(startDate : Calendar, dayOfWeeks : BooleanArray) : ArrayList<String> {
-        val retDates : Array<Calendar?> = arrayOfNulls(dayOfWeeks.filter { it }.size)
-        retDates[0] = startDate
+        val retDates : ArrayList<Calendar> = ArrayList()
+        retDates.add(startDate)
+        Log.i("startDate", retDates[0].get(Calendar.DAY_OF_MONTH).toString())
         dayOfWeeks[startDate.get(Calendar.DAY_OF_WEEK)-1] = false
-        for (r in 1..retDates.size-1) {
-            retDates[r] = retDates[r-1]
+        for (r in 1..dayOfWeeks.filter { it }.size) {
+            val tmpDate = Calendar.getInstance()
+            tmpDate.set(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH))
+            retDates.add(tmpDate)
             for (day in 0..dayOfWeeks.size-1) {
+                Log.i("iter", day.toString())
                 if (dayOfWeeks[day]) {
-                    retDates[r]!!.set(Calendar.DAY_OF_WEEK, day + 1)
+                    retDates[r].set(Calendar.DAY_OF_WEEK, day + 1)
+                    Log.i("test", retDates[r].get(Calendar.DAY_OF_WEEK).toString())
+                    Log.i("test", retDates[r].get(Calendar.DAY_OF_MONTH).toString())
                     dayOfWeeks[day] = false
                     break
                 }
             }
-            if (retDates[r]!! < Calendar.getInstance()) retDates[r]!!.add(Calendar.DAY_OF_MONTH, 7)
+            if (retDates[r] < Calendar.getInstance()) retDates[r].add(Calendar.DAY_OF_MONTH, 7)
             // or try retDates[r].roll(Calendar.DATE, 7)
         }
 
         val dates = arrayListOf<String>()
         (0..retDates.size-1).mapTo(dates) {
-            arrayOf(retDates[it]!!.get(Calendar.DAY_OF_MONTH).toString(),
-                    retDates[it]!!.get(Calendar.MONTH).toString(),
-                    retDates[it]!!.get(Calendar.YEAR).toString()).joinToString("/")
+            arrayOf(retDates[it].get(Calendar.DAY_OF_MONTH).toString(),
+                    retDates[it].get(Calendar.MONTH).toString(),
+                    retDates[it].get(Calendar.YEAR).toString()).joinToString("/")
         }
 
         Log.i("DATES", dates.joinToString(","))
