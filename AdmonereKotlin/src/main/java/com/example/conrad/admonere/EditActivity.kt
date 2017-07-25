@@ -113,12 +113,9 @@ class EditActivity : Activity () {
             val days = IntArray(ud.dates.size)
             for (d in 0..ud.dates.size-1) {
                 val cal = Calendar.getInstance()
-                cal.set(Calendar.DAY_OF_MONTH, ud.dates[d].split("/")[0].toInt(),
-                        Calendar.MONTH, ud.dates[d].split("/")[1].toInt(),
-                        Calendar.YEAR, ud.dates[d].split("/")[2].toInt())
-                days[d] = cal.get(Calendar.DAY_OF_WEEK)-1
+                cal.set(ud.dates[d].split("/")[2].toInt(), ud.dates[d].split("/")[1].toInt(), ud.dates[d].split("/")[0].toInt())
+                days[d] = cal.get(Calendar.DAY_OF_WEEK) - 1
             }
-            Log.i("days", days.joinToString(", "))
             setDays(days)
             if (numRepsET.text.toString().toInt() < dayBtnActives.filter { it }.size) numRepsET.setText(dayBtnActives.filter { it }.size.toString())
         }
@@ -233,30 +230,28 @@ class EditActivity : Activity () {
             val alarmMgr : AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val intent : Intent = Intent(this, AlarmReceiver::class.java)
             // the alarm manager only depends on the reminders ArrayList
-            val alarmIntent : PendingIntent?
             // check if it's a new reminder
             // TODO: must get dates only once because the array empties after that for some reason
             val daysOfWeek = this.getDates(calendar, dayBtnActives)
+            Log.i("Reminders Dates", daysOfWeek.toTypedArray().joinToString("; "))
             if (index < 0) {
                 reminders!!.add(Reminder(daysOfWeek.toTypedArray(),
                         numReps, time.toTypedArray(), name, phoneNo, msg))
                 intent.putExtra("index", (reminders as ArrayList).size-1)
-                alarmIntent = PendingIntent.getBroadcast(this, if (reminders != null) reminders!!.size-1 else 0, intent, 0)
-
             } else {
                 reminders!!.set(index, Reminder(daysOfWeek.toTypedArray(),
                         numReps, time.toTypedArray(), name, phoneNo, msg))
                 intent.putExtra("index", index)
-                alarmIntent = PendingIntent.getBroadcast(this, index, intent, 0)
             }
 
             saveReminders(this, filename, reminders as ArrayList)
 
             // set alarm and go back to main activity
-            for (day in daysOfWeek.toTypedArray()) {
+            for (day in daysOfWeek) {
                 val cal = Calendar.getInstance()
                 val d = day.split("/")
                 cal.set(d[2].toInt(), d[1].toInt(), d[0].toInt(), time[0].toInt(), time[1].toInt(), 0)
+                val alarmIntent = PendingIntent.getBroadcast(this, cal.timeInMillis.toInt(), intent, 0)
                 alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, cal.timeInMillis, AlarmManager.INTERVAL_DAY * 7, alarmIntent)
             }
             goToMain()
@@ -310,18 +305,14 @@ class EditActivity : Activity () {
     private fun getDates(startDate : Calendar, dayOfWeeks : BooleanArray) : ArrayList<String> {
         val retDates : ArrayList<Calendar> = ArrayList()
         retDates.add(startDate)
-        Log.i("startDate", retDates[0].get(Calendar.DAY_OF_MONTH).toString())
         dayOfWeeks[startDate.get(Calendar.DAY_OF_WEEK)-1] = false
         for (r in 1..dayOfWeeks.filter { it }.size) {
             val tmpDate = Calendar.getInstance()
             tmpDate.set(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH))
             retDates.add(tmpDate)
             for (day in 0..dayOfWeeks.size-1) {
-                Log.i("iter", day.toString())
                 if (dayOfWeeks[day]) {
                     retDates[r].set(Calendar.DAY_OF_WEEK, day + 1)
-                    Log.i("test", retDates[r].get(Calendar.DAY_OF_WEEK).toString())
-                    Log.i("test", retDates[r].get(Calendar.DAY_OF_MONTH).toString())
                     dayOfWeeks[day] = false
                     break
                 }
@@ -337,7 +328,6 @@ class EditActivity : Activity () {
                     retDates[it].get(Calendar.YEAR).toString()).joinToString("/")
         }
 
-        Log.i("DATES", dates.joinToString(","))
         return dates
     }
 

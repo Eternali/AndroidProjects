@@ -24,4 +24,6 @@
     <string name="enable_navigation_bar_color">Enable Navigation Bar Color?</string>
     <string name="mx_remind_reps">Maximum Repetitions:</string>
     <string name="day">day(s)</string>
+    <string name="ongoing">Ongoing</string>
+    <string name="finished">Finished</string>
 </resources>

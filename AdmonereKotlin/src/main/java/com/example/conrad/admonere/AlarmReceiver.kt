@@ -7,9 +7,9 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.support.v7.app.NotificationCompat
 import android.telephony.SmsManager
+import android.util.Log
 
 class AlarmReceiver : BroadcastReceiver () {
 
@@ -22,6 +22,7 @@ class AlarmReceiver : BroadcastReceiver () {
 
         index = intent.getIntExtra("index", 0)
         reminds = getReminders(context, filename)
+        Log.i("Alarm called", "The alarm was called")
 
         try {
             // check if we can still send reminders
