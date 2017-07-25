@@ -15,6 +15,7 @@ import android.util.Log
 import android.util.TypedValue
 import android.util.Xml
 import android.view.*
+import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 
@@ -261,22 +262,24 @@ class MainActivity : AppCompatActivity () {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // set the theme, call the superclass method and set the view
-        // note the memory leak could be caused by: recreate being called from onCreate() or
-        // recreate always being called (setTheme always returning true)
         setTheme(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        val viewPager = findViewById(R.id.pager) as ViewPager
         // get context so other methods can use it
         context = applicationContext
-//        viewPager.adapter = RemindersTimeAdapter(context!!)
 
         // NOTE we'll assert that context will never be null which should occur but is not an ideal solution
         reminders = getReminders(context!!, filename)
+
         // create adapter that presents users with the reminders in a listview
         adapter = RemindersArrayAdapter(this, 0, reminders as ArrayList<Reminder>)
         remindersList = findViewById(R.id.remindersList) as ListView
         (remindersList as ListView).adapter = adapter
+
+        // get the view setting buttons and adjust the listview accordingly
+        val ongoingButton = findViewById(R.id.ongoingButton) as Button
+        val pastButton = findViewById(R.id.pastButton) as Button
+
 
         // FAB that lets users add reminders
         addButton = findViewById(R.id.addButton) as FloatingActionButton
