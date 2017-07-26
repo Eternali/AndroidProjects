@@ -26,4 +26,13 @@
         android:layout_marginTop="22dp"
         android:text="@string/enable_navigation_bar_color"
         android:textSize="24sp"/>
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/navbarSwitch"
+        android:layout_below="@+id/navbarSwitch"
+        android:layout_marginTop="20dp"
+        android:text="Enable Exact Alarms (this will impact battery life)" />
 </RelativeLayout>

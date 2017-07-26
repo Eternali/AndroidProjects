@@ -12,22 +12,32 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:background="@drawable/borderbottom">
+
         <Button
             android:id="@+id/ongoingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:background="@drawable/pagerectanglebutton"
+            android:minHeight="0dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
             android:text="@string/ongoing"
-            android:textColor="?btnText" />
+            android:textColor="?btnText"
+            android:textSize="16sp" />
+
         <Button
             android:id="@+id/pastButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:background="@drawable/pagerectanglebutton"
+            android:minHeight="0dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
             android:text="@string/finished"
-            android:textColor="?btnText" />
+            android:textColor="?btnText"
+            android:textSize="16sp" />
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"

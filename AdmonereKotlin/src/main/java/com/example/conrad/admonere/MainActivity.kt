@@ -260,6 +260,49 @@ class MainActivity : AppCompatActivity () {
     internal var remindersList : ListView? = null
     internal var addButton : FloatingActionButton? = null
 
+    // initially set the visible tab to the ongoing reminders
+    private var curTab = 0
+    private var tabs = arrayOfNulls<Button>(2)
+
+    // helper function to setTab to determine which reminders are in the future/ongoing and which are
+    // completely in the past.
+    private fun inFuture (reminder : Reminder) : Int {
+        var nFuture = 0
+        reminder.dates.forEach {
+            val rCal = Calendar.getInstance()
+            rCal.set(it.split("/")[2].toInt(), it.split("/")[1].toInt(),
+                    it.split("/")[0].toInt(), reminder.time[0].toInt(), reminder.time[1].toInt(), 0)
+            if (rCal > Calendar.getInstance()) nFuture++
+        }
+
+        return nFuture
+    }
+
+    // private function for setting up the main display (and deciding which reminders to show the user)
+    // this will affect no other classes
+    private fun setTab (currentTab : Int) {
+        // set the background resources for the tab buttons
+        for (tab in 0..tabs.size-1) {
+            if (tab == currentTab) tabs[tab]!!.setBackgroundResource(R.drawable.pagerectanglebuttonselected)
+            else tabs[tab]!!.setBackgroundResource(R.drawable.pagerectanglebutton)
+        }
+        val returnedReminders = ArrayList<Reminder>()
+        // set the ArrayAdapter to show the appropriate reminders
+        // for each reminder get its calendar and compare it to the current time
+        // we can assert that reminders have been initialized because we are calling it after we get
+        // the saved reminders (and this is private).
+        when (currentTab) {
+            // 0 are the "ongoing" reminders (ie. reminders that still have dates in the future)
+            0 -> reminders!!.forEach { if (inFuture(it) > 0) returnedReminders.add(it) }
+            // 1 are the "finished" reminders (ie. reminders whose dates are all in the past)
+            1 -> reminders!!.forEach { if (inFuture(it) == 0) returnedReminders.add(it) }
+        }
+
+        adapter = RemindersArrayAdapter(this, 0, returnedReminders)
+        remindersList = findViewById(R.id.remindersList) as ListView
+        (remindersList as ListView).adapter = adapter
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // set the theme, call the superclass method and set the view
         setTheme(this)
@@ -270,16 +313,18 @@ class MainActivity : AppCompatActivity () {
 
         // NOTE we'll assert that context will never be null which should occur but is not an ideal solution
         reminders = getReminders(context!!, filename)
-
-        // create adapter that presents users with the reminders in a listview
-        adapter = RemindersArrayAdapter(this, 0, reminders as ArrayList<Reminder>)
-        remindersList = findViewById(R.id.remindersList) as ListView
-        (remindersList as ListView).adapter = adapter
+        // ensure there are no nulls in the reminders array, and if so, remove it
+        (reminders as ArrayList<Reminder>).forEach { if (it !is Reminder) (reminders as ArrayList<Reminder>).remove(it) }
+        // order the reminders to be ready for the different tabs
+        orderReminders(reminders as ArrayList<Reminder>, false)
 
         // get the view setting buttons and adjust the listview accordingly
-        val ongoingButton = findViewById(R.id.ongoingButton) as Button
-        val pastButton = findViewById(R.id.pastButton) as Button
+        tabs[0] = findViewById(R.id.ongoingButton) as Button
+        tabs[1] = findViewById(R.id.pastButton) as Button
 
+        // create adapter that presents users with the reminders in a listview according to the current tab
+        if (null in tabs) { displayWarning(context as Context); return }
+        setTab(curTab)
 
         // FAB that lets users add reminders
         addButton = findViewById(R.id.addButton) as FloatingActionButton
@@ -287,6 +332,15 @@ class MainActivity : AppCompatActivity () {
             val intent : Intent = Intent(this, EditActivity::class.java)
             startActivity(intent)
         }
+
+        // add tab button actions (to switch visible reminders)
+        tabs.forEach { it!!.setOnClickListener {
+            if (tabs.indexOf(it) != curTab) {
+                curTab = tabs.indexOf(it)
+                setTab(curTab)
+            }
+        } }
+
     }
 
     // creates the overflow menu
