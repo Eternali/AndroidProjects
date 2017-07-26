@@ -33,6 +33,7 @@ class RemindersArrayAdapter (var ctx : Context, var resource : Int, var reminds 
             val dateTime = remindView.findViewById(R.id.dateTime) as TextView
             val contactName = remindView.findViewById(R.id.contactName) as TextView
             val message = remindView.findViewById(R.id.message) as TextView
+            // since not all reminders are shown at once, we can't use the passed position argument
             // temporarily add 1 to the month (calendar months are indexed from 0)
             val tmpdate = reminds[position].dates[0].split("/") as ArrayList
             tmpdate[1] = (tmpdate[1].toInt() + 1).toString()
