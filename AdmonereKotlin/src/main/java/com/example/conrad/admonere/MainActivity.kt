@@ -8,7 +8,6 @@ import android.content.SharedPreferences
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBar
 import android.text.TextUtils
 import android.util.Log
@@ -37,6 +36,10 @@ import java.util.Calendar
 internal var reminders : ArrayList<Reminder>? = null
 internal var filename : String = "reminders.xml"
 
+// important global variables for swipe detection
+internal val SWIPE_MIN_DISTANCE : Int = 120
+internal val SWIPE_MAX_OFF_PATH : Int = 250
+internal val SWIPE_THRESHOLD_VELOCITY : Int = 200
 
 // gets the data stored in fname and returns it in a arraylist<Reminder>
 internal fun getReminders (ctx : Context, fname : String) : ArrayList<Reminder> {
@@ -340,6 +343,9 @@ class MainActivity : AppCompatActivity () {
                 setTab(curTab)
             }
         } }
+
+        // implement swipe action for changing reminders subset (ongoing <--> finished)
+
 
     }
 
