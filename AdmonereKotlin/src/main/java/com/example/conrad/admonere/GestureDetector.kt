@@ -4,10 +4,19 @@ import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 
+// an internal enum to determine which action we would like to capture
+enum class touchAction {
+    SLEFT,
+    SRIGHT,
+    SUP,
+    SDOWN
+}
+
 /**
  * This is a class meant to detect basic touch gestures like horizontal or vertical swipes.
+ * @param fun () action  --->  it is the function that will be called when a registered event is detected
  */
-class GestureDetector : GestureDetector.SimpleOnGestureListener () {
+class GestureDetector (action: () -> Unit) : GestureDetector.SimpleOnGestureListener () {
 
     // override the onFling method to implement swipe motions
     override fun onFling(e1 : MotionEvent?, e2 : MotionEvent?, velocityX : Float, velocityY : Float) : Boolean {

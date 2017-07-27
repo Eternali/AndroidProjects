@@ -345,6 +345,7 @@ class MainActivity : AppCompatActivity () {
         } }
 
         // implement swipe action for changing reminders subset (ongoing <--> finished)
+        val adapterChanger = GestureDetector()
 
 
     }
