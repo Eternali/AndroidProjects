@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.view.GestureDetectorCompat
 import android.support.v7.app.ActionBar
 import android.text.TextUtils
 import android.util.Log
@@ -266,6 +267,7 @@ class MainActivity : AppCompatActivity () {
     // initially set the visible tab to the ongoing reminders
     private var curTab = 0
     private var tabs = arrayOfNulls<Button>(2)
+    private var adapterChanger : GestureDetectorCompat? = null
 
     // helper function to setTab to determine which reminders are in the future/ongoing and which are
     // completely in the past.
@@ -304,6 +306,15 @@ class MainActivity : AppCompatActivity () {
         adapter = RemindersArrayAdapter(this, 0, returnedReminders)
         remindersList = findViewById(R.id.remindersList) as ListView
         (remindersList as ListView).adapter = adapter
+    }
+
+    // this is the method passed to the GestureDetector to respond to swipes on the main activity
+    private fun changeTabTouch (direction : TouchAction) {
+        when (direction) {
+            TouchAction.SLEFT -> { if (curTab > 0) { curTab--; setTab(curTab) } }
+            TouchAction.SRIGHT -> { if (curTab < tabs.size-1) { curTab++; setTab(curTab) } }
+            else -> return
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -345,8 +356,7 @@ class MainActivity : AppCompatActivity () {
         } }
 
         // implement swipe action for changing reminders subset (ongoing <--> finished)
-        val adapterChanger = GestureDetector()
-
+        adapterChanger = GestureDetectorCompat(this, MainGestureDetector(this::changeTabTouch))
 
     }
 
@@ -368,6 +378,13 @@ class MainActivity : AppCompatActivity () {
         }
 
         return true
+    }
+
+    // method to handle any touch event on the main activity
+    // THIS DOES NOT INCLUDE THE ARRAYADAPTERS
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (adapterChanger != null) (adapterChanger as GestureDetectorCompat).onTouchEvent(event)
+        return super.onTouchEvent(event)
     }
 
     // when activity resumes reload the arrayadapter with possible new data
