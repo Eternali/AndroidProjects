@@ -304,7 +304,6 @@ class MainActivity : AppCompatActivity () {
         }
 
         adapter = RemindersArrayAdapter(this, 0, returnedReminders)
-        remindersList = findViewById(R.id.remindersList) as ListView
         (remindersList as ListView).adapter = adapter
     }
 
@@ -335,6 +334,11 @@ class MainActivity : AppCompatActivity () {
         // get the view setting buttons and adjust the listview accordingly
         tabs[0] = findViewById(R.id.ongoingButton) as Button
         tabs[1] = findViewById(R.id.pastButton) as Button
+
+        remindersList = findViewById(R.id.remindersList) as ListView
+        (remindersList as ListView).setOnTouchListener(View.OnTouchListener() {
+            override fun onTouch
+        })
 
         // create adapter that presents users with the reminders in a listview according to the current tab
         if (null in tabs) { displayWarning(context as Context); return }
@@ -383,6 +387,7 @@ class MainActivity : AppCompatActivity () {
     // method to handle any touch event on the main activity
     // THIS DOES NOT INCLUDE THE ARRAYADAPTERS
     override fun onTouchEvent(event: MotionEvent?): Boolean {
+        Log.i("Touch event", "Called from main activity")
         if (adapterChanger != null) (adapterChanger as GestureDetectorCompat).onTouchEvent(event)
         return super.onTouchEvent(event)
     }
