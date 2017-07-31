@@ -17,6 +17,7 @@ import android.util.Xml
 import android.view.*
 import android.widget.Button
 import android.widget.ListView
+import android.widget.RelativeLayout
 import android.widget.Toast
 
 import org.xmlpull.v1.XmlPullParser
@@ -361,6 +362,11 @@ class MainActivity : AppCompatActivity () {
 
         // implement swipe action for changing reminders subset (ongoing <--> finished)
         adapterChanger = GestureDetectorCompat(this, MainGestureDetector(this::changeTabTouch))
+
+        val reminderContainer = findViewById(R.id.reminderContainer) as RelativeLayout
+        reminderContainer.setOnTouchListener(View.OnTouchListener() {
+
+        })
 
     }
 
