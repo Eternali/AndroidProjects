@@ -336,9 +336,9 @@ class MainActivity : AppCompatActivity () {
         tabs[1] = findViewById(R.id.pastButton) as Button
 
         remindersList = findViewById(R.id.remindersList) as ListView
-        (remindersList as ListView).setOnTouchListener(View.OnTouchListener() {
-            override fun onTouch
-        })
+//        (remindersList as ListView).setOnTouchListener(View.OnTouchListener() {
+//            override fun onTouch
+//        })
 
         // create adapter that presents users with the reminders in a listview according to the current tab
         if (null in tabs) { displayWarning(context as Context); return }
