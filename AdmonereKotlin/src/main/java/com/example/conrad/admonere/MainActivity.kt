@@ -15,10 +15,7 @@ import android.util.Log
 import android.util.TypedValue
 import android.util.Xml
 import android.view.*
-import android.widget.Button
-import android.widget.ListView
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.widget.*
 
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
@@ -309,10 +306,10 @@ class MainActivity : AppCompatActivity () {
     }
 
     // this is the method passed to the GestureDetector to respond to swipes on the main activity
-    private fun changeTabTouch (direction : TouchAction) {
+    internal fun changeTabTouch (direction : TouchAction) {
         when (direction) {
-            TouchAction.SLEFT -> { if (curTab > 0) { curTab--; setTab(curTab) } }
-            TouchAction.SRIGHT -> { if (curTab < tabs.size-1) { curTab++; setTab(curTab) } }
+            TouchAction.SLEFT -> { if (curTab < tabs.size-1) { curTab++; setTab(curTab) } }
+            TouchAction.SRIGHT -> { if (curTab > 0) { curTab--; setTab(curTab) } }
             else -> return
         }
     }
@@ -360,13 +357,15 @@ class MainActivity : AppCompatActivity () {
             }
         } }
 
+//        val reminderContainer = findViewById(R.id.reminderContainer) as RelativeLayout
+
         // implement swipe action for changing reminders subset (ongoing <--> finished)
         adapterChanger = GestureDetectorCompat(this, MainGestureDetector(this::changeTabTouch))
 
-        val reminderContainer = findViewById(R.id.reminderContainer) as RelativeLayout
-        reminderContainer.setOnTouchListener(View.OnTouchListener() {
-
-        })
+//        reminderContainer.setOnTouchListener(View.OnTouchListener { view, motionEvent -> run {
+//            adapterChanger!!.onTouchEvent(motionEvent)
+//            reminderContainer.performClick()
+//        } })
 
     }
 
@@ -391,7 +390,6 @@ class MainActivity : AppCompatActivity () {
     }
 
     // method to handle any touch event on the main activity
-    // THIS DOES NOT INCLUDE THE ARRAYADAPTERS
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         Log.i("Touch event", "Called from main activity")
         if (adapterChanger != null) (adapterChanger as GestureDetectorCompat).onTouchEvent(event)

@@ -3,6 +3,7 @@ package com.example.conrad.admonere
 // import required libraries
 import android.content.Context
 import android.content.Intent
+import android.support.v4.view.GestureDetectorCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +48,13 @@ class RemindersArrayAdapter (var ctx : Context, var resource : Int, var reminds 
                 editIntent.putExtra("index", position)
                 context.startActivity(editIntent)
             })
+
+            remindView.setOnTouchListener(View.OnTouchListener(view, event : Motionevent) {
+                override fun onTouch () {
+
+                }
+            })
+            remindView.onTouchEvent(GestureDetectorCompat(context, MainGestureDetector(MainActivity::changeTabTouch)))
 
             return remindView
         }
