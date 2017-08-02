@@ -51,7 +51,7 @@ class RemindersArrayAdapter (var ctx : Context, var resource : Int, var reminds 
 
             remindView.setOnTouchListener(View.OnTouchListener(view, event : Motionevent) {
                 override fun onTouch () {
-
+                    
                 }
             })
             remindView.onTouchEvent(GestureDetectorCompat(context, MainGestureDetector(MainActivity::changeTabTouch)))
