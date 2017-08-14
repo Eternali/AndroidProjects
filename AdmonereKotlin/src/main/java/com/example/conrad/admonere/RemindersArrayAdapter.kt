@@ -29,7 +29,7 @@ class RemindersArrayAdapter (var ctx : Context, var resource : Int, var reminds 
         // inflate the remindView
         if (convertView == null) {
             val inflater: LayoutInflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val remindView: View = inflater.inflate(R.layout.reminder_layout, parent, false)
+            val remindView: ReminderView = ReminderView(ctx)//inflater.inflate(R.layout.reminder_layout, parent, false)
             // set components of the layout to values from the reminds array
             val dateTime = remindView.findViewById(R.id.dateTime) as TextView
             val contactName = remindView.findViewById(R.id.contactName) as TextView
@@ -49,17 +49,19 @@ class RemindersArrayAdapter (var ctx : Context, var resource : Int, var reminds 
                 context.startActivity(editIntent)
             })
 
-            remindView.setOnTouchListener(View.OnTouchListener(view, event : Motionevent) {
-                override fun onTouch () {
-                    
-                }
-            })
-            remindView.onTouchEvent(GestureDetectorCompat(context, MainGestureDetector(MainActivity::changeTabTouch)))
+//            remindView.setOnTouchListener(View.OnTouchListener(view, event : Motionevent) {
+//                override fun onTouch () {
+//
+//                }
+//            })
+//            remindView.onTouchEvent(GestureDetectorCompat(context, MainGestureDetector(MainActivity::changeTabTouch)))
 
             return remindView
         }
 
         return convertView
     }
+
+
 
 }

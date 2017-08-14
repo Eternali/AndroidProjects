@@ -361,6 +361,10 @@ class MainActivity : AppCompatActivity () {
 
         // implement swipe action for changing reminders subset (ongoing <--> finished)
         adapterChanger = GestureDetectorCompat(this, MainGestureDetector(this::changeTabTouch))
+        val gestureListener : View.OnTouchListener = View.OnTouchListener() {
+            fun onTouch (v : View, event : MotionEvent?) : Boolean {
+                return (adapterChanger as GestureDetector.SimpleOnGestureListener).onTouchEvent(event) } }
+        (remindersList as ListView).setOnTouchListener(gestureListener)
 
 //        reminderContainer.setOnTouchListener(View.OnTouchListener { view, motionEvent -> run {
 //            adapterChanger!!.onTouchEvent(motionEvent)
