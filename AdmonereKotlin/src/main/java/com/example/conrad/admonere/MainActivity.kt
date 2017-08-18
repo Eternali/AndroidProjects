@@ -285,7 +285,7 @@ class MainActivity : AppCompatActivity () {
     // this will affect no other classes
     private fun setTab (currentTab : Int) {
         // set the background resources for the tab buttons
-        for (tab in 0..tabs.size-1) {
+        for (tab in 0 until tabs.size) {
             if (tab == currentTab) tabs[tab]!!.setBackgroundResource(R.drawable.pagerectanglebuttonselected)
             else tabs[tab]!!.setBackgroundResource(R.drawable.pagerectanglebutton)
         }
@@ -361,10 +361,13 @@ class MainActivity : AppCompatActivity () {
 
         // implement swipe action for changing reminders subset (ongoing <--> finished)
         adapterChanger = GestureDetectorCompat(this, MainGestureDetector(this::changeTabTouch))
-        val gestureListener : View.OnTouchListener = View.OnTouchListener() {
-            fun onTouch (v : View, event : MotionEvent?) : Boolean {
-                return (adapterChanger as GestureDetector.SimpleOnGestureListener).onTouchEvent(event) } }
-        (remindersList as ListView).setOnTouchListener(gestureListener)
+        val curLayout = findViewById(R.id.main_layout) as LinearLayout
+        val rView = ReminderView(applicationContext)
+        curLayout.addView(rView)
+//        val gestureListener : View.OnTouchListener = View.OnTouchListener() {
+//            fun onTouch (v : View, event : MotionEvent?) : Boolean {
+//                return (adapterChanger as GestureDetector.SimpleOnGestureListener).onTouchEvent(event) } }
+//        (remindersList as ListView).setOnTouchListener(gestureListener)
 
 //        reminderContainer.setOnTouchListener(View.OnTouchListener { view, motionEvent -> run {
 //            adapterChanger!!.onTouchEvent(motionEvent)
