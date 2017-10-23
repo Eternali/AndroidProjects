@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.nfc.FormatException
+import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
@@ -22,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     val WRITE_ERROR = "Error during writing, is the NFC tag close enough to your device?"
     var nfcAdapter : NfcAdapter? = null
     var pendIntent : PendingIntent? = null
-    var writeTagFilters : IntentFilter? = null
+    var writeTagFilters : Array<IntentFilter>? = null
     val tag : Tag? = null
     var context : Context? = null
     var writeMode : Boolean = false
@@ -64,7 +66,36 @@ class MainActivity : AppCompatActivity() {
         }
         readFromIntent(getIntent())
 
-        pendIntent = PendingIntent.getActivity(this, 0, Intent(this, ))
+        pendIntent = PendingIntent.getActivity(this, 0, Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0)
+        val tagDetected = IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)
+        tagDetected.addCategory(Intent.CATEGORY_DEFAULT)
+        writeTagFilters = arrayOf(tagDetected)
 
     }
+
+    fun readFromIntent (intent : Intent) {
+        val action = intent.action.toString()
+        if (NfcAdapter.ACTION_TAG_DISCOVERED == action
+                || NfcAdapter.ACTION_TECH_DISCOVERED == action
+                || NfcAdapter.ACTION_NDEF_DISCOVERED == action) {
+            val rawMsgs : Array<Parcelable>? = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
+            val msgs : Array<NdefMessage?>
+            if (rawMsgs != null) {
+                msgs = arrayOfNulls<NdefMessage>(rawMsgs.size)
+                for (i : Int in 0..rawMsgs.size) {
+                    msgs[i] = rawMsgs[i] as NdefMessage
+                }
+            } else return
+            buildTagViews(msgs)
+        }
+    }
+
+    fun buildTagViews (msgs : Array<NdefMessage?>) {
+        if (null in msgs || msgs.isEmpty()) return
+        var text = ""
+        var payload : ByteArray = msgs[0]!!.records[0].payload
+        var textEncoding : String= if (payload[0].toInt() and 128 == 0) "UTF-8" else "UTF-16"
+        val languageCodeLength : Int = payload[0].toInt() and (0063)
+    }
+
 }
