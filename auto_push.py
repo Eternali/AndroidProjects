@@ -16,5 +16,5 @@ for p in projects:
 os.system('git add -f .')
 commit_msg = input('Enter commit message: ')
 os.system('git commit -am "%s"' % commit_msg)
-os.system('git push {} origin master'.format('--force' if sys.argv[1].strip() else ''))
+os.system('git push {} origin master'.format('--force' if 'force' in sys.argv[-1].strip() else ''))
 
