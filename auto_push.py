@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os
+import sys
 
 projects = list(filter(None, os.popen('cd .. && ls').read().strip(' ').split('\n')))
 for p in projects:
@@ -15,5 +16,5 @@ for p in projects:
 os.system('git add -f .')
 commit_msg = input('Enter commit message: ')
 os.system('git commit -am "%s"' % commit_msg)
-os.system('git push origin master')
+os.system('git push {} origin master'.format('--force' if 'force' in sys.argv[-1].strip() else ''))
 
