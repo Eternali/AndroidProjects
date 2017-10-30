@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os
+import sys
 
 projects = list(filter(None, os.popen('cd .. && ls').read().strip(' ').split('\n')))
 for p in projects:
