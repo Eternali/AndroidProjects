@@ -3,4 +3,8 @@
     <string name="settings_name">SETTINGS</string>
     <string name="about_name">ABOUT</string>
     <string name="help_name">HELP</string>
+    <string name="themeText">Join the Dark Side?</string>
+    <string name="displayAsText">Display As</string>
+    <string name="listToggleText">List</string>
+    <string name="calendarToggleText">Calendar</string>
 </resources>
