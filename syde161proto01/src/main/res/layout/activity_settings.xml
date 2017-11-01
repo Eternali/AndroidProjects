@@ -1,62 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <Switch
         android:id="@+id/themeSwitch"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/themeText"
-        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/themeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/displayTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
         android:text="@string/displayAsText"
         android:textColor="@color/colorSubTitle"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="145dp"
-        tools:layout_editor_absoluteY="73dp" />
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="125dp">
+        android:layout_marginTop="125dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:id="@+id/settings_struct"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_centerHorizontal="true" />
-
-        <ToggleButton
-            android:id="@+id/listToggle"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:id="@+id/displayToggleGroup"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignRight="@id/settings_struct"
-            android:text="@string/listToggleText"
-            android:textOff="@string/listToggleText"
-            android:textOn="@string/listToggleText" />
+            android:orientation="horizontal">
+            <ToggleButton
+                android:id="@+id/listToggle"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/listToggleText"
+                android:textOff="@string/listToggleText"
+                android:textOn="@string/listToggleText"
+                android:onClick="toggleDisplay"
+                android:checked="false" />
 
-        <ToggleButton
-            android:id="@+id/calendarToggle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/settings_struct"
-            android:layout_alignParentRight="true"
-            android:text="@string/calendarToggleText"
-            android:textOff="@string/calendarToggleText"
-            android:textOn="@string/calendarToggleText" />
+            <ToggleButton
+                android:id="@+id/calendarToggle"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/calendarToggleText"
+                android:textOff="@string/calendarToggleText"
+                android:textOn="@string/calendarToggleText"
+                android:onClick="toggleDisplay"
+                android:checked="true"/>
+        </RadioGroup>
 
     </RelativeLayout>
 
@@ -66,7 +75,9 @@
         android:layout_height="wrap_content"
         android:text="Alerts"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        tools:layout_editor_absoluteX="169dp"
-        tools:layout_editor_absoluteY="243dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
