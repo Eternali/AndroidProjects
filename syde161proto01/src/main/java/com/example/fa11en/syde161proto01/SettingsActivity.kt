@@ -13,7 +13,7 @@ import android.widget.ToggleButton
 class SettingsActivity : Activity () {
 
     val displayToggleListener: RadioGroup.OnCheckedChangeListener = RadioGroup.OnCheckedChangeListener { group, checkedId ->
-        group.clearCheck()
+        if (group.getChildAt(checkedId) > -1) group.clearCheck()
         for (r in 0..group.childCount) {
             val view: ToggleButton = group.getChildAt(r) as ToggleButton
             if (view.id == checkedId) group.check(checkedId)
@@ -27,8 +27,8 @@ class SettingsActivity : Activity () {
     fun toggleDisplay(view: View) {
         val group = view.parent as RadioGroup
         group.clearCheck()
-        group.check()
-        Log.i("Toggle clicked", Integer.toString())
+        group.check(view.id)
+        Log.i("Toggle clicked", Integer.toString(view.id))
 //        (view.parent as RadioGroup).check(view.id)
     }
 
@@ -39,7 +39,7 @@ class SettingsActivity : Activity () {
         listToggle = findViewById(R.id.listToggle)
         calToggle = findViewById(R.id.calendarToggle)
 
-//        findViewById<RadioGroup>(R.id.displayToggleGroup).setOnCheckedChangeListener(displayToggleListener)
+        findViewById<RadioGroup>(R.id.displayToggleGroup).setOnCheckedChangeListener(displayToggleListener)
     }
 
 }
