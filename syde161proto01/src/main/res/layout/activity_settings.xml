@@ -52,7 +52,8 @@
                 android:text="@string/listToggleText"
                 android:textOff="@string/listToggleText"
                 android:textOn="@string/listToggleText"
-                android:checked="false" />
+                android:checked="false"
+                android:onClick="toggleDisplay" />
 
             <ToggleButton
                 android:id="@+id/calendarToggle"
@@ -62,7 +63,8 @@
                 android:text="@string/calendarToggleText"
                 android:textOff="@string/calendarToggleText"
                 android:textOn="@string/calendarToggleText"
-                android:checked="true"/>
+                android:checked="true"
+                android:onClick="toggleDisplay" />
         </RadioGroup>
 
     </RelativeLayout>
