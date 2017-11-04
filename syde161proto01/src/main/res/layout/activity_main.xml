@@ -6,4 +6,53 @@
     android:layout_height="match_parent"
     tools:context="com.example.fa11en.syde161proto01.MainActivity">
 
+    <RelativeLayout
+        android:id="@+id/overviewLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioGroup
+            android:id="@+id/overviewLayoutSwitcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <ToggleButton
+            android:id="@+id/dayToggle"
+            android:layout_weight="0.3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dayToggleText"
+            android:textOff="@string/dayToggleText"
+            android:textOn="@string/dayToggleText"
+            android:checked="false"
+            android:onClick="toggleDisplay" />
+
+        <ToggleButton
+            android:id="@+id/weekToggle"
+            android:layout_weight="0.3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/weekToggleText"
+            android:textOff="@string/weekToggleText"
+            android:textOn="@string/weekToggleText"
+            android:checked="true"
+            android:onClick="toggleDisplay" />
+
+        <ToggleButton
+            android:id="@+id/monthToggle"
+            android:layout_weight="0.3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monthToggleText"
+            android:textOff="@string/monthToggleText"
+            android:textOn="@string/monthToggleText"
+            android:checked="false"
+            android:onClick="toggleDisplay" />
+        </RadioGroup>
+
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

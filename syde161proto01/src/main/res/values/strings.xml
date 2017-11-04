@@ -7,4 +7,7 @@
     <string name="displayAsText">Display As</string>
     <string name="listToggleText">List</string>
     <string name="calendarToggleText">Calendar</string>
+    <string name="monthToggleText">MONTH</string>
+    <string name="weekToggleText">WEEK</string>
+    <string name="dayToggleText">DAY</string>
 </resources>

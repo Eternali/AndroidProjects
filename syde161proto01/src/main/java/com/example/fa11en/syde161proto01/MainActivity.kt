@@ -6,14 +6,41 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.RadioGroup
+import android.widget.ToggleButton
 
 class MainActivity : AppCompatActivity() {
 
+    val displayToggleListener: RadioGroup.OnCheckedChangeListener = RadioGroup.OnCheckedChangeListener { group, checkedId ->
+        for (r in 0..group.childCount) {
+            if (group.getChildAt(r) == null) continue
+            val view: ToggleButton = group.getChildAt(r) as ToggleButton
+            view.isChecked = view.id == checkedId
+        }
+    }
+
     lateinit private var dotMenu: Menu
+    lateinit var displayGroup: RadioGroup
+    lateinit var dayToggle: ToggleButton
+    lateinit var weekToggle: ToggleButton
+    lateinit var monthToggle: ToggleButton
+
+    fun displayToggle (view: View) {
+        displayGroup.clearCheck()
+        displayGroup.check(view.id)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        displayGroup = findViewById(R.id.displayToggleGroup)
+        dayToggle = findViewById(R.id.dayToggle)
+        weekToggle = findViewById(R.id.weekToggle)
+        monthToggle = findViewById(R.id.monthToggle)
+
+        displayGroup.setOnCheckedChangeListener(displayToggleListener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
