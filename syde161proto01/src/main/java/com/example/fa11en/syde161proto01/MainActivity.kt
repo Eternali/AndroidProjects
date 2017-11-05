@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var weekToggle: ToggleButton
     lateinit var monthToggle: ToggleButton
 
-    fun displayToggle (view: View) {
+    fun toggleDisplay (view: View) {
         displayGroup.clearCheck()
         displayGroup.check(view.id)
     }
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        displayGroup = findViewById(R.id.displayToggleGroup)
+        displayGroup = findViewById(R.id.overviewLayoutSwitcher)
         dayToggle = findViewById(R.id.dayToggle)
         weekToggle = findViewById(R.id.weekToggle)
         monthToggle = findViewById(R.id.monthToggle)
