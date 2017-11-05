@@ -33,12 +33,19 @@ class MainActivity : AppCompatActivity() {
         displayGroup.clearCheck()
         displayGroup.check(view.id)
 
-        if (view.id == R.id.monthToggle) {
-            val fragTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            val monthFrag = monthFragment()
-            fragTransaction.add(R.id.displayFragContainer, monthFrag, "Month")
-            fragTransaction.commit()
+        val fragTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        when (view.id) {
+            R.id.dayToggle -> {
+                fragTransaction.replace(R.id.displayFragContainer, DayFragment(), "Day")
+            }
+            R.id.weekToggle -> {
+                fragTransaction.replace(R.id.displayFragContainer, WeekFragment(), "Week")
+            }
+            R.id.monthToggle -> {
+                fragTransaction.replace(R.id.displayFragContainer, MonthFragment(), "Month")
+            }
         }
+        fragTransaction.commit()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
