@@ -1,5 +1,7 @@
 package com.example.fa11en.syde161proto01
 
+import android.app.FragmentManager
+import android.app.FragmentTransaction
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.RadioGroup
 import android.widget.ToggleButton
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +32,13 @@ class MainActivity : AppCompatActivity() {
     fun toggleDisplay (view: View) {
         displayGroup.clearCheck()
         displayGroup.check(view.id)
+
+        if (view.id == R.id.monthToggle) {
+            val fragTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+            val monthFrag = monthFragment()
+            fragTransaction.add(R.id.displayFragContainer, monthFrag, "Month")
+            fragTransaction.commit()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
