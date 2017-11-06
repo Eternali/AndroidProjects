@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import java.util.*
 
 
-class EventAdapter (val ctx: Context, var resource: Int, var events: ArrayList<UserEvent>)
+class EventAdapter (val ctx: Context, var resource: Int, var events: MutableList<UserEvent>)
         : ArrayAdapter<UserEvent> (ctx, resource, events) {
 
     override fun notifyDataSetChanged() {

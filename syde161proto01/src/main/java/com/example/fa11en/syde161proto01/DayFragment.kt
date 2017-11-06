@@ -13,12 +13,15 @@ class DayFragment : Fragment () {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         if (inflater != null && container != null) {
-            val dayListView: ListView = container.findViewById(R.id.dayView)
-            dayListView.adapter =
-
             val view: View = inflater.inflate(R.layout.day_fragment_layout, null)
+
+            val dayListView: ListView = view.findViewById(R.id.dayView)
+            dayListView.adapter = EventAdapter(activity, 0, events)
+
             return view
         }
+
+        return View(activity)
     }
 
 }
