@@ -58,6 +58,10 @@ class MainActivity : AppCompatActivity() {
         monthToggle = findViewById(R.id.monthToggle)
 
         displayGroup.setOnCheckedChangeListener(displayToggleListener)
+
+        val fragTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragTransaction.replace(R.id.displayFragContainer, WeekFragment, "Week")
+        fragTransaction.commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
