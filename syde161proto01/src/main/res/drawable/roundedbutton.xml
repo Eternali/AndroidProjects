@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true">
+    <solid android:color="#FFC300" />
+    <corners android:bottomRightRadius="200dp"
+        android:bottomLeftRadius="200dp"
+        android:topRightRadius="200dp"
+        android:topLeftRadius="200dp"/>
+    <stroke android:width="3dp" android:color="#FFC300" />
+</shape>
