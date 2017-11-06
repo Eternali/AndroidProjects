@@ -9,9 +9,16 @@ import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ListView
 import android.widget.RadioGroup
 import android.widget.ToggleButton
-import kotlinx.android.synthetic.main.activity_main.view.*
+import java.util.*
+
+
+fun getEvents (events: ArrayList<UserEvent>) {
+    events.add(UserEvent(Date(), "TEST", "Test description"))
+}
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +29,8 @@ class MainActivity : AppCompatActivity() {
             view.isChecked = view.id == checkedId
         }
     }
+
+    lateinit var events: ArrayList<UserEvent>
 
     lateinit private var dotMenu: Menu
     lateinit var displayGroup: RadioGroup
@@ -52,6 +61,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        getEvents(events)
+
         displayGroup = findViewById(R.id.overviewLayoutSwitcher)
         dayToggle = findViewById(R.id.dayToggle)
         weekToggle = findViewById(R.id.weekToggle)
@@ -60,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         displayGroup.setOnCheckedChangeListener(displayToggleListener)
 
         val fragTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        fragTransaction.replace(R.id.displayFragContainer, WeekFragment, "Week")
+        fragTransaction.replace(R.id.displayFragContainer, WeekFragment(), "Week")
         fragTransaction.commit()
     }
 

@@ -10,4 +10,7 @@
     <string name="monthToggleText">MONTH</string>
     <string name="weekToggleText">WEEK</string>
     <string name="dayToggleText">DAY</string>
+    <string name="eventTimePlacehold">TIME</string>
+    <string name="eventTitlePlacehold">TITLE</string>
+    <string name="eventDescPlacehold">DESCRIPTION</string>
 </resources>
