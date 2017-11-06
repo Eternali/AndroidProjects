@@ -64,4 +64,21 @@
         app:layout_constraintTop_toBottomOf="@id/overviewLayout">
     </LinearLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:hapticFeedbackEnabled="true"
+        android:src="@drawable/ic_add_black_24dp"
+        app:backgroundTint="@color/colorAccent"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
