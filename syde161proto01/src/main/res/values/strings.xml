@@ -13,4 +13,9 @@
     <string name="eventTimePlacehold">TIME</string>
     <string name="eventTitlePlacehold">TITLE</string>
     <string name="eventDescPlacehold">DESCRIPTION</string>
+    <string name="eventType_desc">Choose Type</string>
+    <string name="eventTypeChooser_text">EVENT</string>
+    <string name="duedateTypeChooser_text">DUE DATE</string>
+    <string name="projectTypeChooser_text">PROJECT</string>
+    <string name="reminderTypeChooser_text">REMINDER</string>
 </resources>
