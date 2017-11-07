@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.fa11en.syde161proto01.MainActivity">
@@ -64,21 +65,59 @@
         app:layout_constraintTop_toBottomOf="@id/overviewLayout">
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addButton"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/addMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginEnd="20dp"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        fab:fab_addButtonPlusIconColor="@color/white"
+        fab:fab_addButtonColorNormal="@color/colorAccent"
+        fab:fab_addButtonColorPressed="@color/colorAccent_pressed"
+        fab:fab_labelStyle="@style/add_labels_style"
         android:hapticFeedbackEnabled="true"
-        android:src="@drawable/ic_add_black_24dp"
-        app:backgroundTint="@color/colorAccent"
-        app:elevation="6dp"
-        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent">
+
+        <!--add : fab:fab_size="mini" to fab to make it mini size-->
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_addEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorPressed="@color/colorAccent_pressed"
+            fab:fab_title="Event"
+            android:onClick="addMenuActions" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_addDueDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorPressed="@color/colorAccent_pressed"
+            fab:fab_title="Due Date"
+            android:onClick="addMenuActions" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_addProject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorPressed="@color/colorAccent_pressed"
+            fab:fab_title="Project"
+            android:onClick="addMenuActions" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_addReminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorPressed="@color/colorAccent_pressed"
+            fab:fab_title="Reminder"
+            android:onClick="addMenuActions" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </android.support.constraint.ConstraintLayout>

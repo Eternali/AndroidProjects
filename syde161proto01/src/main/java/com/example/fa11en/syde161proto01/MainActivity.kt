@@ -1,6 +1,5 @@
 package com.example.fa11en.syde161proto01
 
-import android.app.FragmentManager
 import android.app.FragmentTransaction
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -11,8 +10,17 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.RadioGroup
 import android.widget.ToggleButton
+import com.getbase.floatingactionbutton.FloatingActionButton
+import com.getbase.floatingactionbutton.FloatingActionsMenu
 import java.util.*
 
+
+enum class EventTypes {
+    EVENT,
+    DUEDATE,
+    PROJECT,
+    REMINDER
+}
 
 internal var events: MutableList<UserEvent> = ArrayList()
 
@@ -36,6 +44,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var weekToggle: ToggleButton
     lateinit var monthToggle: ToggleButton
 
+    lateinit var addMenu: FloatingActionsMenu
+
     fun toggleDisplay (view: View) {
         displayGroup.clearCheck()
         displayGroup.check(view.id)
@@ -55,6 +65,27 @@ class MainActivity : AppCompatActivity() {
         fragTransaction.commit()
     }
 
+    fun addMenuActions (view: View) {
+        val editIntent = Intent(this, EditActivity::class.java)
+        val event = UserEvent()
+        when (view.id) {
+            R.id.action_addEvent -> {
+                event.type = EventTypes.EVENT
+            }
+            R.id.action_addDueDate -> {
+
+            }
+            R.id.action_addProject -> {
+
+            }
+            R.id.action_addReminder -> {
+
+            }
+        }
+        editIntent.putExtra("Data", event)
+        startActivity(editIntent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -72,7 +103,8 @@ class MainActivity : AppCompatActivity() {
         fragTransaction.replace(R.id.displayFragContainer, WeekFragment(), "Week")
         fragTransaction.commit()
 
-//        fragmentManager.findFragmentById(R.id.displayFragContainer)
+        addMenu = findViewById<FloatingActionsMenu>(R.id.addMenu)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
