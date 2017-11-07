@@ -80,16 +80,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-        <!--add : fab:fab_size="mini" to fab to make it mini size-->
-
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/action_addEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorAccent"
             fab:fab_colorPressed="@color/colorAccent_pressed"
-            fab:fab_title="Event"
-            android:onClick="addMenuActions" />
+            fab:fab_size="mini" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/action_addDueDate"
@@ -97,8 +94,7 @@
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorAccent"
             fab:fab_colorPressed="@color/colorAccent_pressed"
-            fab:fab_title="Due Date"
-            android:onClick="addMenuActions" />
+            fab:fab_size="mini" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/action_addProject"
@@ -106,8 +102,7 @@
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorAccent"
             fab:fab_colorPressed="@color/colorAccent_pressed"
-            fab:fab_title="Project"
-            android:onClick="addMenuActions" />
+            fab:fab_size="mini" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/action_addReminder"
@@ -115,8 +110,7 @@
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorAccent"
             fab:fab_colorPressed="@color/colorAccent_pressed"
-            fab:fab_title="Reminder"
-            android:onClick="addMenuActions" />
+            fab:fab_size="mini" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

@@ -10,7 +10,7 @@
     android:orientation="vertical"
     android:background="@color/cardview_dark_background">
 
-    <RadioGroup
+    <!--RadioGroup
         android:id="@+id/eventTypeRadios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -39,6 +39,6 @@
             android:layout_height="wrap_content"
             style="@style/radioTitle"
             android:text="@string/reminderTypeChooser_text" />
-    </RadioGroup>
+    </RadioGroup-->
 
 </RelativeLayout>

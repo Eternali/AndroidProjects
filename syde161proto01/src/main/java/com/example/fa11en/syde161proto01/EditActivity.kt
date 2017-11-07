@@ -15,11 +15,11 @@ class EditActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
-        bundle = intent.extras
-
-        if (bundle.getSerializable("data") != null) {
-
-        }
+//        bundle = intent.extras
+//
+//        if (bundle.getSerializable("data") != null) {
+//
+//        }
     }
 
 }

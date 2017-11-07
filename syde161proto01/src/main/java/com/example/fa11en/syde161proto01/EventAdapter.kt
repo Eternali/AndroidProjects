@@ -19,17 +19,18 @@ class EventAdapter (val ctx: Context, var resource: Int, var events: MutableList
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
         if (convertView == null) {
-            val inflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val eventView = EventListView(ctx)
 
             // get data from event layout
             val dateTime = eventView.findViewById<TextView>(R.id.eventTime)
             val title = eventView.findViewById<TextView>(R.id.eventTitle)
             val desc = eventView.findViewById<TextView>(R.id.eventDesc)
+            val type = eventView.findViewById<TextView>(R.id.eventType)
 
             // since not all events are shown at once, we can't used the passed position argument
-            title.text = events[position].title
-            desc.text = events[position].desc
+            title.text = events[position].params[ParameterTypes.TITLE] as String
+            desc.text = events[position].params[ParameterTypes.DESCRIPTION] as String
+            type.text = events[position].type.name
 
             return eventView
         }

@@ -18,4 +18,5 @@
     <string name="duedateTypeChooser_text">DUE DATE</string>
     <string name="projectTypeChooser_text">PROJECT</string>
     <string name="reminderTypeChooser_text">REMINDER</string>
+    <string name="eventTypePlacehold">TYPE</string>
 </resources>

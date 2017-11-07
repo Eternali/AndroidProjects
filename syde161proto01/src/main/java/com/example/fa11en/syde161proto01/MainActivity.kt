@@ -2,12 +2,10 @@ package com.example.fa11en.syde161proto01
 
 import android.app.FragmentTransaction
 import android.content.Intent
+import android.location.Location
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.RadioGroup
 import android.widget.ToggleButton
 import com.getbase.floatingactionbutton.FloatingActionButton
@@ -15,19 +13,45 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu
 import java.util.*
 
 
-enum class EventTypes {
-    EVENT,
-    DUEDATE,
-    PROJECT,
-    REMINDER
+enum class ParameterTypes {
+    TITLE,
+    DESCRIPTION,
+    DATETIME,
+    LOCATION,
+    ENTITIES,
+    REPEAT
 }
 
+internal var eventTypes = hashMapOf(
+        "EVENT" to EventType("EVENT",
+                                    arrayListOf(ParameterTypes.TITLE,
+                                            ParameterTypes.DESCRIPTION,
+                                            ParameterTypes.DATETIME,
+                                            ParameterTypes.LOCATION,
+                                            ParameterTypes.ENTITIES)),
+        "EVALUATION" to EventType("EVALUATION",
+                                    arrayListOf(ParameterTypes.TITLE,
+                                            ParameterTypes.DESCRIPTION,
+                                            ParameterTypes.DATETIME)),
+        "PROJECT" to EventType("PROJECT",
+                                    arrayListOf(ParameterTypes.TITLE,
+                                            ParameterTypes.DESCRIPTION,
+                                            ParameterTypes.DATETIME)),
+        "REMINDER" to EventType("REMINDER",
+                                    arrayListOf(ParameterTypes.TITLE,
+                                            ParameterTypes.DESCRIPTION,
+                                            ParameterTypes.DATETIME))
+        )
 internal var events: MutableList<UserEvent> = ArrayList()
 
 class MainActivity : AppCompatActivity() {
 
     fun getEvents (events: MutableList<UserEvent>) {
-        events.add(UserEvent(EventTypes.EVENT, Date(), "TEST", "Test description"))
+        events.add(UserEvent(eventTypes["EVENT"]!!))
+        events[events.size-1].setParam(ParameterTypes.TITLE, "TEST TITLE")
+        events[events.size-1].setParam(ParameterTypes.DESCRIPTION, "TEST DESCRIPTION")
+        events[events.size-1].setParam(ParameterTypes.DATETIME, Date())
+        events[events.size-1].setParam(ParameterTypes.LOCATION, Location("gps"))
     }
 
     val displayToggleListener: RadioGroup.OnCheckedChangeListener = RadioGroup.OnCheckedChangeListener { group, checkedId ->
@@ -67,22 +91,22 @@ class MainActivity : AppCompatActivity() {
 
     fun addMenuActions (view: View) {
         val editIntent = Intent(this, EditActivity::class.java)
-        val event = UserEvent()
-        when (view.id) {
-            R.id.action_addEvent -> {
-                event.type = EventTypes.EVENT
-            }
-            R.id.action_addDueDate -> {
-                event.type = EventTypes.DUEDATE
-            }
-            R.id.action_addProject -> {
-                event.type = EventTypes.PROJECT
-            }
-            R.id.action_addReminder -> {
-                event.type = EventTypes.REMINDER
-            }
-        }
-        editIntent.putExtra("data", event)
+//        val event = UserEvent()
+//        when (view.id) {
+//            R.id.action_addEvent -> {
+//                event.type = EventTypes.EVENT
+//            }
+//            R.id.action_addDueDate -> {
+//                event.type = EventTypes.DUEDATE
+//            }
+//            R.id.action_addProject -> {
+//                event.type = EventTypes.PROJECT
+//            }
+//            R.id.action_addReminder -> {
+//                event.type = EventTypes.REMINDER
+//            }
+//        }
+//        editIntent.putExtra("data", event)
         startActivity(editIntent)
     }
 
@@ -104,6 +128,16 @@ class MainActivity : AppCompatActivity() {
         fragTransaction.commit()
 
         addMenu = findViewById<FloatingActionsMenu>(R.id.addMenu)
+
+        (addMenu.getChildAt(1) as FloatingActionButton).title = "Testing"
+        // generate event adding buttons
+//        for (c in 0..addMenu.childCount-2) {
+//            (addMenu.getChildAt(c) as FloatingActionButton).title = eventTypes.keys.elementAt(c)
+//            (addMenu.getChildAt(c) as FloatingActionButton).setOnClickListener {
+//                val editIntent = Intent(this, EditActivity::class.java)
+//                startActivity(editIntent)
+//            }
+//        }
 
     }
 

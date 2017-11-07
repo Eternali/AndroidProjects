@@ -8,13 +8,27 @@
     android:layout_marginRight="2dp"
     android:layout_marginBottom="3dp">
 
-    <TextView
-        android:id="@+id/eventTime"
+    <LinearLayout
+        android:layout_weight="0.35"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.35"
+        android:orientation="vertical"
+        android:layout_margin="0dp">
+
+    <TextView
+        android:id="@+id/eventTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/eventTimePlacehold"
         android:textSize="24sp" />
+    <TextView
+        android:id="@+id/eventType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/eventTypePlacehold"
+        android:textSize="12sp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_weight="0.65"
@@ -30,7 +44,6 @@
             android:layout_marginBottom="2dp"
             android:text="@string/eventTitlePlacehold"
             android:textSize="18sp" />
-
         <TextView
             android:id="@+id/eventDesc"
             android:layout_width="wrap_content"
