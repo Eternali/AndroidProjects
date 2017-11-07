@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp">
 
         <TextView
             android:id="@+id/eventTypeDesc"
@@ -21,37 +23,12 @@
             android:textStyle="bold"
             android:text="@string/eventType_desc" />
 
-        <RadioGroup
-            android:id="@+id/eventTypeRadios"
+        <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5">
-            <RadioButton
-                android:id="@+id/eventRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                style="@style/radioTitle"
-                android:text="@string/eventTypeChooser_text"/>
-            <RadioButton
-                android:id="@+id/duedateRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/radioTitle"
-                android:text="@string/duedateTypeChooser_text" />
-            <RadioButton
-                android:id="@+id/projectRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/radioTitle"
-                android:text="@string/projectTypeChooser_text" />
-            <RadioButton
-                android:id="@+id/reminderRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/radioTitle"
-                android:text="@string/reminderTypeChooser_text" />
-        </RadioGroup>
+            android:layout_weight="0.5"
+            android:background="@color/colorAccent"
+            android:text="CHOOSE TEXT"/>
 
     </LinearLayout>
 
