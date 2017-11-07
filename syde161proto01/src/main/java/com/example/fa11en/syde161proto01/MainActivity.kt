@@ -27,7 +27,7 @@ internal var events: MutableList<UserEvent> = ArrayList()
 class MainActivity : AppCompatActivity() {
 
     fun getEvents (events: MutableList<UserEvent>) {
-        events.add(UserEvent(Date(), "TEST", "Test description"))
+        events.add(UserEvent(EventTypes.EVENT, Date(), "TEST", "Test description"))
     }
 
     val displayToggleListener: RadioGroup.OnCheckedChangeListener = RadioGroup.OnCheckedChangeListener { group, checkedId ->
@@ -73,16 +73,16 @@ class MainActivity : AppCompatActivity() {
                 event.type = EventTypes.EVENT
             }
             R.id.action_addDueDate -> {
-
+                event.type = EventTypes.DUEDATE
             }
             R.id.action_addProject -> {
-
+                event.type = EventTypes.PROJECT
             }
             R.id.action_addReminder -> {
-
+                event.type = EventTypes.REMINDER
             }
         }
-        editIntent.putExtra("Data", event)
+        editIntent.putExtra("data", event)
         startActivity(editIntent)
     }
 
