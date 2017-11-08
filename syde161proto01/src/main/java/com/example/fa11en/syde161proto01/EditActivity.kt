@@ -23,7 +23,7 @@ class EditActivity : Activity() {
 
         //  set layout dynamically according to event type  //
 
-        val root = findViewById<LinearLayout>(R.id.edit_activity_root)
+        val root = findViewById<ScrollView>(R.id.edit_activity_root)
 
         val typeSpinner = findViewById<Spinner>(R.id.eventTypeSpinner)
         val typeAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
@@ -32,6 +32,7 @@ class EditActivity : Activity() {
         typeSpinner.adapter = typeAdapter
         typeSpinner.setSelection(typeAdapter.getPosition(typeName))
 
+        // load the proper fragment for each type (and on type change)
         event.params.forEach {
             val linearParams = LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -46,13 +47,13 @@ class EditActivity : Activity() {
                     curLayout.orientation = LinearLayout.HORIZONTAL
                     curLayout.layoutParams = linearParams
                     labelText.layoutParams = LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            0,
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             0.5f)
                     labelText.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                     labelText.text = it.key.param
                     titleEdit.layoutParams = LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            0,
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             0.5f)
                     titleEdit.hint = it.key.param
@@ -62,6 +63,7 @@ class EditActivity : Activity() {
                     root.addView(curLayout)
                 }
             }
+            root.invalidate()
         }
 
     }
