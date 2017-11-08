@@ -42,6 +42,7 @@ internal var eventTypes = hashMapOf(
                                             ParameterTypes.DESCRIPTION,
                                             ParameterTypes.DATETIME))
         )
+
 internal var events: MutableList<UserEvent> = ArrayList()
 
 class MainActivity : AppCompatActivity() {
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var monthToggle: ToggleButton
 
     lateinit var addMenu: FloatingActionsMenu
+    val addMenuButtons: MutableList<FloatingActionButton> = mutableListOf()
 
     fun toggleDisplay (view: View) {
         displayGroup.clearCheck()
@@ -87,27 +89,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         fragTransaction.commit()
-    }
-
-    fun addMenuActions (view: View) {
-        val editIntent = Intent(this, EditActivity::class.java)
-//        val event = UserEvent()
-//        when (view.id) {
-//            R.id.action_addEvent -> {
-//                event.type = EventTypes.EVENT
-//            }
-//            R.id.action_addDueDate -> {
-//                event.type = EventTypes.DUEDATE
-//            }
-//            R.id.action_addProject -> {
-//                event.type = EventTypes.PROJECT
-//            }
-//            R.id.action_addReminder -> {
-//                event.type = EventTypes.REMINDER
-//            }
-//        }
-//        editIntent.putExtra("data", event)
-        startActivity(editIntent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,15 +110,22 @@ class MainActivity : AppCompatActivity() {
 
         addMenu = findViewById<FloatingActionsMenu>(R.id.addMenu)
 
-        (addMenu.getChildAt(1) as FloatingActionButton).title = "Testing"
         // generate event adding buttons
-//        for (c in 0..addMenu.childCount-2) {
-//            (addMenu.getChildAt(c) as FloatingActionButton).title = eventTypes.keys.elementAt(c)
-//            (addMenu.getChildAt(c) as FloatingActionButton).setOnClickListener {
-//                val editIntent = Intent(this, EditActivity::class.java)
-//                startActivity(editIntent)
-//            }
-//        }
+        eventTypes.forEach {
+            val button = FloatingActionButton(this)
+            button.size = FloatingActionButton.SIZE_MINI
+            button.setColorNormalResId(R.color.colorAccent)
+            button.setColorPressedResId(R.color.colorAccent_pressed)
+            button.title = it.key
+            button.setOnClickListener {
+                val editIntent = Intent(this, EditActivity::class.java)
+                editIntent.putExtra("eventType", it)
+                startActivity(editIntent)
+            }
+
+            addMenuButtons.add(button)
+            addMenu.addButton(addMenuButtons[addMenuButtons.size-1])
+        }
 
     }
 
