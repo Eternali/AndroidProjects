@@ -63,7 +63,7 @@ class EditActivity : Activity() {
                     root.addView(curLayout)
                 }
             }
-            root.invalidate()
+//            root.invalidate()
         }
 
     }

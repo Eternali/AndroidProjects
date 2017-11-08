@@ -4,7 +4,7 @@ import os
 
 projects = list(filter(None, os.popen('cd .. && ls').read().strip(' ').split('\n')))
 for p in projects:
-    if p == 'Src' or p == 'Examples':
+    if p == 'Src' or p == 'Examples' or p == 'WAToPlan':
         projects.remove(p)
 
 os.system('git pull origin master')
