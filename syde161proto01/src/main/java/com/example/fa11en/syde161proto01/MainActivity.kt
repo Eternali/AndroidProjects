@@ -13,13 +13,13 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu
 import java.util.*
 
 
-enum class ParameterTypes {
-    TITLE,
-    DESCRIPTION,
-    DATETIME,
-    LOCATION,
-    ENTITIES,
-    REPEAT
+enum class ParameterTypes (val param: String){
+    TITLE ("TITLE"),
+    DESCRIPTION ("DESCRIPTION"),
+    DATETIME ("DATETIME"),
+    LOCATION ("LOCATION"),
+    ENTITIES ("ENTITIES"),
+    REPEAT ("REPEAT")
 }
 
 internal var eventTypes = hashMapOf(
