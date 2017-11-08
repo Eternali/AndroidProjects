@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/edit_activity_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +8,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/typeContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -23,12 +25,11 @@
             android:textStyle="bold"
             android:text="@string/eventType_desc" />
 
-        <Button
+        <Spinner
+            android:id="@+id/eventTypeSpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:background="@color/colorAccent"
-            android:text="CHOOSE TEXT"/>
+            android:layout_weight="0.5" />
 
     </LinearLayout>
 

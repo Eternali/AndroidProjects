@@ -117,9 +117,11 @@ class MainActivity : AppCompatActivity() {
             button.setColorNormalResId(R.color.colorAccent)
             button.setColorPressedResId(R.color.colorAccent_pressed)
             button.title = it.key
-            button.setOnClickListener {
+            button.setOnClickListener { _ ->
+                addMenu.collapse()
                 val editIntent = Intent(this, EditActivity::class.java)
-                editIntent.putExtra("eventType", it)
+                editIntent.putExtra("typeName", it.key)
+                editIntent.putExtra("parameters", it.value.parameters)
                 startActivity(editIntent)
             }
 
