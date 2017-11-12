@@ -330,10 +330,10 @@ class MainActivity : AppCompatActivity () {
         orderReminders(reminders as ArrayList<Reminder>, false)
 
         // get the view setting buttons and adjust the listview accordingly
-        tabs[0] = findViewById(R.id.ongoingButton) as Button
-        tabs[1] = findViewById(R.id.pastButton) as Button
+        tabs[0] = findViewById(R.id.ongoingButton)
+        tabs[1] = findViewById(R.id.pastButton)
 
-        remindersList = findViewById(R.id.remindersList) as ListView
+        remindersList = findViewById(R.id.remindersList)
 //        (remindersList as ListView).setOnTouchListener(View.OnTouchListener() {
 //            override fun onTouch
 //        })
@@ -343,7 +343,7 @@ class MainActivity : AppCompatActivity () {
         setTab(curTab)
 
         // FAB that lets users add reminders
-        addButton = findViewById(R.id.addButton) as FloatingActionButton
+        addButton = findViewById(R.id.addButton)
         (addButton as FloatingActionButton).setOnClickListener {
             val intent : Intent = Intent(this, EditActivity::class.java)
             startActivity(intent)

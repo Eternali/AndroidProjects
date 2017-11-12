@@ -31,9 +31,9 @@ class RemindersArrayAdapter (var ctx : Context, var resource : Int, var reminds 
             val inflater: LayoutInflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val remindView: ReminderView = ReminderView(ctx)//inflater.inflate(R.layout.reminder_layout, parent, false)
             // set components of the layout to values from the reminds array
-            val dateTime = remindView.findViewById(R.id.dateTime) as TextView
-            val contactName = remindView.findViewById(R.id.contactName) as TextView
-            val message = remindView.findViewById(R.id.message) as TextView
+            val dateTime = remindView.findViewById<TextView>(R.id.dateTime)
+            val contactName = remindView.findViewById<TextView>(R.id.contactName)
+            val message = remindView.findViewById<TextView>(R.id.message)
             // since not all reminders are shown at once, we can't use the passed position argument
             // temporarily add 1 to the month (calendar months are indexed from 0)
             val tmpdate = reminds[position].dates[0].split("/") as ArrayList

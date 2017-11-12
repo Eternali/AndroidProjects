@@ -68,20 +68,20 @@ class EditActivity : Activity () {
         setContentView(R.layout.activity_edit)
 
         // set UI elements
-        val datePicker = findViewById(R.id.datePick) as EditText
-        val timePicker = findViewById(R.id.timePick) as EditText
-        val numRepsET = findViewById(R.id.maxFreq) as EditText
-        contact = findViewById(R.id.phoneNumber) as EditText
-        val message = findViewById(R.id.message) as EditText
-        val sendBtn = findViewById(R.id.sendBtn) as Button
-        val backBtn = findViewById(R.id.backBtn) as Button
-        dayBtns[0] = findViewById(R.id.sunBtn) as Button
-        dayBtns[1] = findViewById(R.id.monBtn) as Button
-        dayBtns[2] = findViewById(R.id.tueBtn) as Button
-        dayBtns[3] = findViewById(R.id.wedBtn) as Button
-        dayBtns[4] = findViewById(R.id.thuBtn) as Button
-        dayBtns[5] = findViewById(R.id.friBtn) as Button
-        dayBtns[6] = findViewById(R.id.satBtn) as Button
+        val datePicker = findViewById<EditText>(R.id.datePick)
+        val timePicker = findViewById<EditText>(R.id.timePick)
+        val numRepsET = findViewById<EditText>(R.id.maxFreq)
+        contact = findViewById(R.id.phoneNumber)
+        val message = findViewById<EditText>(R.id.message)
+        val sendBtn = findViewById<Button>(R.id.sendBtn)
+        val backBtn = findViewById<Button>(R.id.backBtn)
+        dayBtns[0] = findViewById(R.id.sunBtn)
+        dayBtns[1] = findViewById(R.id.monBtn)
+        dayBtns[2] = findViewById(R.id.tueBtn)
+        dayBtns[3] = findViewById(R.id.wedBtn)
+        dayBtns[4] = findViewById(R.id.thuBtn)
+        dayBtns[5] = findViewById(R.id.friBtn)
+        dayBtns[6] = findViewById(R.id.satBtn)
 
         // just to make sure no NullPointerExceptions check if there are any nulls in dayBtns or dayBtnActives
         if (null in dayBtns) { displayWarning(this, "Failed to load UI."); finish() }

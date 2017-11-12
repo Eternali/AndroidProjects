@@ -46,8 +46,8 @@ class SettingsActivity : Activity () {
 
         // get the two switches to control overall theme and the enabling of changing the navbar color
         // (some might not like it but I know some who will)
-        val darkSwitch = findViewById(R.id.darkSwitch) as Switch
-        val navbarSwitch = findViewById(R.id.navbarSwitch) as Switch
+        val darkSwitch = findViewById<Switch>(R.id.darkSwitch)
+        val navbarSwitch = findViewById<Switch>(R.id.navbarSwitch)
         val sharedPref : SharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
 
         // get the saved settings from preferences and set the switches to match them
